@@ -99,7 +99,12 @@ function memoized(key, fetcher) {
  */
 export function plazaGet(url, data) {
   const key = data ? `${url}::${JSON.stringify(data)}` : url;
-  return memoized(key, () => ajax(url, data ? { data } : undefined));
+  // Discourse 2026.7's ajax() reads properties off the second argument
+  // whenever one is passed — even an explicit `undefined` — so it must be
+  // omitted entirely when there's no data. Passing `undefined` throws
+  // synchronously ("reading 'ignoreUnsent'"), which attempt() swallowed,
+  // silently nulling every data-less plazaGet call.
+  return memoized(key, () => (data ? ajax(url, { data }) : ajax(url)));
 }
 
 /**
