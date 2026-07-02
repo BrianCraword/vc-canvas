@@ -1,0 +1,124 @@
+.block-plaza-ai-guides {
+  &__layout {
+    @include tinted-card(var(--plaza-sky-mid), var(--plaza-blue-border));
+    padding: var(--card-padding);
+    text-align: center;
+  }
+
+  &__title {
+    @include section-title;
+    justify-content: center;
+    margin-bottom: var(--space-1);
+  }
+
+  &__lead {
+    margin: 0 0 var(--space-3);
+    color: var(--plaza-text-soft);
+    font-size: var(--font-down-1);
+    line-height: 1.4;
+  }
+
+  &__doors {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+
+    // Stack the two doors when the block is narrow (small columns / mobile).
+    @container homepage-blocks (width <= 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__door {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-3) var(--space-2);
+    border-radius: var(--space-3);
+    text-decoration: none;
+    color: var(--plaza-text);
+    border: 2px solid transparent;
+    cursor: pointer;
+    font-family: inherit;
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    }
+
+    &:active {
+      transform: translateY(-1px);
+    }
+  }
+
+  &__door--logos {
+    background: var(--plaza-pink);
+    border-color: var(--plaza-pink-border);
+
+    .block-plaza-ai-guides__icon {
+      color: var(--plaza-pop);
+    }
+    .block-plaza-ai-guides__cta {
+      background: var(--plaza-pop);
+    }
+  }
+
+  &__door--omega {
+    background: var(--plaza-lavender);
+    border-color: var(--plaza-lavender-border);
+
+    .block-plaza-ai-guides__icon {
+      color: var(--plaza-accent);
+    }
+    .block-plaza-ai-guides__cta {
+      background: var(--plaza-accent);
+    }
+  }
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--plaza-card-bg);
+    margin-bottom: var(--space-1);
+
+    .d-icon {
+      width: 1.4em;
+      height: 1.4em;
+    }
+  }
+
+  &__name {
+    font-size: var(--font-up-1);
+    font-weight: 800;
+    color: var(--plaza-text);
+  }
+
+  &__tagline {
+    font-size: var(--font-down-1);
+    color: var(--plaza-text-soft);
+    line-height: 1.35;
+    min-height: 2.7em; // keep both doors visually level even if taglines differ
+    display: flex;
+    align-items: center;
+  }
+
+  &__cta {
+    margin-top: var(--space-1);
+    display: inline-block;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 999px;
+    padding: 0.4em 1.2em;
+    font-weight: 700;
+    font-size: var(--font-down-1);
+  }
+}

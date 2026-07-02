@@ -1,0 +1,66 @@
+{
+  "name": "VC-Canvas",
+  "component": false,
+  "license_url": null,
+  "about_url": null,
+  "authors": "Victorious Christians",
+  "theme_version": "1.1.0",
+  "minimum_discourse_version": null,
+  "maximum_discourse_version": null,
+  "assets": {},
+  "color_schemes": {
+    "Community Plaza Light": {
+      "primary": "3d3358",
+      "secondary": "ffffff",
+      "tertiary": "9b6bd6",
+      "quaternary": "f08fb4",
+      "header_background": "fdf5fb",
+      "header_primary": "3d3358",
+      "highlight": "ffe9a8",
+      "selected": "efe4f8",
+      "hover": "f7f0fb",
+      "danger": "e26d6d",
+      "success": "7ec988",
+      "love": "f08fb4"
+    },
+    "Community Plaza Dark": {
+      "primary": "f5e9ff",
+      "secondary": "1f1830",
+      "tertiary": "c79bff",
+      "quaternary": "ffaccc",
+      "header_background": "281f3d",
+      "header_primary": "f5e9ff",
+      "highlight": "ffe9a8",
+      "selected": "352a55",
+      "hover": "2a2244",
+      "danger": "ff8b8b",
+      "success": "9be0a3",
+      "love": "ffaccc"
+    }
+  },
+  "modifiers": {
+    "serialize_topic_excerpts": true,
+    "svg_icons": [
+      "far-lightbulb",
+      "far-gem",
+      "far-calendar",
+      "far-comment",
+      "trophy",
+      "fire",
+      "star",
+      "crown",
+      "dice",
+      "chart-bar",
+      "tag",
+      "heart",
+      "wand-magic-sparkles",
+      "quote-left",
+      "bullhorn",
+      "face-smile-wink",
+      "users",
+      "book-open"
+    ],
+    "custom_homepage": true
+  },
+  "learn_more": "https://meta.discourse.org/t/beginners-guide-to-using-discourse-themes/91966"
+}

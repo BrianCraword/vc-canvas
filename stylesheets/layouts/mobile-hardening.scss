@@ -1,0 +1,88 @@
+// Mobile viewport hardening for the Community Plaza homepage.
+//
+// Goal: no element on the homepage can ever force the layout viewport
+// wider than the device, which on phones shows up as the page "scaling
+// off the viewport" (zoomed out / horizontally pannable).
+//
+// Strategy, in layers:
+// 1. Clip horizontal overflow at the block wrappers themselves, so a
+//    single misbehaving child can never widen the page.
+// 2. Kill the two classic min-content offenders: grid/flex children
+//    default to min-width:auto (they refuse to shrink below their
+//    content), and `white-space: nowrap` text (usernames, topic titles)
+//    that can't wrap. Force min-width:0 and safe wrapping everywhere
+//    inside plaza blocks.
+// 3. Scale the hero title with the viewport floor low enough for a
+//    320px screen, and let long usernames break instead of overflow.
+
+// --- Layer 1: clip at the wrappers -------------------------------------
+
+.homepage-blocks,
+.main-outlet-blocks {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+.homepage-blocks__block,
+.main-outlet-blocks__block {
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+}
+
+// --- Layer 2: min-content offenders ------------------------------------
+
+// Any direct grid/flex child inside a plaza block must be allowed to
+// shrink. This neutralizes the min-width:auto default without touching
+// each block's own layout rules.
+[class*="block-plaza-"] {
+  > * {
+    min-width: 0;
+  }
+
+  a,
+  h2,
+  li,
+  p {
+    overflow-wrap: anywhere;
+  }
+}
+
+// Rows that intentionally use nowrap (leaderboard rows, ranking rows,
+// legendary meta) must truncate rather than push the layout.
+[class*="block-plaza-"] [style*="nowrap"],
+.block-plaza-leaderboard__row-name,
+.block-plaza-rankings__name,
+.block-plaza-legendary__meta,
+.block-plaza-hot-topics__meta,
+.block-plaza-new-faces__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+// --- Layer 3: hero + ticker specifics -----------------------------------
+
+.block-plaza-hero__title {
+  // Old floor was 2.5rem — on a 320–360px phone a single long
+  // "Welcome, {username}" word could exceed the viewport. Lower the
+  // floor and allow a break as the final safety net.
+  font-size: clamp(1.75rem, 7vw, 3.5rem);
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+
+.block-plaza-ticker__layout {
+  // Known issue from the initial survey: ticker items clip unsafely at
+  // narrow viewports (e.g., with the Discourse sidebar open). The pill
+  // itself must never exceed its container.
+  max-width: 100%;
+  min-width: 0;
+}
+
+.block-plaza-ticker__track {
+  // Contain the 100%-padded animated inner strip fully — belt and
+  // suspenders on browsers where mask + overflow interact oddly.
+  overflow: clip;
+  contain: paint;
+}

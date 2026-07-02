@@ -1,0 +1,141 @@
+// ── Plaza Scripture Campaign block ──────────────────────────────────────
+// The communal light meter as a Plaza doorway. Carries the same band logic
+// as the in-plugin player meter (dark → strong) so the standing reads the
+// same on the homepage and inside the run. Scheme tokens only, so Plaza
+// Light and Dark both render it correctly; a warm candle wash sets it
+// apart from the cooler sibling cards.
+
+.block-plaza-campaign__layout {
+  position: relative;
+  border: 1px solid var(--plaza-peach-border, var(--primary-200));
+  border-left: 4px solid var(--plaza-accent-dark, var(--tertiary));
+  border-radius: 12px;
+  padding: 1em 1.1em;
+  background: linear-gradient(
+    135deg,
+    var(--plaza-peach, var(--secondary)) 0%,
+    var(--secondary) 60%
+  );
+}
+
+.block-plaza-campaign__title {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: var(--font-up-1);
+  margin: 0 0 0.35em;
+
+  .d-icon {
+    color: #d8a657;
+  }
+}
+
+.block-plaza-campaign__season {
+  font-weight: 700;
+  font-size: var(--font-up-1);
+  margin-bottom: 0.6em;
+}
+
+.block-plaza-campaign__meter {
+  height: 9px;
+  border-radius: 5px;
+  background: var(--primary-low);
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.18);
+}
+
+.block-plaza-campaign__meter-fill {
+  height: 100%;
+  border-radius: 5px;
+  background: var(--tertiary);
+  transition: width 0.8s ease;
+}
+
+.block-plaza-campaign__standing {
+  font-variant: small-caps;
+  letter-spacing: 0.03em;
+  font-size: var(--font-down-1);
+  color: var(--primary-high);
+  margin-top: 0.4em;
+}
+
+.block-plaza-campaign__progress {
+  margin: 0.3em 0 0.5em;
+  font-size: var(--font-down-1);
+  color: var(--primary-medium);
+}
+
+.block-plaza-campaign__lead {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  margin: 0 0 0.4em;
+}
+
+.block-plaza-campaign__pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d8a657;
+  box-shadow: 0 0 0 0 rgba(216, 166, 87, 0.7);
+  animation: sc-plaza-pulse 1.8s infinite;
+  flex: none;
+}
+
+@keyframes sc-plaza-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(216, 166, 87, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(216, 166, 87, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(216, 166, 87, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .block-plaza-campaign__pulse {
+    animation: none;
+  }
+  .block-plaza-campaign__meter-fill {
+    transition: none;
+  }
+}
+
+.block-plaza-campaign__cta {
+  display: block;
+  text-align: center;
+  margin-top: 0.6em;
+  background: var(--plaza-accent-dark, var(--tertiary));
+  color: var(--secondary);
+  border-radius: 8px;
+  padding: 0.55em 1em;
+  font-weight: 700;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    background: var(--plaza-accent, var(--tertiary-hover, var(--tertiary)));
+    color: var(--secondary);
+    text-decoration: none;
+  }
+}
+
+// Band tints on the meter fill — mirror the player meter.
+.block-plaza-campaign--dark .block-plaza-campaign__meter-fill {
+  background: linear-gradient(90deg, #6b1f1f, #a83232);
+}
+.block-plaza-campaign--guttering .block-plaza-campaign__meter-fill {
+  background: linear-gradient(90deg, #9a5a1f, #d08a2c);
+}
+.block-plaza-campaign--holds .block-plaza-campaign__meter-fill {
+  background: linear-gradient(90deg, var(--tertiary), var(--tertiary-high, var(--tertiary)));
+}
+.block-plaza-campaign--gaining .block-plaza-campaign__meter-fill {
+  background: linear-gradient(90deg, #4f9a52, #76c47a);
+}
+.block-plaza-campaign--strong .block-plaza-campaign__meter-fill {
+  background: linear-gradient(90deg, #d8a657, #f2cd84);
+  box-shadow: 0 0 10px rgba(216, 166, 87, 0.6);
+}

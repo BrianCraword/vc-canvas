@@ -1,0 +1,100 @@
+.block-plaza-hero {
+  &__layout {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 220px;
+    padding: var(--space-8) var(--space-6);
+    border-radius: var(--d-border-radius-large);
+    overflow: hidden;
+    background: linear-gradient(
+      180deg,
+      var(--plaza-sky-top) 0%,
+      var(--plaza-sky-mid) 60%,
+      var(--plaza-sky-bottom) 100%
+    );
+    margin-block: var(--space-3) var(--space-4);
+  }
+
+  &__sky {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  &__cloud {
+    position: absolute;
+    width: 200px;
+    height: 80px;
+    animation: plaza-cloud-drift 80s linear infinite;
+
+    &--1 {
+      top: 18%;
+      left: 8%;
+      animation-duration: 100s;
+    }
+    &--2 {
+      top: 55%;
+      right: 12%;
+      width: 160px;
+      animation-duration: 120s;
+      animation-direction: reverse;
+    }
+    &--3 {
+      top: 30%;
+      right: 25%;
+      width: 140px;
+      opacity: 0.7;
+      animation-duration: 90s;
+    }
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    color: var(--plaza-accent);
+    text-shadow: 0 2px 0 #fff, 0 0 14px rgba(255, 255, 255, 0.6);
+    letter-spacing: -0.02em;
+  }
+
+  &__stats {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  &__stat {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid var(--plaza-card-border);
+    padding: 0.35em 0.9em;
+    border-radius: 999px;
+    font-size: var(--font-down-1);
+    color: var(--plaza-text);
+
+    strong {
+      color: var(--plaza-accent-dark);
+      font-weight: 700;
+    }
+  }
+}
+
+@keyframes plaza-cloud-drift {
+  0% {
+    transform: translateX(-30px);
+  }
+  100% {
+    transform: translateX(30px);
+  }
+}
