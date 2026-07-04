@@ -94,83 +94,88 @@ ai_guides_omega_agent_id:
 # single stack ordered by the *_mobile settings, so column choice is
 # desktop-only. When moving a block to a new column, also adjust its
 # *_desktop order so it seats correctly among its new neighbors.
+# ── Block placement + kill switch ───────────────────────────────────────
+# Each column_* setting places its block in a desktop column — or turns it
+# OFF entirely ("off" removes the block from desktop AND mobile; e.g. set
+# column_my_matches to off on a site without matchmaking). Settings are
+# per-site, so each site curates its own Plaza from the same component.
 column_profile_status:
   default: "left"
   type: enum
-  choices: ["left", "middle", "right"]
+  choices: ["left", "middle", "right", "off"]
 column_my_matches:
   default: "left"
   type: enum
-  choices: ["left", "middle", "right"]
+  choices: ["left", "middle", "right", "off"]
 column_hot_topics:
   default: "left"
   type: enum
-  choices: ["left", "middle", "right"]
+  choices: ["left", "middle", "right", "off"]
 column_new_faces:
   default: "left"
   type: enum
-  choices: ["left", "middle", "right"]
+  choices: ["left", "middle", "right", "off"]
 column_staff_picks:
   default: "left"
   type: enum
-  choices: ["left", "middle", "right"]
+  choices: ["left", "middle", "right", "off"]
 column_quote:
   default: "left"
   type: enum
-  choices: ["left", "middle", "right"]
+  choices: ["left", "middle", "right", "off"]
 column_leaderboard:
   default: "middle"
   type: enum
-  choices: ["left", "middle", "right"]
+  choices: ["left", "middle", "right", "off"]
 column_rankings:
   default: "middle"
   type: enum
-  choices: ["left", "middle", "right"]
+  choices: ["left", "middle", "right", "off"]
 column_mood:
   default: "middle"
   type: enum
-  choices: ["left", "middle", "right"]
+  choices: ["left", "middle", "right", "off"]
 column_legendary:
   default: "middle"
   type: enum
-  choices: ["left", "middle", "right"]
+  choices: ["left", "middle", "right", "off"]
 column_ad:
   default: "middle"
   type: enum
-  choices: ["left", "middle", "right"]
+  choices: ["left", "middle", "right", "off"]
 # Bible Trivia entry block (requires the discourse-bible-trivia plugin;
 # hides itself automatically when the plugin is absent or disabled).
 column_trivia:
   default: "middle"
   type: enum
-  choices: ["left", "middle", "right"]
+  choices: ["left", "middle", "right", "off"]
 # Scripture Campaign light-meter block (requires the
 # discourse-scripture-campaign plugin; hides itself when the plugin is
 # absent, disabled, or no run is active).
 column_campaign:
   default: "middle"
   type: enum
-  choices: ["left", "middle", "right"]
+  choices: ["left", "middle", "right", "off"]
 column_whos_online:
   default: "right"
   type: enum
-  choices: ["left", "middle", "right"]
+  choices: ["left", "middle", "right", "off"]
 column_lucky:
   default: "right"
   type: enum
-  choices: ["left", "middle", "right"]
+  choices: ["left", "middle", "right", "off"]
 column_poll:
   default: "right"
   type: enum
-  choices: ["left", "middle", "right"]
+  choices: ["left", "middle", "right", "off"]
 column_vibes:
   default: "right"
   type: enum
-  choices: ["left", "middle", "right"]
+  choices: ["left", "middle", "right", "off"]
 column_tags:
   default: "right"
   type: enum
-  choices: ["left", "middle", "right"]
+  choices: ["left", "middle", "right", "off"]
 
 # Left column
 order_profile_status_desktop:

@@ -185,10 +185,15 @@ export default apiInitializer((api) => {
   ];
 
   // Resolve a block's column: use its setting when it's a valid column,
-  // otherwise fall back to its home column. This makes a blank or typo'd
-  // setting safe — a block can never be dropped off the page.
+  // "off" removes the block entirely (per-site kill switch — e.g. the
+  // matchmaking block on a site with no matchmaking), and anything else
+  // (blank / typo) falls back to the home column so a bad value can never
+  // silently strand a block.
   const resolveColumn = (entry) => {
     const v = entry.column;
+    if (v === "off") {
+      return null;
+    }
     if (v === "left" || v === "middle" || v === "right") {
       return v;
     }
