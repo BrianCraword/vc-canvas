@@ -123,6 +123,13 @@ en:
       walk_lead: "The body walks the story together."
       cta_answer: "Stand and answer"
       cta_enter: "Enter the campaign"
+      newest_tag: "Newest season"
+      scenes_word: "scenes"
+      community_light: "light gathered by the body"
+      walkers_word: "walking"
+      library_lead: "Walk it at your own pace — answered from the Word, graded and taught personally."
+      cta_library: "Begin the walk"
+      browse_library: "Browse the library →"
     quick_poll:
       title: "📊 Quick Poll"
       question: "How's your day going?"

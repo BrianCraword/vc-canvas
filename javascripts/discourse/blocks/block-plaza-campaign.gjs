@@ -8,28 +8,32 @@ import { plazaGet } from "../lib/plaza-fetch";
 
 // ── Plaza Scripture Campaign block ───────────────────────────────────────
 //
-// Thin doorway into the discourse-scripture-campaign plugin: when a run is
-// active, this block carries the communal light meter onto the Plaza so the
-// body's standing is visible from the homepage and a scene that's open to
-// answer feels like something you'd want to walk into.
+// Doorway into the discourse-scripture-campaign plugin, now with TWO moods
+// (revision two, 2026-07-03):
+//
+//   RUN MODE — a communal run is active: the communal light meter, the
+//     body's standing, and a door into the open scene. Unchanged from
+//     revision one, plus a quiet "browse the library" footer link.
+//
+//   LIBRARY MODE — no run on the clock: the NEWEST approved season from
+//     the plugin's library plus the community light the body has gathered
+//     walking solo. Before this revision the block rendered NOTHING
+//     between runs — the plugin's whole library was invisible from the
+//     homepage, and a freshly approved season had no door anywhere.
 //
 // Data: one fetch of /scripture-campaign/plaza-summary.json (contract
-// frozen in the plugin):
-//   { active: false }
-//   { active: true, run_id, run_name, season_title, light_level, standing,
-//     scenes_walked, scene_count, scene_open }
+// frozen in the plugin; `library` + `solo` keys are additive as of 0.8.1):
+//   { active: false|true, ...run fields when active,
+//     solo: { walkers, walks_completed, light_gathered },
+//     library: { seasons, newest: { id, title, premise, scene_count } } }
 //
 // Graceful absence: any fetch failure (plugin absent/disabled → 404,
-// anonymous viewer → 403) or { active: false } renders NOTHING — the quiet
+// anonymous or non-allowed viewer → 403) renders NOTHING — the quiet
 // empty state the Plaza requires. The block can never error onto the page.
-//
-// Two moods, one CTA:
-//   scene_open  → a scene is live to answer → "Stand and answer"
-//   walking     → between scenes / walking   → "Enter the campaign"
 
 @block("theme:community-plaza:campaign", {
   description:
-    "Scripture Campaign — the communal light meter and a door into the open scene",
+    "Scripture Campaign — communal light meter when a run is live; the newest library season otherwise",
   args: {},
 })
 export default class BlockPlazaCampaign extends Component {
@@ -51,8 +55,28 @@ export default class BlockPlazaCampaign extends Component {
     }
   }
 
+  get isRun() {
+    return this.loaded && this.summary?.active === true;
+  }
+
+  get newest() {
+    return this.summary?.library?.newest;
+  }
+
+  get isLibrary() {
+    return this.loaded && !this.isRun && !!this.newest;
+  }
+
   get visible() {
-    return this.loaded && this.summary?.active;
+    return this.isRun || this.isLibrary;
+  }
+
+  get solo() {
+    return this.summary?.solo || {};
+  }
+
+  get hasCommunityLight() {
+    return (this.solo.walkers || 0) > 0;
   }
 
   get level() {
@@ -106,7 +130,7 @@ export default class BlockPlazaCampaign extends Component {
   }
 
   <template>
-    {{#if this.visible}}
+    {{#if this.isRun}}
       <div class="block-plaza-campaign__layout block-plaza-campaign--{{this.band}}">
         <h2 class="block-plaza-campaign__title">
           {{icon "fire"}}
@@ -136,6 +160,49 @@ export default class BlockPlazaCampaign extends Component {
 
         <a class="block-plaza-campaign__cta" href={{this.runHref}}>
           {{i18n (themePrefix this.ctaKey)}}
+        </a>
+
+        <a class="block-plaza-campaign__library-link" href="/scripture-campaign">
+          {{i18n (themePrefix "plaza.campaign.browse_library")}}
+        </a>
+      </div>
+    {{else if this.isLibrary}}
+      <div class="block-plaza-campaign__layout block-plaza-campaign--library">
+        <h2 class="block-plaza-campaign__title">
+          {{icon "fire"}}
+          {{i18n (themePrefix "plaza.campaign.title")}}
+        </h2>
+
+        <div class="block-plaza-campaign__newest-tag">
+          {{i18n (themePrefix "plaza.campaign.newest_tag")}}
+        </div>
+        <div class="block-plaza-campaign__season">{{this.newest.title}}</div>
+
+        {{#if this.newest.premise}}
+          <p class="block-plaza-campaign__premise">{{this.newest.premise}}</p>
+        {{/if}}
+
+        <p class="block-plaza-campaign__progress">
+          {{this.newest.scene_count}}
+          {{i18n (themePrefix "plaza.campaign.scenes_word")}}
+        </p>
+
+        {{#if this.hasCommunityLight}}
+          <p class="block-plaza-campaign__community">
+            {{icon "fire"}}
+            {{this.solo.light_gathered}}
+            {{i18n (themePrefix "plaza.campaign.community_light")}}
+            · {{this.solo.walkers}}
+            {{i18n (themePrefix "plaza.campaign.walkers_word")}}
+          </p>
+        {{/if}}
+
+        <p class="block-plaza-campaign__lead">
+          {{i18n (themePrefix "plaza.campaign.library_lead")}}
+        </p>
+
+        <a class="block-plaza-campaign__cta" href="/scripture-campaign">
+          {{i18n (themePrefix "plaza.campaign.cta_library")}}
         </a>
       </div>
     {{/if}}

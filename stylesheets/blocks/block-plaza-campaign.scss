@@ -139,3 +139,57 @@
   background: linear-gradient(90deg, #d8a657, #f2cd84);
   box-shadow: 0 0 10px rgba(216, 166, 87, 0.6);
 }
+
+// ── Revision two (2026-07-03): library mode + crossover link ────────────
+// When no communal run is on the clock, the block becomes the door to the
+// newest approved season in the solo library — same warm candle chrome,
+// so the two moods read as one surface.
+
+.block-plaza-campaign__newest-tag {
+  display: inline-block;
+  font-size: var(--font-down-2);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #9a6f24;
+  background: rgba(216, 166, 87, 0.18);
+  border-radius: 1em;
+  padding: 0.15em 0.7em;
+  margin-bottom: 0.35em;
+}
+
+.block-plaza-campaign__premise {
+  font-size: var(--font-down-1);
+  color: var(--primary-high);
+  line-height: 1.45;
+  margin: 0 0 0.5em;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.block-plaza-campaign__community {
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+  font-size: var(--font-down-1);
+  color: var(--primary-medium);
+  margin: 0 0 0.5em;
+
+  .d-icon {
+    color: #d8a657;
+    font-size: 0.9em;
+  }
+}
+
+.block-plaza-campaign__library-link {
+  display: block;
+  margin-top: 0.55em;
+  font-size: var(--font-down-1);
+  color: var(--primary-medium);
+
+  &:hover {
+    color: var(--tertiary);
+  }
+}
