@@ -10,11 +10,11 @@ import { plazaGet } from "../lib/plaza-fetch";
 // Phase 1, Block 1 of the matchmaking lane.
 //
 // Surfaces the searcher's own active matches on the homepage. Reads the
-// live plugin endpoint GET /steering/matches.json, which returns the
+// live plugin endpoint GET /matchmaking/matches.json, which returns the
 // full active set (everything except dismissed, plus presented within the
 // 14-day window) already shaped by match_summary_hash in the plugin's
 // MatchesController. We render a count headline + the top N candidate
-// cards and link out to the full /steering/matches list. Each card
+// cards and link out to the full /matchmaking/matches list. Each card
 // links to the candidate's Discourse profile summary (/u/{username}/summary).
 //
 // The endpoint is gated server-side (group + ai_matching consent +
@@ -60,8 +60,8 @@ export default class BlockPlazaMyMatches extends Component {
     // Profile first — source of truth for the empty-state CTA. A 403/404
     // here means the viewer isn't a matchmaking participant yet.
     try {
-      const profileData = await plazaGet("/steering/profile.json");
-      const profile = profileData?.steering_profile;
+      const profileData = await plazaGet("/matchmaking/profile.json");
+      const profile = profileData?.matchmaking_profile;
       hasProfile = !!profile;
       verificationStatus = profile?.verification_status || null;
     } catch {
@@ -71,7 +71,7 @@ export default class BlockPlazaMyMatches extends Component {
     // Matches — non-success simply yields an empty array. The endpoint's
     // own gating is authoritative; we don't duplicate it client-side.
     try {
-      const data = await plazaGet("/steering/matches.json");
+      const data = await plazaGet("/matchmaking/matches.json");
       rawMatches = data?.matches || [];
     } catch {
       rawMatches = [];
@@ -178,7 +178,7 @@ export default class BlockPlazaMyMatches extends Component {
               {{/each}}
             </div>
 
-            <a class="block-plaza-my-matches__all" href="/steering/matches">
+            <a class="block-plaza-my-matches__all" href="/matchmaking/matches">
               {{i18n (themePrefix "plaza.my_matches.view_all")}}
             </a>
 
