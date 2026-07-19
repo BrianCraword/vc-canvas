@@ -187,7 +187,7 @@ export default class BlockPlazaMyMatches extends Component {
               <p class="block-plaza-my-matches__empty-text">
                 {{i18n (themePrefix "plaza.my_matches.empty_no_profile")}}
               </p>
-              <a class="block-plaza-my-matches__cta" href="/my/preferences/profile">
+              <a class="block-plaza-my-matches__cta" href="/matchmaking/profile">
                 {{i18n (themePrefix "plaza.my_matches.cta_create")}}
               </a>
             </div>
@@ -197,7 +197,7 @@ export default class BlockPlazaMyMatches extends Component {
               <p class="block-plaza-my-matches__empty-text">
                 {{i18n (themePrefix "plaza.my_matches.empty_unverified")}}
               </p>
-              <a class="block-plaza-my-matches__cta" href="/my/preferences/profile">
+              <a class="block-plaza-my-matches__cta" href="/matchmaking/profile">
                 {{i18n (themePrefix "plaza.my_matches.cta_verify")}}
               </a>
             </div>
