@@ -58,7 +58,9 @@ export default class BlockPlazaMyMatches extends Component {
     let rawMatches = [];
 
     // Profile first — source of truth for the empty-state CTA. A 403/404
-    // here means the viewer isn't a matchmaking participant yet.
+    // here means the viewer isn't a matchmaking participant yet. Both
+    // pre-participant empty states door to /matchmaking — the Journey is
+    // the one front door for everything pre-confirmation (theme 1.3.2).
     try {
       const profileData = await plazaGet("/matchmaking/profile.json");
       const profile = profileData?.matchmaking_profile;
@@ -187,7 +189,7 @@ export default class BlockPlazaMyMatches extends Component {
               <p class="block-plaza-my-matches__empty-text">
                 {{i18n (themePrefix "plaza.my_matches.empty_no_profile")}}
               </p>
-              <a class="block-plaza-my-matches__cta" href="/matchmaking/profile">
+              <a class="block-plaza-my-matches__cta" href="/matchmaking">
                 {{i18n (themePrefix "plaza.my_matches.cta_create")}}
               </a>
             </div>
@@ -197,7 +199,7 @@ export default class BlockPlazaMyMatches extends Component {
               <p class="block-plaza-my-matches__empty-text">
                 {{i18n (themePrefix "plaza.my_matches.empty_unverified")}}
               </p>
-              <a class="block-plaza-my-matches__cta" href="/matchmaking/profile">
+              <a class="block-plaza-my-matches__cta" href="/matchmaking">
                 {{i18n (themePrefix "plaza.my_matches.cta_verify")}}
               </a>
             </div>

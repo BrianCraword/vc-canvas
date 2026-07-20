@@ -11,21 +11,26 @@ import { plazaGet } from "../lib/plaza-fetch";
 //
 // A glanceable "where do I stand" panel for the searcher's own profile.
 //
-// v0.12.0 (Profile Hub) changes:
-//   • CTA now routes to the hub (/steering/profile), not the old
-//     /my/preferences/profile form. This block is one of the hub's entry
-//     points.
-//   • TWO verification statuses are now surfaced, reflecting the corrected
-//     model where faith verification (Veritas/TL1) and identity
-//     verification (Didit) are INDEPENDENT:
-//       - Faith pill: from verification_status (the Trust Gate state).
-//         Relabeled "Faith verified" so it's clearly the faith profile,
-//         not an all-encompassing "Verified".
-//       - Identity pill: from GET /steering/identity/status.json. Only
-//         shown when the identity feature is enabled. Reads identity_verified
-//         + identity_verification_status. When the circuit breaker has
-//         lifted the requirement (required:false) and identity isn't done,
-//         it's shown as optional, not as a blocker.
+// Journey re-anchor (theme 1.3.2 — plugin discourse-matchmaking ≥0.14):
+//   • Endpoints are the matchmaking plugin's (/matchmaking/profile.json,
+//     payload key matchmaking_profile; /matchmaking/identity/status.json).
+//     The Steering plugin is dead and its endpoints 404 — this block's
+//     graceful-absence design is why the dead wiring failed silently.
+//   • The CTA follows journey semantics (one front door): anything
+//     pre-confirmation routes to /matchmaking (the resumable Journey,
+//     which owns consent, profile readiness, identity, and the Veritas
+//     conversation); a confirmed member routes to /matchmaking/profile
+//     (the hub — the post-confirmation management surface).
+//   • TWO verification statuses surfaced, reflecting the corrected model
+//     where faith confirmation (Veritas) and identity verification
+//     (Didit) are INDEPENDENT — and neither is trust-level-based:
+//       - Faith pill: from verification_status. "Profile Confirmed" =
+//         faith; never conflate with identity.
+//       - Identity pill: from identity/status.json. Only shown when the
+//         identity feature is enabled. Reads identity_verified +
+//         identity_verification_status. When the circuit breaker has
+//         lifted the requirement (required:false) and identity isn't
+//         done, it's shown as optional, not as a blocker.
 //
 // Reads two endpoints; each degrades independently. A non-200 on the
 // profile endpoint resolves to the "get started" state; a failure on the
@@ -49,8 +54,8 @@ export default class BlockPlazaProfileStatus extends Component {
     let consent = null;
 
     try {
-      const data = await plazaGet("/steering/profile.json");
-      profile = data?.steering_profile || null;
+      const data = await plazaGet("/matchmaking/profile.json");
+      profile = data?.matchmaking_profile || null;
       consent = data?.consent_status || null;
     } catch {
       profile = null;
@@ -59,13 +64,14 @@ export default class BlockPlazaProfileStatus extends Component {
     // Identity status — independent endpoint, independent failure mode.
     let identity = null;
     try {
-      identity = await plazaGet("/steering/identity/status.json");
+      identity = await plazaGet("/matchmaking/identity/status.json");
     } catch {
       identity = null;
     }
     const identityView = this.#identityView(identity);
 
-    // No profile → the "get started" state. CTA routes to the hub.
+    // No profile → the "begin the Journey" state. CTA routes to the
+    // Journey front door (it owns consent + every pre-profile state).
     if (!profile) {
       return {
         showBar: false,
@@ -81,7 +87,8 @@ export default class BlockPlazaProfileStatus extends Component {
         statusRejected: false,
         needsConsent: false,
         ...identityView,
-        ctaHref: "/steering/profile",
+        ctaHref: "/matchmaking",
+        ctaJourney: true,
       };
     }
 
@@ -111,8 +118,10 @@ export default class BlockPlazaProfileStatus extends Component {
       statusRejected: vstatus === "rejected",
       needsConsent: !!consent?.needs_reconsent,
       ...identityView,
-      // CTA routes to the hub (front door), not the old form.
-      ctaHref: "/steering/profile",
+      // Journey semantics: confirmed members manage in the hub; everyone
+      // else continues the Journey (one front door — /matchmaking).
+      ctaHref: vstatus === "verified" ? "/matchmaking/profile" : "/matchmaking",
+      ctaJourney: vstatus !== "verified",
     };
   }
 
@@ -237,7 +246,11 @@ export default class BlockPlazaProfileStatus extends Component {
           {{/if}}
 
           <a class="block-plaza-profile-status__cta" href={{s.ctaHref}}>
-            {{i18n (themePrefix "plaza.profile_status.cta_update")}}
+            {{#if s.ctaJourney}}
+              {{i18n (themePrefix "plaza.profile_status.cta_journey")}}
+            {{else}}
+              {{i18n (themePrefix "plaza.profile_status.cta_update")}}
+            {{/if}}
           </a>
         </div>
       </:content>

@@ -157,10 +157,10 @@ en:
     my_matches:
       title: "💞 My Matches"
       view_all: "View all matches →"
-      empty_no_profile: "Create your faith-and-values profile to start seeing matches."
-      cta_create: "Create your profile"
-      empty_unverified: "Verify your account to unlock matching."
-      cta_verify: "Verify your account"
+      empty_no_profile: "Begin the Journey — the guided path into matchmaking."
+      cta_create: "Begin the Journey"
+      empty_unverified: "Finish your Journey to unlock matching."
+      cta_verify: "Continue your Journey"
       empty_no_matches: "No active matches yet. Talk with Logos to find candidates worth exploring."
       cta_logos: "Talk to Logos"
     profile_status:
@@ -181,6 +181,7 @@ en:
         not_started: "ID not verified"
       needs_reconsent: "Your consent needs renewal — please review your matchmaking settings."
       cta_update: "Update your profile"
+      cta_journey: "Continue your Journey"
     quote_of_day:
       title: "💬 Quote of the Day"
     trending_tags:
