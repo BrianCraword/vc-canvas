@@ -164,3 +164,112 @@
   padding: 0.1em 0.5em;
   font-weight: 800;
 }
+
+
+// ── Mobile tab bar: the emphasis tab (Covenant, 2026-07-25) ───────────
+// Field report: the Matchmaking icon hits the top of the bar. The
+// component's own rule grows that one icon to 38×38 and lifts it with
+// margin-top: -8px — but the icon's siblings are 26px tall inside a bar
+// whose height is FIXED (--je-mnav-height on .je-mnav__bar, align-items:
+// stretch). A taller box plus a one-sided negative margin overflows a
+// fixed-height, overflow-hidden row: hence the clipping, and hence why
+// -3px only trades clipping for a cramped circle.
+//
+// Root cause fix, three parts, no magic offset to re-tune:
+//   1. the bar gets a little more room (--je-mnav-height 56 → 60; the
+//      component already pads #main-outlet from the same variable, so
+//      content spacing follows automatically);
+//   2. the emphasis icon's LAYOUT box stays exactly its siblings' height
+//      (symmetric negative block margins), so the row's flow is
+//      undisturbed no matter how large the circle is drawn;
+//   3. the circle is then painted 44px and floated on a transform (which
+//      cannot affect layout) with a surface-colored ring, so the overhang
+//      reads as a deliberate floating action button.
+@media (max-width: 767px) {
+  :root { --je-mnav-height: 60px; }
+
+  .je-mnav,
+  .je-mnav__bar,
+  .je-mnav__tab { overflow: visible; }
+
+  .je-mnav {
+    background: var(--vc-surface);
+    border-top: 1px solid var(--vc-line);
+    box-shadow: 0 -2px 16px rgba(20, 25, 31, 0.06);
+  }
+
+  .je-mnav__tab {
+    color: var(--vc-ink-faint);
+    font-weight: 700;
+    &.active,
+    &.open { color: var(--vc-rose); }
+  }
+  .je-mnav__tab-label { font-weight: 700; letter-spacing: 0; }
+
+  .je-mnav__tab.is-emphasis {
+    .je-mnav__tab-icon {
+      width: 44px;
+      height: 44px;
+      // Symmetric: the flow box stays the sibling icons' 26px.
+      margin-block: -9px;
+      margin-top: -9px;
+      transform: translateY(-10px);
+      border-radius: 50%;
+      background: var(--vc-rose);
+      box-shadow: 0 0 0 4px var(--vc-surface),
+        0 4px 14px color-mix(in srgb, var(--vc-rose) 35%, transparent);
+
+      &::before { background: none; }        // component's own hover wash
+      .d-icon { color: #fff; font-size: var(--font-up-1); }
+    }
+
+    .je-mnav__tab-label {
+      color: var(--vc-rose);
+      font-weight: 800;
+    }
+
+    &.active .je-mnav__tab-icon,
+    &.open .je-mnav__tab-icon {
+      box-shadow: 0 0 0 4px var(--vc-surface),
+        0 0 0 6px color-mix(in srgb, var(--vc-rose) 25%, transparent),
+        0 4px 14px color-mix(in srgb, var(--vc-rose) 35%, transparent);
+    }
+  }
+
+  .je-mnav__tab-icon.is-avatar img.avatar { border-radius: 9px; }
+  .je-mnav__tab.open .je-mnav__tab-icon.is-avatar img.avatar {
+    box-shadow: 0 0 0 2px var(--vc-rose);
+  }
+  .je-mnav__tab-badge { background: var(--vc-rose); color: #fff; font-weight: 800; }
+  .je-mnav__tab-dot { background: var(--vc-rose); }
+
+  // The sheets join the card system.
+  .je-mnav-sheet {
+    background: var(--vc-surface);
+    border-top: 1px solid var(--vc-line);
+    box-shadow: 0 -10px 40px rgba(20, 25, 31, 0.14);
+  }
+  .je-mnav-sheet__section-title {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    color: var(--vc-ink-faint);
+  }
+  .je-mnav-identity-row,
+  .je-mnav-identity__door {
+    background: var(--vc-surface-sunk);
+    border: 1px solid var(--vc-line-soft);
+    border-radius: var(--vc-radius-inner);
+  }
+  .je-mnav-identity__door-icon .d-icon { color: var(--vc-rose); }
+  .je-mnav-identity__primary { background: var(--vc-ink); color: var(--vc-paper); }
+  .je-mnav-identity__avatar img.avatar {
+    border-radius: 16px;
+    box-shadow: 0 0 0 3px var(--vc-surface), 0 0 0 4px var(--vc-line);
+  }
+  .je-mnav-identity__avatar-edit {
+    background: var(--vc-ink);
+    border-radius: 12px;
+    .d-icon { color: var(--vc-gold); }
+  }
+}
