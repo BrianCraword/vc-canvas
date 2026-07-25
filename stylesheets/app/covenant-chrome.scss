@@ -1,0 +1,166 @@
+// ═══ Covenant chrome — core header + JE mega nav (VC-Canvas 2.0.0) ════
+// The two surfaces every page wears. Icons get pop the honest way: real
+// hit targets, hairline containers, ink glyphs, ONE accent on state —
+// not a second color per glyph.
+
+// ── Core header ───────────────────────────────────────────────────────
+.d-header {
+  background: var(--vc-surface);
+  border-bottom: 1px solid var(--vc-line);
+  box-shadow: none;
+
+  .d-header-icons .icon,
+  .header-dropdown-toggle .icon {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--vc-line);
+    border-radius: 50%;
+    color: var(--vc-ink-soft);
+    background: var(--vc-surface);
+    transition: border-color 0.12s ease, color 0.12s ease, background 0.12s ease;
+
+    .d-icon { color: inherit; font-size: var(--font-0); }
+
+    &:hover,
+    &:focus-visible {
+      border-color: var(--vc-rose);
+      color: var(--vc-rose);
+      background: var(--vc-rose-wash);
+    }
+  }
+
+  // Unread/notification dots: rose, tight, legible on white.
+  .badge-notification {
+    background: var(--vc-rose);
+    color: #fff;
+    font-weight: 800;
+    border: 2px solid var(--vc-surface);
+  }
+  .ring { box-shadow: none; }
+
+  // The member's own photo is the one non-round chrome element: a tile,
+  // matching every other identity surface in the system.
+  .header-dropdown-toggle.current-user .avatar,
+  #current-user .avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid var(--vc-line);
+  }
+  #current-user:hover .avatar { border-color: var(--vc-rose); }
+
+  .title .logo-big, .title .logo-small { image-rendering: auto; }
+}
+
+// ── JE mega nav ───────────────────────────────────────────────────────
+// The component already reads --plaza-* (bridged to Covenant tokens), so
+// this layer is geometry and rhythm: a rail of pill items on paper, one
+// rose underline for the current page, gold for Word destinations.
+.je-nav {
+  --je-accent: var(--vc-rose);
+  --je-accent-light: var(--vc-rose-wash);
+  --je-text: var(--vc-ink);
+  --je-text-soft: var(--vc-ink-soft);
+
+  background: var(--vc-surface);
+  border-bottom: 1px solid var(--vc-line);
+  box-shadow: none;
+}
+
+.je-nav__inner { gap: 0.35em; }
+
+.je-nav__item {
+  gap: 0.45em;
+  min-height: 38px;
+  padding: 0 0.85em;
+  border-radius: var(--vc-radius-pill);
+  border: 1px solid transparent;
+  color: var(--vc-ink-soft);
+  font-size: var(--font-down-1);
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+
+  .d-icon {
+    font-size: var(--font-down-1);
+    color: var(--vc-ink-faint);
+    transition: color 0.12s ease;
+  }
+
+  &:hover {
+    background: var(--vc-surface-sunk);
+    border-color: var(--vc-line);
+    color: var(--vc-ink);
+    .d-icon { color: var(--vc-rose); }
+  }
+
+  // Current page: one quiet fill + a rose glyph. No purple pill.
+  &.is-active,
+  &.active,
+  &[aria-current="page"] {
+    background: var(--vc-rose-wash);
+    border-color: var(--vc-rose-line);
+    color: var(--vc-ink);
+    font-weight: 800;
+    .d-icon { color: var(--vc-rose); }
+  }
+}
+
+// Word / study destinations carry the lamp, not the rose.
+.je-nav__item[href*="/word"],
+.je-nav__item[href*="scripture"],
+.je-nav__item[href*="trivia"],
+.je-nav__item[href*="guides"] {
+  .d-icon { color: var(--vc-gold); }
+  &:hover .d-icon { color: var(--vc-gold); }
+}
+
+.je-nav__sidebar-toggle,
+.je-nav__avatar {
+  min-height: 38px;
+  border-radius: var(--vc-radius-pill);
+  border: 1px solid var(--vc-line);
+  color: var(--vc-ink-soft);
+  &:hover { border-color: var(--vc-rose); color: var(--vc-rose); }
+}
+.je-nav__avatar img.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+}
+
+.je-nav__dropdown {
+  background: var(--vc-surface);
+  border: 1px solid var(--vc-line);
+  border-radius: var(--vc-radius-card);
+  box-shadow: var(--vc-shadow-lift);
+  padding: 0.5em;
+}
+.je-nav__dropdown-row {
+  gap: 0.7em;
+  padding: 0.55em 0.65em;
+  border-radius: var(--vc-radius-media);
+  color: var(--vc-ink);
+  .d-icon { color: var(--vc-rose); }
+  &:hover { background: var(--vc-surface-sunk); }
+}
+.je-nav__dropdown-label { font-weight: 700; font-size: var(--font-down-1); color: var(--vc-ink); }
+.je-nav__dropdown-subtext { color: var(--vc-ink-faint); font-size: var(--font-down-2); }
+.je-nav__section-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--vc-ink-faint);
+}
+.je-nav__badge {
+  background: var(--vc-gold-wash);
+  border: 1px solid var(--vc-line-gold);
+  color: var(--vc-gold);
+  border-radius: var(--vc-radius-pill);
+  padding: 0.1em 0.5em;
+  font-weight: 800;
+}
