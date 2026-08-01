@@ -4,12 +4,12 @@
   "license_url": null,
   "about_url": null,
   "authors": "Victorious Christians",
-  "theme_version": "2.0.0",
-  "minimum_discourse_version": null,
+  "theme_version": "2.0.1",
+  "minimum_discourse_version": "3.5.0",
   "maximum_discourse_version": null,
   "assets": {},
   "color_schemes": {
-    "Covenant Light": {
+    "Community Plaza Light": {
       "primary": "14191f",
       "secondary": "ffffff",
       "tertiary": "b7454e",
@@ -23,7 +23,7 @@
       "success": "3f6b57",
       "love": "b7454e"
     },
-    "Covenant Dark": {
+    "Community Plaza Dark": {
       "primary": "f2ede4",
       "secondary": "15181c",
       "tertiary": "e0757c",
