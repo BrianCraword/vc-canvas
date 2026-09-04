@@ -1,6 +1,11 @@
+// 1.4.0: Outfit is the display face site-wide (headings, nav, section
+// labels). Loaded once here; the Feed plugin's own loader is harmless if
+// both are present. Body stays Inter/system.
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&display=swap");
+
 :root {
   --font-family: "Inter", system-ui, -apple-system, sans-serif;
-  --heading-font-family: "Inter", system-ui, -apple-system, sans-serif;
+  --heading-font-family: "Outfit", "Inter", system-ui, -apple-system, sans-serif;
 }
 
 h1,

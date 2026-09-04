@@ -1,0 +1,53 @@
+// ═══════════════════════════════════════════════════════════════════════
+// Victorious Christians — site brand tokens (Canvas 1.4.0)
+//
+// ONE palette for the whole site. The Feed skin (--vcf-*), the Header
+// Mega Nav (--je-*), the Plaza accent aliases (--plaza-*), and the core
+// sidebar all read from here. Change a hue here and the site follows.
+//
+// Values are the crimson → ember → gold arc the feed already carries,
+// promoted to site scope. When Claude Design delivers the final token
+// sheet, this file is where it lands — nothing else should need to move.
+// ═══════════════════════════════════════════════════════════════════════
+
+:root {
+  // ── accent arc ────────────────────────────────────────────────────
+  --vc-crimson: light-dark(#c9184a, #ff6e8e);
+  --vc-crimson-deep: light-dark(#a3123f, #ff8fa8);
+  --vc-ember: light-dark(#b23a0a, #ff9a5c);
+  --vc-gold: light-dark(#8f6008, #ffc93d);
+  --vc-plum: light-dark(#8e1e5e, #e58ac0);
+  --vc-violet: light-dark(#6b2c8f, #c79bff);
+  --vc-leaf: light-dark(#1e7a4a, #7fd7a3);
+
+  // ── tints (backgrounds behind a colored glyph or label) ───────────
+  --vc-crimson-tint: light-dark(#fde4eb, #3a1622);
+  --vc-ember-tint: light-dark(#ffe8dc, #3a2418);
+  --vc-gold-tint: light-dark(#fbefd5, #3a3018);
+  --vc-plum-tint: light-dark(#fbe4f0, #3a1830);
+  --vc-violet-tint: light-dark(#f0e6fb, #2e2244);
+  --vc-leaf-tint: light-dark(#e4f5ea, #17301f);
+
+  // ── semantic aliases (what components actually ask for) ───────────
+  --vc-accent: var(--vc-crimson);
+  --vc-accent-deep: var(--vc-crimson-deep);
+  --vc-accent-tint: var(--vc-crimson-tint);
+  --vc-pop: var(--vc-gold);
+
+  --vc-grad: linear-gradient(100deg, #d81b45 0%, #c2540b 100%);
+  --vc-grad-wide: linear-gradient(118deg, #c9184a 0%, #e0561b 52%, #ffb03d 100%);
+
+  // ── surfaces & ink ────────────────────────────────────────────────
+  --vc-surface: var(--secondary);
+  --vc-tint: light-dark(#f4f1f0, #2a2226);
+  --vc-tint-2: light-dark(#faf8f7, #241d21);
+  --vc-line: light-dark(rgba(23, 17, 20, 0.07), rgba(255, 255, 255, 0.08));
+  --vc-line-strong: light-dark(rgba(23, 17, 20, 0.12), rgba(255, 255, 255, 0.14));
+  --vc-ink: var(--primary);
+  --vc-ink-2: light-dark(#453c41, #d9cdd3);
+  --vc-muted: light-dark(#6e646a, #a99ca3);
+  --vc-label: light-dark(#5c5257, #b8abb2);
+
+  // ── type ──────────────────────────────────────────────────────────
+  --vc-display: "Outfit", var(--font-family);
+}

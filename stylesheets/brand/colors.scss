@@ -2,12 +2,14 @@
 // Each card gets a soft tint to give the page its colorful "portal" feel.
 
 :root {
-  // Accent / brand
-  --plaza-accent: light-dark(#9b6bd6, #c79bff);
-  --plaza-accent-light: light-dark(#efe4f8, #352a55);
-  --plaza-accent-dark: light-dark(#7a4eb8, #b88aff);
-  --plaza-pop: light-dark(#f08fb4, #ffaccc);
-  --plaza-pop-light: light-dark(#fde6ef, #3a2030);
+  // Accent / brand — 1.4.0: aliases onto the site tokens (brand/tokens.scss).
+  // The lavender/pink pastel accent is retired; every block that asked for
+  // --plaza-accent now gets the Victorious crimson.
+  --plaza-accent: var(--vc-accent);
+  --plaza-accent-light: var(--vc-accent-tint);
+  --plaza-accent-dark: var(--vc-accent-deep);
+  --plaza-pop: var(--vc-pop);
+  --plaza-pop-light: var(--vc-gold-tint);
 
   // Card tints — these are the soft pastels used on individual block cards.
   --plaza-pink: light-dark(#fde6ef, #3a2030);

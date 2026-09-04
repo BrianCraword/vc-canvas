@@ -1,0 +1,127 @@
+// ═══════════════════════════════════════════════════════════════════════
+// Core sidebar — brand pass (Canvas 1.4.0)
+//
+// Rule: every glyph carries ONE hue from the arc, assigned by what the
+// destination IS — never by its position in the list. Selectors key on
+// the link's href (deterministic, visible in the admin sidebar editor)
+// and on core's data-link-name for stock destinations.
+//
+// ⚠ VERIFY LIVE: core's sidebar DOM (Discourse 2025.x) is
+//   .sidebar-section-wrapper[data-section-name] >
+//     .sidebar-section-content > li.sidebar-section-link-wrapper >
+//       a.sidebar-section-link[data-link-name][href]
+//         > .sidebar-section-link-prefix.icon > svg.d-icon
+// If the live markup differs, the hue map below is the only thing to
+// re-key; the rule itself stands. The browser tool was not attached
+// when this was written.
+// ═══════════════════════════════════════════════════════════════════════
+
+.sidebar-wrapper {
+  --vc-sb-hue: var(--vc-muted);
+
+  // ── section headers: Outfit, tracked, label ink ───────────────────
+  .sidebar-section-header-text {
+    font-family: var(--vc-display);
+    font-weight: 700;
+    font-size: var(--font-down-2);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--vc-label);
+  }
+
+  .sidebar-section-header-caret,
+  .sidebar-section-header-button .d-icon {
+    color: var(--vc-muted);
+  }
+
+  // ── links: the glyph is the color carrier ─────────────────────────
+  .sidebar-section-link {
+    border-radius: 9px;
+    color: var(--vc-ink-2);
+    font-weight: 500;
+
+    .sidebar-section-link-prefix.icon .d-icon {
+      color: var(--vc-sb-hue);
+      transition: transform 0.16s ease;
+    }
+
+    &:hover {
+      background: var(--vc-tint);
+      color: var(--vc-ink);
+
+      .sidebar-section-link-prefix.icon .d-icon {
+        transform: translateY(-1px);
+      }
+    }
+
+    // you are here: tinted fill, ink text, a short rule in the hue
+    &.active,
+    &[aria-current="page"] {
+      background: color-mix(in srgb, var(--vc-sb-hue) 10%, transparent);
+      color: var(--vc-ink);
+      font-weight: 700;
+      box-shadow: inset 3px 0 0 var(--vc-sb-hue);
+    }
+  }
+
+  // ── hue map: by meaning ───────────────────────────────────────────
+  // Feed is the centerpiece → crimson
+  .sidebar-section-link[href="/feed"],
+  .sidebar-section-link[href^="/feed?"] { --vc-sb-hue: var(--vc-crimson); }
+
+  // Discussions / posts / topics → ember
+  .sidebar-section-link[data-link-name="everything"],
+  .sidebar-section-link[data-link-name="my-posts"],
+  .sidebar-section-link[href="/latest"],
+  .sidebar-section-link[href^="/my/activity"] { --vc-sb-hue: var(--vc-ember); }
+
+  // Scripture, campaign, trivia, badges → gold (the Word / achievement)
+  .sidebar-section-link[href*="campaign" i],
+  .sidebar-section-link[href*="trivia" i],
+  .sidebar-section-link[href*="scripture" i],
+  .sidebar-section-link[data-link-name="badges"] { --vc-sb-hue: var(--vc-gold); }
+
+  // Matchmaking → crimson (pillar; same hue as Feed, both are "home")
+  .sidebar-section-link[href*="match" i] { --vc-sb-hue: var(--vc-crimson); }
+
+  // Messages, people, invite → plum
+  .sidebar-section-link[data-link-name="messages"],
+  .sidebar-section-link[data-link-name="users"],
+  .sidebar-section-link[data-link-name="groups"],
+  .sidebar-section-link[data-link-name="invite"],
+  .sidebar-section-link[href^="/u/"][href*="/messages"],
+  .sidebar-section-link[href="/u"] { --vc-sb-hue: var(--vc-plum); }
+
+  // AI guides → violet
+  .sidebar-section-link[href*="insight" i],
+  .sidebar-section-link[href*="ai-conversations" i],
+  .sidebar-section-link[href*="/ai" i],
+  .sidebar-section-link[href*="omega" i],
+  .sidebar-section-link[href*="logos" i] { --vc-sb-hue: var(--vc-violet); }
+
+  // Support / help → leaf
+  .sidebar-section-link[href*="support" i],
+  .sidebar-section-link[data-link-name="faq"],
+  .sidebar-section-link[data-link-name="about"] { --vc-sb-hue: var(--vc-leaf); }
+
+  // Staff utilities stay quiet (muted) — admin, review, "More"
+  .sidebar-section-link[data-link-name="admin"],
+  .sidebar-section-link[data-link-name="review"] { --vc-sb-hue: var(--vc-muted); }
+
+  // Tags glyphs → gold; category dots keep their own category color
+  .sidebar-section-wrapper[data-section-name="tags"] .sidebar-section-link {
+    --vc-sb-hue: var(--vc-gold);
+  }
+
+  // Chat / channels → plum
+  .sidebar-section-wrapper[data-section-name="chat-channels"] .sidebar-section-link,
+  .sidebar-section-wrapper[data-section-name="chat-dms"] .sidebar-section-link {
+    --vc-sb-hue: var(--vc-plum);
+  }
+
+  // "All categories" / "All tags" / "More" footers are navigation, not
+  // destinations — keep them muted
+  .sidebar-section-link[data-link-name="all-categories"],
+  .sidebar-section-link[data-link-name="all-tags"],
+  .sidebar-more-section-links-details-summary { --vc-sb-hue: var(--vc-muted); }
+}
