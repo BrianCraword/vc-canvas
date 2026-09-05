@@ -1,127 +1,230 @@
 // ═══════════════════════════════════════════════════════════════════════
-// Core sidebar — brand pass (Canvas 1.4.0)
+// Core sidebar — brand pass (Canvas 1.5.0, direction "1a")
 //
-// Rule: every glyph carries ONE hue from the arc, assigned by what the
-// destination IS — never by its position in the list. Selectors key on
-// the link's href (deterministic, visible in the admin sidebar editor)
-// and on core's data-link-name for stock destinations.
+// Every glyph sits in a 28px tinted TILE and carries ONE hue from the
+// arc, assigned by what the destination IS — never by list position.
+// Active row ("you are here"): tint fill, deep-hue text, solid tile with
+// a white glyph, 4px hue bar at the right edge.
 //
-// ⚠ VERIFY LIVE: core's sidebar DOM (Discourse 2025.x) is
-//   .sidebar-section-wrapper[data-section-name] >
-//     .sidebar-section-content > li.sidebar-section-link-wrapper >
-//       a.sidebar-section-link[data-link-name][href]
-//         > .sidebar-section-link-prefix.icon > svg.d-icon
-// If the live markup differs, the hue map below is the only thing to
-// re-key; the rule itself stands. The browser tool was not attached
-// when this was written.
+// Selectors key on href (deterministic, visible in the admin sidebar
+// editor) and on core's data-link-name for stock destinations.
+//
+// Spec: row 38px · r10 · Inter 13.5/500 · tile 28 r8 · glyph 12.5px ·
+// gap 12 · section eyebrow Outfit 10.5/600 .17em caps · width 248.
 // ═══════════════════════════════════════════════════════════════════════
 
 .sidebar-wrapper {
-  --vc-sb-hue: var(--vc-muted);
+  --vc-sb-hue: var(--vc-ink-2);
+  --vc-sb-tint: var(--vc-tint-2);
+  --d-sidebar-width: 248px;
+  background: var(--vc-tint);
+  border-right: 0;
 
-  // ── section headers: Outfit, tracked, label ink ───────────────────
+  .sidebar-sections {
+    padding: 0.5em 0.75em;
+  }
+
+  // ── section headers ───────────────────────────────────────────────
+  .sidebar-section-header-wrapper {
+    padding: 0 8px 6px;
+  }
+
   .sidebar-section-header-text {
-    font-family: var(--vc-display);
-    font-weight: 700;
-    font-size: var(--font-down-2);
-    letter-spacing: 0.15em;
+    font-family: var(--vc-ui);
+    font-weight: 600;
+    font-size: 10.5px;
+    letter-spacing: 0.17em;
     text-transform: uppercase;
-    color: var(--vc-label);
+    color: var(--vc-muted);
   }
 
   .sidebar-section-header-caret,
   .sidebar-section-header-button .d-icon {
-    color: var(--vc-muted);
+    color: var(--vc-label);
   }
 
-  // ── links: the glyph is the color carrier ─────────────────────────
+  // ── rows ──────────────────────────────────────────────────────────
+  .sidebar-section-link-wrapper {
+    margin-bottom: 2px;
+  }
+
   .sidebar-section-link {
-    border-radius: 9px;
-    color: var(--vc-ink-2);
+    height: 38px;
+    padding: 0 8px;
+    border-radius: 10px;
+    gap: 12px;
+    font-family: var(--font-family);
+    font-size: 13.5px;
     font-weight: 500;
+    color: var(--vc-ink-2);
+    transition: background 0.16s ease, color 0.16s ease;
 
-    .sidebar-section-link-prefix.icon .d-icon {
-      color: var(--vc-sb-hue);
-      transition: transform 0.16s ease;
-    }
+    // the tile
+    .sidebar-section-link-prefix.icon {
+      width: var(--vc-tile);
+      height: var(--vc-tile);
+      margin: 0;
+      border-radius: var(--vc-radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--vc-sb-tint);
+      transition: background 0.16s ease;
 
-    &:hover {
-      background: var(--vc-tint);
-      color: var(--vc-ink);
-
-      .sidebar-section-link-prefix.icon .d-icon {
-        transform: translateY(-1px);
+      .d-icon {
+        width: 12.5px;
+        height: 12.5px;
+        color: var(--vc-sb-hue);
+        transition: color 0.16s ease;
       }
     }
 
-    // you are here: tinted fill, ink text, a short rule in the hue
+    &:hover {
+      background: color-mix(in srgb, var(--vc-ink) 6%, var(--vc-tint));
+      color: var(--vc-ink);
+    }
+
+    // you are here
     &.active,
     &[aria-current="page"] {
-      background: color-mix(in srgb, var(--vc-sb-hue) 10%, transparent);
-      color: var(--vc-ink);
-      font-weight: 700;
-      box-shadow: inset 3px 0 0 var(--vc-sb-hue);
+      background: var(--vc-sb-tint);
+      color: color-mix(in srgb, var(--vc-sb-hue) 80%, var(--vc-ink));
+      font-weight: 600;
+      box-shadow: inset -4px 0 0 var(--vc-sb-hue);
+
+      .sidebar-section-link-prefix.icon {
+        background: var(--vc-sb-hue);
+        .d-icon { color: #fff; }
+      }
+    }
+
+    // unread dot / count, right-aligned
+    .sidebar-section-link-suffix.icon .d-icon {
+      color: var(--vc-crimson);
+      width: 7px;
+      height: 7px;
+    }
+    .sidebar-section-link-content-badge {
+      font-family: var(--vc-ui);
+      font-weight: 600;
+      color: var(--vc-crimson);
     }
   }
 
   // ── hue map: by meaning ───────────────────────────────────────────
-  // Feed is the centerpiece → crimson
+  // crimson — Feed, Matchmaking, Invite
   .sidebar-section-link[href="/feed"],
-  .sidebar-section-link[href^="/feed?"] { --vc-sb-hue: var(--vc-crimson); }
+  .sidebar-section-link[href^="/feed?"],
+  .sidebar-section-link[href*="match" i],
+  .sidebar-section-link[data-link-name="invite"] {
+    --vc-sb-hue: var(--vc-crimson);
+    --vc-sb-tint: var(--vc-crimson-tint);
+  }
 
-  // Discussions / posts / topics → ember
+  // ember — Discussions, My posts, Review
   .sidebar-section-link[data-link-name="everything"],
   .sidebar-section-link[data-link-name="my-posts"],
+  .sidebar-section-link[data-link-name="review"],
   .sidebar-section-link[href="/latest"],
-  .sidebar-section-link[href^="/my/activity"] { --vc-sb-hue: var(--vc-ember); }
+  .sidebar-section-link[href^="/my/activity"],
+  .sidebar-section-link[href="/review"] {
+    --vc-sb-hue: var(--vc-ember);
+    --vc-sb-tint: var(--vc-ember-tint);
+  }
 
-  // Scripture, campaign, trivia, badges → gold (the Word / achievement)
+  // gold — Scripture Campaign, Bible Trivia, badges, tags
   .sidebar-section-link[href*="campaign" i],
   .sidebar-section-link[href*="trivia" i],
   .sidebar-section-link[href*="scripture" i],
-  .sidebar-section-link[data-link-name="badges"] { --vc-sb-hue: var(--vc-gold); }
+  .sidebar-section-link[data-link-name="badges"],
+  .sidebar-section-wrapper[data-section-name="tags"] .sidebar-section-link {
+    --vc-sb-hue: var(--vc-gold);
+    --vc-sb-tint: var(--vc-gold-tint);
+  }
 
-  // Matchmaking → crimson (pillar; same hue as Feed, both are "home")
-  .sidebar-section-link[href*="match" i] { --vc-sb-hue: var(--vc-crimson); }
-
-  // Messages, people, invite → plum
+  // plum — Messages, Users, Groups, Chat
   .sidebar-section-link[data-link-name="messages"],
   .sidebar-section-link[data-link-name="users"],
   .sidebar-section-link[data-link-name="groups"],
-  .sidebar-section-link[data-link-name="invite"],
   .sidebar-section-link[href^="/u/"][href*="/messages"],
-  .sidebar-section-link[href="/u"] { --vc-sb-hue: var(--vc-plum); }
+  .sidebar-section-link[href="/u"],
+  .sidebar-section-wrapper[data-section-name="chat-channels"] .sidebar-section-link,
+  .sidebar-section-wrapper[data-section-name="chat-dms"] .sidebar-section-link {
+    --vc-sb-hue: var(--vc-plum);
+    --vc-sb-tint: var(--vc-plum-tint);
+  }
 
-  // AI guides → violet
+  // violet — AI guides
   .sidebar-section-link[href*="insight" i],
   .sidebar-section-link[href*="ai-conversations" i],
   .sidebar-section-link[href*="/ai" i],
   .sidebar-section-link[href*="omega" i],
-  .sidebar-section-link[href*="logos" i] { --vc-sb-hue: var(--vc-violet); }
+  .sidebar-section-link[href*="logos" i] {
+    --vc-sb-hue: var(--vc-violet);
+    --vc-sb-tint: var(--vc-violet-tint);
+  }
 
-  // Support / help → leaf
+  // leaf — Support, help
   .sidebar-section-link[href*="support" i],
   .sidebar-section-link[data-link-name="faq"],
-  .sidebar-section-link[data-link-name="about"] { --vc-sb-hue: var(--vc-leaf); }
+  .sidebar-section-link[data-link-name="about"] {
+    --vc-sb-hue: var(--vc-leaf);
+    --vc-sb-tint: var(--vc-leaf-tint);
+  }
 
-  // Staff utilities stay quiet (muted) — admin, review, "More"
+  // ink — Admin, More, "All …" footers: neutral tools, not destinations
   .sidebar-section-link[data-link-name="admin"],
-  .sidebar-section-link[data-link-name="review"] { --vc-sb-hue: var(--vc-muted); }
-
-  // Tags glyphs → gold; category dots keep their own category color
-  .sidebar-section-wrapper[data-section-name="tags"] .sidebar-section-link {
-    --vc-sb-hue: var(--vc-gold);
-  }
-
-  // Chat / channels → plum
-  .sidebar-section-wrapper[data-section-name="chat-channels"] .sidebar-section-link,
-  .sidebar-section-wrapper[data-section-name="chat-dms"] .sidebar-section-link {
-    --vc-sb-hue: var(--vc-plum);
-  }
-
-  // "All categories" / "All tags" / "More" footers are navigation, not
-  // destinations — keep them muted
   .sidebar-section-link[data-link-name="all-categories"],
   .sidebar-section-link[data-link-name="all-tags"],
-  .sidebar-more-section-links-details-summary { --vc-sb-hue: var(--vc-muted); }
+  .sidebar-more-section-links-details-summary {
+    --vc-sb-hue: var(--vc-ink-2);
+    --vc-sb-tint: color-mix(in srgb, var(--vc-ink) 7%, var(--vc-surface));
+  }
+
+  // ── categories: square swatch (10px r3), no tile ──────────────────
+  .sidebar-section-wrapper[data-section-name="categories"] .sidebar-section-link {
+    height: 32px;
+    padding-left: 17px;
+
+    .sidebar-section-link-prefix.span {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      margin-right: 2px;
+    }
+  }
+
+  // ── tags: bare glyph, quieter row ─────────────────────────────────
+  .sidebar-section-wrapper[data-section-name="tags"] .sidebar-section-link {
+    height: 32px;
+    padding-left: 17px;
+
+    .sidebar-section-link-prefix.icon {
+      width: auto;
+      height: auto;
+      background: transparent;
+      .d-icon { width: 10px; height: 10px; color: var(--vc-label); }
+    }
+  }
+
+  // "All categories" / "All tags" footers
+  .sidebar-section-link[data-link-name="all-categories"],
+  .sidebar-section-link[data-link-name="all-tags"] {
+    height: 30px;
+    font-size: 12.5px;
+    color: var(--vc-muted);
+    .sidebar-section-link-prefix.icon { background: transparent; }
+  }
+
+  // Section dividers: a hairline, breathing room above
+  .sidebar-section-wrapper + .sidebar-section-wrapper {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--vc-line);
+  }
+}
+
+// The sidebar toggle in the strip / header picks up the ink hue
+.header-sidebar-toggle .d-icon {
+  color: var(--header_primary);
 }
