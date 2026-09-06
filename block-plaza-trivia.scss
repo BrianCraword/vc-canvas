@@ -1,0 +1,92 @@
+// ── Plaza Trivia block ──────────────────────────────────────────────────
+// The contest centerpiece while one is live. Slightly richer treatment
+// than sibling blocks (soft tertiary wash + accent border) — deliberate:
+// this block's job is to pull people in. Scheme tokens only, so both
+// Plaza Light and Dark render it correctly.
+
+.block-plaza-trivia__layout {
+  position: relative;
+  border: 1px solid var(--tertiary-low);
+  border-left: 4px solid var(--tertiary);
+  border-radius: 12px;
+  padding: 1em 1.1em;
+  background:
+    linear-gradient(
+      135deg,
+      var(--tertiary-very-low, var(--tertiary-low)) 0%,
+      var(--secondary) 55%
+    );
+}
+
+.block-plaza-trivia__title {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: var(--font-up-1);
+  margin: 0 0 0.35em;
+
+  .d-icon {
+    color: var(--tertiary);
+  }
+}
+
+.block-plaza-trivia__contest-name {
+  font-weight: 700;
+  font-size: var(--font-up-1);
+  margin-bottom: 0.5em;
+}
+
+.block-plaza-trivia__day-chip {
+  display: inline-block;
+  background: var(--tertiary);
+  color: var(--secondary);
+  border-radius: 999px;
+  padding: 0.15em 0.8em;
+  font-size: var(--font-down-1);
+  font-weight: 700;
+  margin-bottom: 0.6em;
+}
+
+.block-plaza-trivia__line {
+  margin: 0 0 0.35em;
+}
+
+.block-plaza-trivia__sub {
+  margin: 0 0 0.35em;
+  font-size: var(--font-down-1);
+  color: var(--primary-medium);
+}
+
+.block-plaza-trivia__progress {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--primary-low);
+  overflow: hidden;
+  margin: 0.25em 0 0.5em;
+}
+
+.block-plaza-trivia__progress-fill {
+  height: 100%;
+  background: var(--tertiary);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.block-plaza-trivia__cta {
+  display: block;
+  text-align: center;
+  margin-top: 0.75em;
+  background: var(--tertiary);
+  color: var(--secondary);
+  border-radius: 8px;
+  padding: 0.55em 1em;
+  font-weight: 700;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    background: var(--tertiary-hover, var(--tertiary-high, var(--tertiary)));
+    color: var(--secondary);
+    text-decoration: none;
+  }
+}

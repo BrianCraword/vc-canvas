@@ -1,0 +1,55 @@
+// 1.5.0: two faces, each with one job.
+//   Newsreader — display: h1–h3, hero greeting, post titles, module titles.
+//                A warm serif reads as trustworthy and human; it is what
+//                separates VC from every Outfit/Inter startup.
+//   Outfit     — UI: nav labels, eyebrows, buttons, stat numerals.
+//   Inter      — body.
+// Loaded once here; the Feed plugin's own loader is harmless if both are
+// present (browsers dedupe identical @font-face declarations).
+@import url("https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  --font-family: "Inter", system-ui, -apple-system, sans-serif;
+  --heading-font-family: var(--vc-display);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--heading-font-family);
+  font-weight: var(--vc-display-weight);
+  letter-spacing: var(--vc-display-tracking);
+  color: var(--vc-ink);
+}
+
+h4,
+h5,
+h6 {
+  font-family: var(--vc-ui);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: var(--font-up-6);
+  line-height: 1.05;
+}
+
+h2 {
+  font-size: var(--font-up-3);
+  line-height: 1.15;
+}
+
+h3 {
+  font-size: var(--font-up-1);
+  line-height: 1.25;
+}
+
+// Eyebrow labels used across the site (sidebar section headers, feed
+// header, rail section titles). One declaration, one look.
+%vc-eyebrow {
+  font: var(--vc-eyebrow);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--vc-label);
+}

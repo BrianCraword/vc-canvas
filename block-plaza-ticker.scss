@@ -1,0 +1,74 @@
+.block-plaza-ticker {
+  &__layout {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: var(--plaza-card-bg);
+    border: 1px solid var(--plaza-card-border);
+    border-radius: 999px;
+    padding: 0.4em 0.6em;
+    overflow: hidden;
+    max-width: var(--d-max-width);
+    margin: var(--space-3) auto 0;
+  }
+
+  &__label {
+    flex-shrink: 0;
+    background: var(--plaza-pop);
+    color: #fff;
+    font-weight: 800;
+    font-size: var(--font-down-1);
+    padding: 0.25em 0.7em;
+    border-radius: 999px;
+    letter-spacing: 0.05em;
+  }
+
+  &__track {
+    flex: 1;
+    overflow: hidden;
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 6%,
+      #000 94%,
+      transparent
+    );
+  }
+
+  &__inner {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    white-space: nowrap;
+    animation: plaza-ticker-scroll 40s linear infinite;
+    padding-left: 100%;
+  }
+
+  &__item {
+    color: var(--plaza-text);
+    font-size: var(--font-down-1);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--plaza-accent);
+    }
+  }
+
+  &__sep {
+    color: var(--plaza-pop);
+    opacity: 0.6;
+  }
+
+  &__layout:hover &__inner {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes plaza-ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

@@ -1,0 +1,59 @@
+.block-plaza-quote {
+  &__layout {
+    @include tinted-card(var(--plaza-blue), var(--plaza-blue-border));
+    padding: var(--card-padding);
+  }
+
+  &__title {
+    @include section-title;
+    margin-bottom: var(--space-2);
+  }
+
+  &__body {
+    display: block;
+    background: rgba(255, 255, 255, 0.55);
+    border-left: 3px solid var(--plaza-accent);
+    border-radius: var(--d-border-radius);
+    padding: var(--space-2) var(--space-3);
+    text-decoration: none;
+    color: var(--plaza-text);
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.85);
+    }
+  }
+
+  &__text {
+    margin: 0 0 var(--space-2);
+    font-style: italic;
+    font-size: var(--font-down-1);
+    line-height: 1.45;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    font-size: var(--font-down-1);
+  }
+
+  &__author {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    color: var(--plaza-text-soft);
+
+    img.avatar {
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  &__likes {
+    color: var(--plaza-pop);
+    font-weight: 600;
+  }
+}

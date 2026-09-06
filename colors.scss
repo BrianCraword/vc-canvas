@@ -1,0 +1,45 @@
+// Community Plaza pastel palette.
+// Each card gets a soft tint to give the page its colorful "portal" feel.
+
+:root {
+  // Accent / brand — 1.4.0: aliases onto the site tokens (brand/tokens.scss).
+  // The lavender/pink pastel accent is retired; every block that asked for
+  // --plaza-accent now gets the Victorious crimson.
+  --plaza-accent: var(--vc-accent);
+  --plaza-accent-light: var(--vc-accent-tint);
+  --plaza-accent-dark: var(--vc-accent-deep);
+  --plaza-pop: var(--vc-pop);
+  --plaza-pop-light: var(--vc-gold-tint);
+
+  // Card tints — these are the soft pastels used on individual block cards.
+  --plaza-pink: light-dark(#fde6ef, #3a2030);
+  --plaza-pink-border: light-dark(#f6c8da, #54324a);
+  --plaza-yellow: light-dark(#fff7d6, #3a3220);
+  --plaza-yellow-border: light-dark(#f5e1a0, #5a4d2e);
+  --plaza-green: light-dark(#dff5e1, #1f3a25);
+  --plaza-green-border: light-dark(#b6e3bb, #355c40);
+  --plaza-purple: light-dark(#ece1f8, #2e2244);
+  --plaza-purple-border: light-dark(#d3c0ec, #4a3a6e);
+  --plaza-blue: light-dark(#e0f0fb, #1c2e44);
+  --plaza-blue-border: light-dark(#bfdcf2, #345a82);
+  --plaza-peach: light-dark(#ffe9d6, #3a2c1c);
+  --plaza-peach-border: light-dark(#f7c9a3, #5a4530);
+  --plaza-mint: light-dark(#dff5ea, #1f3a30);
+  --plaza-mint-border: light-dark(#a8dcc1, #3d6755);
+  --plaza-lavender: light-dark(#e8e1f8, #2a234a);
+  --plaza-lavender-border: light-dark(#cabff2, #463d77);
+
+  // Sky gradient for the hero
+  --plaza-sky-top: light-dark(#cfe6f7, #1a2a3e);
+  --plaza-sky-mid: light-dark(#e0eef9, #25364c);
+  --plaza-sky-bottom: light-dark(#f0f7fc, #2c3d54);
+
+  // Text
+  --plaza-text: var(--primary);
+  --plaza-text-soft: var(--primary-medium);
+  --plaza-cloud: light-dark(#ffffff, #4a5e7a);
+
+  // Surfaces
+  --plaza-card-bg: var(--secondary);
+  --plaza-card-border: var(--primary-200);
+}

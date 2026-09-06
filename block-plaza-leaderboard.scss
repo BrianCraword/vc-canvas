@@ -1,0 +1,227 @@
+.block-plaza-leaderboard {
+  // Medal colors for the podium rings + the "you" highlight.
+  --lb-gold: #f5c518;
+  --lb-gold-deep: #d9a400;
+  --lb-silver: #b8c0c8;
+  --lb-silver-deep: #8a949e;
+  --lb-bronze: #cd8b4f;
+  --lb-bronze-deep: #a96f37;
+
+  &__layout {
+    @include tinted-card(var(--plaza-lavender), var(--plaza-lavender-border));
+    padding: var(--card-padding);
+  }
+
+  &__loading {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-4);
+  }
+
+  &__title {
+    @include section-title;
+    margin-bottom: var(--space-3);
+  }
+
+  // ── Podium ───────────────────────────────────────────────────────────
+  &__podium {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  &__slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--plaza-text);
+    flex: 0 1 auto;
+    min-width: 0;
+    transition: transform 0.15s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  // First place sits higher and larger; 2nd/3rd flank it lower.
+  &__slot--first {
+    order: 2;
+    padding-bottom: var(--space-2);
+  }
+  &__slot--second {
+    order: 1;
+  }
+  &__slot--third {
+    order: 3;
+  }
+
+  &__crown {
+    font-size: 1.4em;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  &__avatar-wrap {
+    position: relative;
+    display: inline-flex;
+
+    img.avatar {
+      border-radius: 50%;
+    }
+  }
+
+  &__slot--first &__avatar-wrap img.avatar {
+    width: 84px;
+    height: 84px;
+    box-shadow: 0 0 0 3px var(--plaza-card-bg), 0 0 0 6px var(--lb-gold);
+  }
+  &__slot--second &__avatar-wrap img.avatar {
+    width: 60px;
+    height: 60px;
+    box-shadow: 0 0 0 3px var(--plaza-card-bg), 0 0 0 5px var(--lb-silver);
+  }
+  &__slot--third &__avatar-wrap img.avatar {
+    width: 60px;
+    height: 60px;
+    box-shadow: 0 0 0 3px var(--plaza-card-bg), 0 0 0 5px var(--lb-bronze);
+  }
+
+  &__medal {
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-down-2);
+    font-weight: 700;
+    color: #ffffff;
+    border: 2px solid var(--plaza-card-bg);
+  }
+  &__slot--first &__medal {
+    background: var(--lb-gold-deep);
+  }
+  &__slot--second &__medal {
+    background: var(--lb-silver-deep);
+  }
+  &__slot--third &__medal {
+    background: var(--lb-bronze-deep);
+  }
+
+  &__name {
+    margin-top: var(--space-2);
+    font-size: var(--font-down-1);
+    font-weight: 600;
+    max-width: 9ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+  }
+  &__slot--first &__name {
+    font-size: var(--font-0);
+  }
+
+  &__score {
+    font-weight: 800;
+    color: var(--plaza-text);
+    font-size: var(--font-up-1);
+  }
+  &__slot--first &__score {
+    font-size: var(--font-up-3);
+  }
+
+  // ── "You" strip ──────────────────────────────────────────────────────
+  &__you {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: var(--plaza-accent);
+    color: #ffffff;
+    border-radius: 999px;
+    padding: var(--space-2) var(--space-3);
+    margin-bottom: var(--space-3);
+    font-weight: 700;
+  }
+  &__you-rank {
+    font-size: var(--font-up-1);
+  }
+  &__you-label {
+    flex: 1;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  &__you-score {
+    font-size: var(--font-up-1);
+  }
+
+  // ── Ranked rows ──────────────────────────────────────────────────────
+  &__rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--space-2);
+    text-decoration: none;
+    color: var(--plaza-text);
+    background: var(--plaza-card-bg);
+
+    &:hover {
+      background: var(--plaza-accent-light);
+    }
+  }
+  &__row-rank {
+    font-weight: 700;
+    color: var(--plaza-text-soft);
+    min-width: 1.5em;
+    text-align: center;
+  }
+  &__row-avatar img.avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: block;
+  }
+  &__row-name {
+    flex: 1;
+    font-size: var(--font-down-1);
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  &__row-score {
+    font-weight: 700;
+    color: var(--plaza-text);
+  }
+
+  // ── Full-board link ──────────────────────────────────────────────────
+  &__all {
+    display: block;
+    margin-top: var(--space-3);
+    text-align: center;
+    font-size: var(--font-down-1);
+    font-weight: 600;
+    color: var(--plaza-accent-dark);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

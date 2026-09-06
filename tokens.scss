@@ -1,0 +1,87 @@
+// ═══════════════════════════════════════════════════════════════════════
+// Victorious Christians — site brand tokens (Canvas 1.5.0)
+//
+// ONE palette for the whole site. The Feed skin (--vcf-*), the Header
+// Mega Nav (--je-*), the Plaza aliases (--plaza-*), and the core sidebar
+// all read from here. Change a hue here and the site follows.
+//
+// 1.5.0 — final token sheet from the brand pass (direction "1a"):
+//   • warm cream page (--vc-tint) instead of grey
+//   • deep-wine header (--vc-header) and hero block (--vc-hero-ink)
+//   • display face is Newsreader (headings); Outfit stays for UI labels
+//   • one sanctioned gradient (--vc-grad-wide); --vc-grad is its 2-stop cut
+// ═══════════════════════════════════════════════════════════════════════
+
+:root {
+  // ── accent arc (all light values ≥4.5:1 on white) ─────────────────
+  --vc-crimson: light-dark(#be1a4b, #ff6e8e);
+  --vc-crimson-deep: light-dark(#96123a, #ff8fa8);
+  --vc-ember: light-dark(#b5410e, #ff9a5c);
+  --vc-gold: light-dark(#8a5c06, #ffc93d);
+  --vc-plum: light-dark(#8b1e5b, #e58ac0);
+  --vc-violet: light-dark(#6a2d8e, #c79bff);
+  --vc-leaf: light-dark(#1f7a4a, #7fd7a3);
+
+  // Bright gold: the ONE accent allowed on dark surfaces (hero CTA,
+  // Omega glyph). Never used as text on white — that is --vc-gold.
+  --vc-gold-bright: light-dark(#f0b23f, #ffc93d);
+
+  // ── tints (backgrounds behind a colored glyph or label) ───────────
+  --vc-crimson-tint: light-dark(#fbe3ea, #3a1622);
+  --vc-ember-tint: light-dark(#fce6d9, #3a2418);
+  --vc-gold-tint: light-dark(#f8eccf, #3a3018);
+  --vc-plum-tint: light-dark(#f8e2ee, #3a1830);
+  --vc-violet-tint: light-dark(#efe4f9, #2e2244);
+  --vc-leaf-tint: light-dark(#e1f3e8, #17301f);
+
+  // ── semantic aliases (what components actually ask for) ───────────
+  --vc-accent: var(--vc-crimson);
+  --vc-accent-deep: var(--vc-crimson-deep);
+  --vc-accent-tint: var(--vc-crimson-tint);
+  --vc-pop: var(--vc-gold);
+
+  --vc-grad: linear-gradient(118deg, #be1a4b 0%, #dd5a1c 100%);
+  --vc-grad-wide: linear-gradient(118deg, #be1a4b 0%, #dd5a1c 52%, #f0b23f 100%);
+
+  // ── dark brand surfaces ───────────────────────────────────────────
+  --vc-header: light-dark(#24101e, #0f070b);       // header strip
+  --vc-hero-ink: light-dark(#2a1020, #1f0c18);     // hero block, Omega tile
+  --vc-on-dark: #ffffff;
+  --vc-on-dark-soft: rgba(255, 255, 255, 0.62);
+  --vc-on-dark-line: rgba(255, 255, 255, 0.12);
+  --vc-on-dark-fill: rgba(255, 255, 255, 0.08);
+
+  // ── surfaces & ink ────────────────────────────────────────────────
+  --vc-surface: var(--secondary);
+  --vc-tint: light-dark(#f6f0ea, #140b0f);          // page background
+  --vc-tint-2: light-dark(#fbf7f3, #241c20);        // hover fill
+  --vc-line: light-dark(rgba(28, 20, 23, 0.08), rgba(255, 255, 255, 0.08));
+  --vc-line-strong: light-dark(rgba(28, 20, 23, 0.14), rgba(255, 255, 255, 0.14));
+  --vc-ink: var(--primary);
+  --vc-ink-2: light-dark(#45393e, #d9cdd3);
+  --vc-muted: light-dark(#6f6368, #a99ca3);
+  --vc-label: light-dark(#8e8287, #8c7f85);
+
+  // ── form ──────────────────────────────────────────────────────────
+  --vc-radius: 16px;      // cards
+  --vc-radius-lg: 18px;   // hero
+  --vc-radius-sm: 8px;    // icon tiles
+  --vc-tile: 28px;        // icon tile (sidebar, composer, rail marks)
+  --vc-shadow-lift: 0 18px 40px -22px rgba(42, 16, 32, 0.35);
+  --vc-ring: 0 0 0 4px color-mix(in srgb, var(--vc-crimson) 10%, transparent);
+
+  // ── type ──────────────────────────────────────────────────────────
+  // Display = headings (hero greeting, module titles, post titles).
+  // UI = nav labels, eyebrows, buttons, numerals.
+  --vc-display: "Newsreader", Georgia, "Times New Roman", serif;
+  --vc-display-weight: 500;
+  --vc-display-tracking: -0.012em;
+  --vc-ui: "Outfit", var(--font-family);
+  --vc-eyebrow: 600 0.6875rem/1 var(--vc-ui); // 11px, letter-spacing .18em, uppercase
+}
+
+// The page itself is cream. Core paints body with --secondary (white);
+// the cards stay white so they read as paper on a warm desk.
+body {
+  background: var(--vc-tint);
+}
