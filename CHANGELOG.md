@@ -1,5 +1,33 @@
 # Changelog
 
+## 2.1.0 — 2026-10-18 (claude-two; candidate, not installed)
+
+Phase 2, first page family: Latest and the other topic lists. Board C18.
+
+Topic lists as cards
+- Latest, New, Unread, Top, Hot, category and tag lists show each topic as a card: title in the heading font, a short excerpt, posters, category and tags, replies and date. The whole card opens the topic.
+- Excerpts that would only repeat the title are left out. Feed and quick posts take their title from the start of the post, so their excerpt starts with the same words.
+- Phones get the same cards (one avatar, no tags, no views) instead of Discourse's separate phone row.
+- The column headings are hidden on cards: they don't line up with a card. Staff keep the bulk-select control. Sort by replies or views from the classic layout, or use Top and Hot.
+- Uses only Discourse's own transformers (`topic-list-class`, `topic-list-item-class`, `topic-list-item-mobile-layout`, `topic-list-item-expand-pinned`, `topic-list-item-click`). Every cell is still Discourse's, so plugin outlets and bulk select keep working. Suggested topics and messages keep the table.
+- Layout approach adapted from Discourse's Horizon theme (MIT).
+- New files: `javascripts/discourse/api-initializers/topic-cards.js`, `javascripts/discourse/lib/vc-topic-cards.js`, `stylesheets/pages/` (`_index`, `topic-list`, `topic`).
+
+Admin settings (new)
+- `topic_list_layout`: cards (default) or classic. Classic is 2.0.0's table, unchanged.
+- `topic_card_excerpt_lines`: 0–4, default 2. With 0, only pinned topics show an excerpt, as in Discourse.
+- `topic_card_views`: show view counts on cards (default off).
+
+Tokens
+- `--vc-card-pad` and `--vc-card-gap`, set by `density` (comfortable / compact).
+
+Contrast
+- The nested-replies "OP" badge was 4.45:1 in VC Flame Light. It now uses the deep accent on the accent wash: 7.12 / 7.68 / 8.08 / 7.68 in the four shipped palettes.
+- Core's like-heat colours on reply and view counts (~2.6:1) are replaced by the deep accent on cards.
+
+Unchanged
+- Colour derivation, palettes, all other settings, the Plaza blocks, homepage layout and mobile hardening are byte-identical to 2.0.0.
+
 ## 2.0.0 — 2026-10-17 (claude-two; candidate, not installed)
 
 Phase 1 of the design overhaul (`Second Brain/projects/victorious-christians/design-overhaul-2026-10-17/PLAN.md`). Installs as a separate theme named "VC Canvas 2" next to VC-Canvas 1.5.0.

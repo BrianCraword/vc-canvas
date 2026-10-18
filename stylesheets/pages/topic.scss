@@ -1,0 +1,12 @@
+// ═══════════════════════════════════════════════════════════════════════
+// Topic page (VC Canvas 2.1.0)
+// ═══════════════════════════════════════════════════════════════════════
+
+// "OP" badge in nested replies. Core paints the accent on its own very-low
+// tint: 4.45:1 in VC Flame Light (needs 4.5:1). The deep accent on the
+// accent wash passes in all four shipped palettes (TOKENS.md).
+.nested-post .nested-post__op-badge {
+  color: var(--vc-accent-deep);
+  background: var(--vc-accent-wash);
+  border-color: var(--vc-accent-line);
+}

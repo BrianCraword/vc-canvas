@@ -1,4 +1,4 @@
-# VC token contract — VC Canvas 2.0.0
+# VC token contract — VC Canvas 2.1.0
 
 The base theme publishes these CSS custom properties. Feature components and plugins (Feed, Header Mega Nav, AI Conversations, Trivia, Campaign, Matchmaking, Bible Tagger, Versatile Banner) may **read** them. They must not define their own colours: a component that needs a new value asks for a token here.
 
@@ -57,11 +57,12 @@ Contrast of the shipped palettes (WCAG AA needs 4.5 for text; values are on surf
 | core primary-400 / low-mid (60%) | 5.06 / 4.56 | 5.30 / 5.90 | 5.51 / 4.96 | 5.40 / 5.74 |
 | core primary-600 / medium (68%) | 6.59 / 5.94 | 6.56 / 7.31 | 7.25 / 6.53 | 6.78 / 7.21 |
 | accent | 5.18 / 4.67 | 7.14 / 7.95 | 6.11 / 5.50 | 6.79 / 7.22 |
+| OP badge: accent-deep on accent-wash (2.1.0) | 7.12 | 7.68 | 8.08 | 7.68 |
 | button text on accent | 5.18 | 7.14 | 6.11 | 6.79 |
 
 ## Shape and density (from settings)
 
-`--vc-radius-sm`, `--vc-radius`, `--vc-radius-lg`, `--vc-radius-card`, `--vc-radius-inner`, `--vc-radius-media`, `--vc-radius-pill`, `--vc-card-border`, `--vc-shadow`, `--vc-shadow-lift`, `--vc-gap`, `--vc-sb-row`, `--vc-tile`, `--card-padding`.
+`--vc-radius-sm`, `--vc-radius`, `--vc-radius-lg`, `--vc-radius-card`, `--vc-radius-inner`, `--vc-radius-media`, `--vc-radius-pill`, `--vc-card-border`, `--vc-shadow`, `--vc-shadow-lift`, `--vc-gap`, `--vc-sb-row`, `--vc-tile`, `--card-padding`, `--vc-card-pad` and `--vc-card-gap` (topic cards, 2.1.0).
 
 Core tokens set from them: `--d-border-radius`, `--d-border-radius-large`, `--d-input-border-radius`, `--d-button-border-radius`, `--d-post-accordion-radius`, `--d-topic-list-data-padding-y`, `--d-sidebar-row-height` (compact), `--d-max-width`.
 

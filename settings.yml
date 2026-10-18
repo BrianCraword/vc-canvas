@@ -1,5 +1,5 @@
 # ═══════════════════════════════════════════════════════════════════════
-# LOOK & FEEL (2.0.0). Colours are edited in Admin → Appearance → Colour
+# LOOK & FEEL (2.0.0; topic list settings 2.1.0). Colours are edited in Admin → Appearance → Colour
 # palettes (VC Flame Light / VC Flame Dark by default). These settings
 # control everything else about how the site looks.
 # ═══════════════════════════════════════════════════════════════════════
@@ -90,6 +90,26 @@ welcome_banner_style:
     - compact
     - hidden
   description: "Size of the 'Welcome back' banner on topic lists. To switch it off entirely you can also use 'Enable welcome banner' under Settings the theme can override."
+
+topic_list_layout:
+  type: enum
+  default: cards
+  choices:
+    - cards
+    - classic
+  description: "Topic lists (Latest, New, Unread, Top, Hot, categories and tags). cards = each topic is a card with an excerpt, posters, replies and date; the whole card opens the topic. classic = Discourse's table with sortable columns."
+
+topic_card_excerpt_lines:
+  type: integer
+  default: 2
+  min: 0
+  max: 4
+  description: "Lines of excerpt on each topic card. 0 = no excerpts (pinned topics still show theirs). Excerpts that would only repeat the title are left out."
+
+topic_card_views:
+  type: bool
+  default: false
+  description: "Show the view count on topic cards (desktop and tablet)."
 
 content_width:
   type: integer
