@@ -1,0 +1,169 @@
+// ═══════════════════════════════════════════════════════════════════════
+// Admin-controlled look (VC Canvas 2.0.0)
+//
+// Every block here is driven by a theme setting (Admin → Appearance →
+// Themes → VC Canvas 2 → Settings). Discourse hands settings to SCSS as
+// unquoted strings, so booleans are compared as "true"/"false".
+// Colours are NOT here — they come from the colour palette.
+// ═══════════════════════════════════════════════════════════════════════
+
+// ── corner_style ──────────────────────────────────────────────────────
+@if $corner_style == "square" {
+  :root {
+    --vc-radius-sm: 4px;
+    --vc-radius: 6px;
+    --vc-radius-lg: 8px;
+  }
+} @else if $corner_style == "round" {
+  :root {
+    --vc-radius-sm: 10px;
+    --vc-radius: 16px;
+    --vc-radius-lg: 20px;
+  }
+} @else {
+  :root {
+    --vc-radius-sm: 8px;
+    --vc-radius: 12px;
+    --vc-radius-lg: 16px;
+  }
+}
+
+:root {
+  --vc-radius-card: var(--vc-radius);
+  --vc-radius-inner: var(--vc-radius-sm);
+  --vc-radius-media: var(--vc-radius-sm);
+  --vc-radius-pill: 999px;
+  --d-border-radius: var(--vc-radius-sm);
+  --d-border-radius-large: var(--vc-radius);
+  --d-input-border-radius: var(--vc-radius-sm);
+  --d-post-accordion-radius: var(--vc-radius);
+  --vc-tile: 28px;
+}
+
+// ── button_shape ──────────────────────────────────────────────────────
+@if $button_shape == "rounded" {
+  :root { --d-button-border-radius: var(--vc-radius-sm); }
+} @else {
+  :root { --d-button-border-radius: var(--vc-radius-pill); }
+}
+
+// ── card_style ────────────────────────────────────────────────────────
+// flat: no border, no shadow (separation by background only)
+// outlined: hairline border (default)
+// raised: hairline + soft layered shadow (the Bible tooltip's depth)
+@if $card_style == "flat" {
+  :root {
+    --vc-card-border: 0 solid transparent;
+    --vc-shadow: none;
+  }
+} @else if $card_style == "raised" {
+  :root {
+    --vc-card-border: 1px solid var(--vc-line-soft);
+    --vc-shadow: 0 1px 2px color-mix(in oklab, var(--vc-ink) 6%, transparent),
+      0 6px 18px -8px color-mix(in oklab, var(--vc-ink) 18%, transparent);
+  }
+} @else {
+  :root {
+    --vc-card-border: 1px solid var(--vc-line);
+    --vc-shadow: 0 1px 2px color-mix(in oklab, var(--vc-ink) 5%, transparent);
+  }
+}
+
+:root {
+  --vc-shadow-lift: 0 18px 40px -22px color-mix(in oklab, var(--vc-ink) 35%, transparent);
+}
+
+// ── density ───────────────────────────────────────────────────────────
+@if $density == "compact" {
+  :root {
+    --vc-gap: 12px;
+    --vc-sb-row: 32px;
+    --d-sidebar-row-height: 1.75rem;
+    --d-topic-list-data-padding-y: var(--space-2);
+    --card-padding: var(--space-2) var(--space-3);
+  }
+} @else {
+  :root {
+    --vc-gap: 16px;
+    --vc-sb-row: 38px;
+    --d-topic-list-data-padding-y: var(--space-3);
+    --card-padding: var(--space-3) var(--space-4);
+  }
+}
+
+// ── page_background ───────────────────────────────────────────────────
+@if $page_background == "white" {
+  :root { --vc-page: var(--vc-page-white); }
+} @else if $page_background == "tinted" {
+  :root { --vc-page: var(--vc-page-tinted); }
+} @else {
+  :root { --vc-page: var(--vc-page-paper); }
+}
+
+// ── content_width ─────────────────────────────────────────────────────
+:root {
+  --d-max-width: #{$content_width}px;
+}
+
+// ── header_style ──────────────────────────────────────────────────────
+// palette: the palette's header colours (default; light header in light
+//          mode, dark header in dark mode with the dark logo)
+// night:   the dark brand surface in both modes. Check the logo reads on
+//          it before choosing this — the light logo has navy detail.
+@if $header_style == "night" {
+  .d-header {
+    background: var(--vc-night);
+    color: var(--vc-on-night);
+    --d-header-icon-color: color-mix(in oklab, var(--vc-on-night) 72%, transparent);
+    --d-header-icon-color--hover: var(--vc-on-night);
+    --d-header-icon-color--active: var(--vc-on-night);
+    --d-header-icon-background--hover: color-mix(in oklab, var(--vc-on-night) 12%, transparent);
+    --d-header-icon-background--active: color-mix(in oklab, var(--vc-on-night) 16%, transparent);
+  }
+}
+
+.d-header {
+  box-shadow: 0 1px 0 var(--vc-line-soft);
+}
+
+// ── welcome_banner_style ──────────────────────────────────────────────
+// The banner itself is switched on/off per theme under "Settings the theme
+// can override → Enable welcome banner". This setting sizes it.
+@if $welcome_banner_style == "compact" {
+  .welcome-banner {
+    --d-welcome-banner-padding-top: var(--space-4);
+    --d-welcome-banner-padding-bottom: var(--space-4);
+    --d-welcome-banner-title-margin-bottom: var(--space-3);
+
+    h1,
+    .welcome-banner__title {
+      font-size: var(--font-up-4);
+    }
+  }
+} @else if $welcome_banner_style == "hidden" {
+  .welcome-banner {
+    display: none;
+  }
+}
+
+// ── motion ────────────────────────────────────────────────────────────
+@if $motion == "false" {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

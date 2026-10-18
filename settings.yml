@@ -1,3 +1,112 @@
+# ═══════════════════════════════════════════════════════════════════════
+# LOOK & FEEL (2.0.0). Colours are edited in Admin → Appearance → Colour
+# palettes (VC Flame Light / VC Flame Dark by default). These settings
+# control everything else about how the site looks.
+# ═══════════════════════════════════════════════════════════════════════
+
+font_pairing:
+  type: enum
+  default: inter_newsreader
+  choices:
+    - inter_newsreader
+    - inter_only
+    - admin_fonts
+  description: "Fonts. inter_newsreader = Inter for text, Newsreader for headings. inter_only = Inter everywhere. admin_fonts = use the fonts chosen in Admin → Appearance → Fonts."
+
+heading_weight:
+  type: enum
+  default: medium
+  choices:
+    - regular
+    - medium
+    - semibold
+  description: "How heavy headings and titles look."
+
+corner_style:
+  type: enum
+  default: soft
+  choices:
+    - square
+    - soft
+    - round
+  description: "Corner rounding for cards, inputs and panels. square 4–8px, soft 8–16px, round 10–20px."
+
+button_shape:
+  type: enum
+  default: pill
+  choices:
+    - pill
+    - rounded
+  description: "Button shape. pill = fully rounded ends; rounded = matches the corner style."
+
+card_style:
+  type: enum
+  default: outlined
+  choices:
+    - flat
+    - outlined
+    - raised
+  description: "How cards separate from the page. flat = background only, outlined = hairline border, raised = hairline plus soft shadow."
+
+density:
+  type: enum
+  default: comfortable
+  choices:
+    - comfortable
+    - compact
+  description: "Spacing of sidebar rows, topic rows and card padding."
+
+page_background:
+  type: enum
+  default: paper
+  choices:
+    - paper
+    - white
+    - tinted
+  description: "Page background behind the cards. paper = warm off-white derived from the accent, white = plain, tinted = a stronger accent tint. All follow the colour palette, including dark mode."
+
+header_style:
+  type: enum
+  default: palette
+  choices:
+    - palette
+    - night
+  description: "Site header. palette = the colour palette's header colours. night = the dark brand colour in both modes (check the logo reads on it first)."
+
+sidebar_style:
+  type: enum
+  default: quiet
+  choices:
+    - quiet
+    - tiles
+    - text
+  description: "Sidebar icons. quiet = one neutral tile, only the current page takes the accent. tiles = a colour per kind of destination. text = plain icons."
+
+welcome_banner_style:
+  type: enum
+  default: compact
+  choices:
+    - full
+    - compact
+    - hidden
+  description: "Size of the 'Welcome back' banner on topic lists. To switch it off entirely you can also use 'Enable welcome banner' under Settings the theme can override."
+
+content_width:
+  type: integer
+  default: 1200
+  min: 960
+  max: 1600
+  description: "Maximum width of the main content in pixels (the Feed keeps its own wider layout)."
+
+motion:
+  type: bool
+  default: true
+  description: "Hover and transition animations. Members who ask their device for reduced motion never get them."
+
+# ═══════════════════════════════════════════════════════════════════════
+# COMMUNITY PLAZA BLOCKS (unchanged from 1.5.0)
+# ═══════════════════════════════════════════════════════════════════════
+
 hot_topics_count:
   default: 5
   type: integer

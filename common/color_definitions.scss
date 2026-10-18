@@ -1,0 +1,134 @@
+// ═══════════════════════════════════════════════════════════════════════
+// VC Canvas 2 — colour derivation (2.0.0)
+//
+// Discourse compiles this file once per colour palette: once with the
+// light palette's colours and once with the dark palette's. Every VC
+// colour below is DERIVED from the palette colours, so editing a colour
+// in Admin → Appearance → Colour palettes recolours the whole site, in
+// light and in dark. No hex values live here.
+//
+// Palette roles (what each Admin palette colour drives):
+//   primary          ink: text, icons, the dark "night" brand surface
+//   secondary        surface: cards, panels, inputs
+//   tertiary         accent: links, primary buttons, active states, focus
+//   quaternary       second accent: decorative highlights, gradients
+//   header_*         site header
+//   highlight        highlighted posts and search hits
+//   selected/hover   selection and hover fills
+//   danger/success   status
+//   love             likes and hearts
+//
+// light-dark(light, dark) picks the formula for the palette being compiled.
+// Pattern taken from Discourse's own Horizon theme (system theme −2).
+// ═══════════════════════════════════════════════════════════════════════
+
+html {
+  // ── surfaces ─────────────────────────────────────────────────────────
+  --vc-surface: #{$secondary};
+  --vc-surface-raised: #{$secondary};
+  --vc-surface-sunk: color-mix(in oklab, #{$secondary} 95%, #{$primary});
+  --vc-surface-warm: color-mix(in oklab, #{$secondary} 96%, #{$tertiary});
+
+  // Page backgrounds — the setting `page_background` picks one of these.
+  // Fallbacks first; relative-colour versions below where supported.
+  --vc-page-paper: light-dark(
+    color-mix(in oklab, color-mix(in oklab, #{$secondary} 97%, #{$primary}) 94%, #{$quaternary}),
+    color-mix(in oklab, #{$secondary} 80%, black)
+  );
+  --vc-page-tinted: light-dark(
+    color-mix(in oklab, color-mix(in oklab, #{$secondary} 96%, #{$primary}) 91%, #{$tertiary}),
+    color-mix(in oklab, #{$secondary} 92%, #{$tertiary})
+  );
+  --vc-page-white: light-dark(#{$secondary}, color-mix(in oklab, #{$secondary} 80%, black));
+
+  // ── ink (text) ───────────────────────────────────────────────────────
+  // Mix ratios checked for ≥4.5:1 on surface and page in all four
+  // palettes that ship with the theme (see TOKENS.md).
+  --vc-ink: #{$primary};
+  --vc-ink-body: color-mix(in oklab, #{$primary} 90%, #{$secondary});
+  --vc-ink-2: color-mix(in oklab, #{$primary} 82%, #{$secondary});
+  --vc-muted: color-mix(in oklab, #{$primary} 66%, #{$secondary});
+  --vc-label: color-mix(in oklab, #{$primary} 60%, #{$secondary});
+
+  // ── lines ────────────────────────────────────────────────────────────
+  --vc-line: color-mix(in oklab, #{$primary} 11%, transparent);
+  --vc-line-strong: color-mix(in oklab, #{$primary} 18%, transparent);
+  --vc-line-soft: color-mix(in oklab, #{$primary} 7%, transparent);
+
+  // ── accent ───────────────────────────────────────────────────────────
+  --vc-accent: #{$tertiary};
+  --vc-accent-deep: light-dark(
+    color-mix(in oklab, #{$tertiary} 82%, black),
+    color-mix(in oklab, #{$tertiary} 80%, white)
+  );
+  --vc-accent-tint: color-mix(in oklab, #{$tertiary} 12%, #{$secondary});
+  --vc-accent-wash: color-mix(in oklab, #{$tertiary} 7%, #{$secondary});
+  --vc-accent-line: color-mix(in oklab, #{$tertiary} 35%, #{$secondary});
+  --vc-on-accent: #{$secondary};
+  --vc-accent-2: #{$quaternary};
+  --vc-accent-2-tint: color-mix(in oklab, #{$quaternary} 14%, #{$secondary});
+
+  // ── night: the dark brand surface (hero, Omega tile, strong panels) ──
+  --vc-night: light-dark(
+    #{$primary},
+    color-mix(in oklab, #{$header_background} 70%, black)
+  );
+  --vc-on-night: light-dark(#{$secondary}, #{$primary});
+
+  // ── status ───────────────────────────────────────────────────────────
+  --vc-love: #{$love};
+  --vc-success: #{$success};
+  --vc-success-tint: color-mix(in oklab, #{$success} 12%, #{$secondary});
+  --vc-danger: #{$danger};
+  --vc-highlight: #{$highlight};
+  --vc-highlight-tint: color-mix(in oklab, #{$highlight} 40%, #{$secondary});
+
+  // ── core Discourse tokens steered from the palette ───────────────────
+  // Visited topic titles were #919191 (3.15:1) — now ≥6.7:1.
+  --title-color--read: color-mix(in oklab, #{$primary} 72%, #{$secondary}) !important;
+  --excerpt-color: var(--vc-muted) !important;
+  --metadata-color: var(--vc-muted) !important;
+  --content-border-color: var(--vc-line) !important;
+  --d-hover: color-mix(in oklab, #{$primary} 6%, #{$secondary}) !important;
+  --d-selected: color-mix(in oklab, #{$tertiary} 11%, #{$secondary}) !important;
+  --d-selected-hover: color-mix(in oklab, #{$tertiary} 16%, #{$secondary}) !important;
+  --d-selected-text-color: #{$primary} !important;
+  --d-link-color: #{$tertiary} !important;
+  --highlight-bg: color-mix(in oklab, #{$highlight} 55%, #{$secondary}) !important;
+
+  // Core's muted-text steps are ~3:1 on white by default (primary-medium
+  // was #919191). Dates, user titles, labels, mobile tab labels and search
+  // blurbs all use them. Pull the text-bearing steps toward the ink so they
+  // pass 4.5:1 on surface and page (AUDIT D11).
+  // Mix ratios checked against all four shipped palettes (TOKENS.md).
+  --primary-400: color-mix(in oklab, #{$primary} 60%, #{$secondary}) !important;
+  --primary-500: color-mix(in oklab, #{$primary} 64%, #{$secondary}) !important;
+  --primary-600: color-mix(in oklab, #{$primary} 68%, #{$secondary}) !important;
+  --primary-700: color-mix(in oklab, #{$primary} 75%, #{$secondary}) !important;
+  --primary-800: color-mix(in oklab, #{$primary} 82%, #{$secondary}) !important;
+  --primary-900: color-mix(in oklab, #{$primary} 90%, #{$secondary}) !important;
+  --primary-low-mid: var(--primary-400) !important;
+  --primary-medium: var(--primary-600) !important;
+  --primary-high: var(--primary-800) !important;
+  --primary-very-high: var(--primary-900) !important;
+  --primary-med-or-secondary-med: var(--primary-600) !important;
+  --primary-med-or-secondary-high: var(--primary-600) !important;
+  --primary-high-or-secondary-low: var(--primary-800) !important;
+  --primary-low-mid-or-secondary-high: var(--primary-400) !important;
+  --primary-low-mid-or-secondary-low: var(--primary-400) !important;
+}
+
+// Warmer, hue-shifted paper where relative colour syntax is supported
+// (same mechanism Horizon uses for its page background).
+@supports (color: oklch(from red l c h)) {
+  html {
+    --vc-page-paper: light-dark(
+      oklch(from #{$tertiary} 96.5% 0.012 calc(h + 30)),
+      oklch(from #{$secondary} calc(l * 0.8) c h)
+    );
+    --vc-page-tinted: light-dark(
+      oklch(from #{$tertiary} 95% 0.02 calc(h + 20)),
+      oklch(from #{$secondary} calc(l * 0.9) calc(c + 0.012) h)
+    );
+  }
+}

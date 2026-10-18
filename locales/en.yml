@@ -1,7 +1,19 @@
 en:
   theme_metadata:
-    description: "Community Plaza — a Japanese-portal-inspired Discourse homepage built on the Skills blocks framework"
+    description: "VC Canvas 2 — the Victorious Christians design system: palette-driven colour with dark mode, Admin look-and-feel settings, and the Community Plaza blocks"
     settings:
+      font_pairing: "Fonts — inter_newsreader: Inter text with Newsreader headings · inter_only: Inter everywhere · admin_fonts: use Admin → Appearance → Fonts"
+      heading_weight: "Heading weight"
+      corner_style: "Corner rounding (square / soft / round)"
+      button_shape: "Button shape (pill / rounded)"
+      card_style: "Card separation (flat / outlined / raised)"
+      density: "Spacing density (comfortable / compact)"
+      page_background: "Page background (paper / white / tinted) — follows the colour palette"
+      header_style: "Header (palette colours / night)"
+      sidebar_style: "Sidebar icons (quiet / tiles / text)"
+      welcome_banner_style: "Welcome banner size (full / compact / hidden)"
+      content_width: "Maximum content width in pixels"
+      motion: "Hover and transition animations"
       hot_topics_count: "Number of hot topics shown"
       hot_topics_threshold: "Reply count for HOT badge"
       new_faces_count: "Number of new community members shown"

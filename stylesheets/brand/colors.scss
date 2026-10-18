@@ -4,7 +4,7 @@
 :root {
   // Accent / brand — 1.4.0: aliases onto the site tokens (brand/tokens.scss).
   // The lavender/pink pastel accent is retired; every block that asked for
-  // --plaza-accent now gets the Victorious crimson.
+  // --plaza-accent now gets the palette accent (2.0.0).
   --plaza-accent: var(--vc-accent);
   --plaza-accent-light: var(--vc-accent-tint);
   --plaza-accent-dark: var(--vc-accent-deep);
@@ -40,6 +40,6 @@
   --plaza-cloud: light-dark(#ffffff, #4a5e7a);
 
   // Surfaces
-  --plaza-card-bg: var(--secondary);
-  --plaza-card-border: var(--primary-200);
+  --plaza-card-bg: var(--vc-surface);
+  --plaza-card-border: var(--vc-line-strong);
 }
