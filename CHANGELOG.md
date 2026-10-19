@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.7.0 — 2026-10-19 (claude-two; candidate, not installed)
+
+Phase 2, step 7 (first half): badges, groups, tags and the about page. Board C18. The composer and empty states follow in 2.8.0.
+
+Community pages (`community_pages_layout`: cards, the default; classic = Discourse's, byte-identical to 2.6.0)
+- Badges (/badges, a member's badges, one badge's page): each badge a card with the flame edge on hover; badge group titles as small labels.
+- Groups (/g): each group a card, the name in the heading font one size smaller, so names like "pending_verification" no longer break mid-word.
+- Tags (/tags): the tag list on one card; tags as chips like the category chips, counts at the meta size.
+- About (/about): the site name on the night surface (a white card with `profile_header_style` card), the four counts as tiles, the site's text on a card, and contact and site activity on one card beside it.
+- Group card (click a group mention): the user card's look.
+
+Not changed
+- Topic lists, categories, topic page, profiles, search, notifications and menus (as 2.6.0), frame, palettes and colour definitions. No JavaScript changes. No new tokens.
+
 ## 2.6.0 — 2026-10-19 (claude-two; candidate, not installed)
 
 Phase 2, step 6: search, notifications and the header menus. Board C18. Includes the 2.5.1 fix (the messages-page name).

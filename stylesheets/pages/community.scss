@@ -1,0 +1,288 @@
+@use "lib/viewport";
+
+// ═══════════════════════════════════════════════════════════════════════
+// Badges, groups, tags and about (VC Canvas 2.7.0)
+//
+// Setting: `community_pages_layout` cards (default) / classic (Discourse's
+// own, the 2.6.0 build byte-for-byte). CSS only.
+//   [badges: each badge a card; group titles as small labels]
+//   [groups: each group a card, the name in the heading font]
+//   [tags: the tag list on one card, tags as chips]
+//   [about: the site name on the night surface, stats as tiles, the text
+//    and the side panel on cards]
+//   [group card (click a group mention): the user card's look]
+// Uses the night-surface mixins from profile.scss (imported before this).
+// ═══════════════════════════════════════════════════════════════════════
+
+// a section label, as on the profile summary
+@mixin vc-comm-eyebrow {
+  font-family: var(--vc-ui);
+  font-size: var(--font-down-1-rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--vc-muted);
+}
+
+@mixin vc-comm-card {
+  background: var(--vc-surface);
+  border: var(--vc-card-border);
+  border-radius: var(--vc-radius-card);
+  box-shadow: var(--vc-shadow);
+}
+
+// a whole-card link: lift and flame edge on hover, like the topic cards
+@mixin vc-comm-card-hover {
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--vc-line-strong);
+
+      @if $card_edge != "none" {
+        box-shadow:
+          inset 4px 0 0 var(--vc-edge-strong),
+          var(--vc-shadow);
+      }
+    }
+  }
+}
+
+@if $community_pages_layout == "cards" {
+  // ── badges: /badges, a user's badges, one badge's page ──────────────
+  .badge-card {
+    @include vc-comm-card;
+    @include vc-comm-card-hover;
+
+    .badge-summary {
+      color: var(--vc-ink-2);
+    }
+
+    .badge-granted,
+    .grant-count,
+    .grant-text {
+      color: var(--vc-muted);
+    }
+  }
+
+  .badges .badge-grouping .title h2 {
+    @include vc-comm-eyebrow;
+    margin: var(--space-6) 0 var(--space-3);
+  }
+
+  // ── groups: /g ──────────────────────────────────────────────────────
+  .groups-boxes .group-box {
+    @include vc-comm-card;
+    @include vc-comm-card-hover;
+
+    .group-info-name {
+      font-family: var(--heading-font-family);
+      font-size: var(--font-up-1-rem);
+      font-weight: var(--vc-card-title-weight);
+      color: var(--vc-ink);
+      overflow-wrap: anywhere;
+    }
+
+    // mention name and count in the description colour: no extra grey
+    .group-info-mention-name {
+      font-size: var(--font-down-1-rem);
+      color: var(--vc-ink-2);
+    }
+
+    .group-description {
+      color: var(--vc-ink-2);
+    }
+
+    .group-box-inner .group-user-count {
+      color: var(--vc-ink-2);
+    }
+  }
+
+  // ── tags: /tags ─────────────────────────────────────────────────────
+  .tags-index .tags-list {
+    @include vc-comm-card;
+    margin-bottom: var(--vc-card-gap);
+    padding: var(--space-4) var(--space-5);
+
+    @include viewport.until(md) {
+      padding: var(--space-3) var(--space-4);
+    }
+
+    h3 {
+      @include vc-comm-eyebrow;
+      margin: 0 0 var(--space-3);
+    }
+
+    .tag-box {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+    }
+
+    .discourse-tag.box {
+      padding: 0.3em 0.7em;
+      border-radius: var(--vc-radius-pill);
+      background: var(--vc-surface-sunk);
+      color: var(--vc-ink-2);
+
+      @media (hover: hover) {
+        &:hover {
+          background: color-mix(in oklab, var(--vc-ink) 10%, var(--vc-surface));
+        }
+      }
+    }
+
+    .tag-count {
+      font-size: var(--font-down-1-rem);
+      color: var(--vc-muted);
+    }
+  }
+
+  // ── about: /about ───────────────────────────────────────────────────
+  .about__header {
+    margin-bottom: var(--space-4);
+    padding: var(--space-6);
+    border-radius: var(--vc-radius-card);
+    box-shadow: var(--vc-shadow);
+
+    @include viewport.until(md) {
+      padding: var(--space-4);
+    }
+
+    h1 {
+      margin: 0 0 var(--space-2);
+      font-family: var(--heading-font-family);
+      font-size: var(--font-up-4);
+      font-weight: var(--vc-display-weight);
+      letter-spacing: var(--vc-display-tracking);
+      line-height: 1.15;
+    }
+
+    .short-description {
+      margin: 0;
+      font-size: var(--font-up-1-rem);
+    }
+
+    @if $profile_header_style == "night" {
+      @include vc-night-surface;
+      @include vc-on-night;
+
+      h1 {
+        color: var(--vc-frame-ink);
+      }
+
+      .short-description {
+        color: var(--vc-frame-ink);
+      }
+    } @else {
+      @include vc-comm-card;
+
+      h1 {
+        color: var(--vc-ink);
+      }
+
+      .short-description {
+        color: var(--vc-ink-2);
+      }
+    }
+  }
+
+  // the four counts as tiles
+  .about__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    gap: var(--space-3);
+    padding: 0;
+    border: 0;
+
+    @include viewport.until(md) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .about__stats-item {
+    @include vc-comm-card;
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    color: var(--vc-ink);
+
+    @include viewport.until(md) {
+      margin-bottom: 0;
+    }
+
+    .d-icon {
+      color: var(--vc-accent-deep);
+    }
+  }
+
+  // the site's own About text on a card
+  .about__left-side > h2 + div {
+    @include vc-comm-card;
+    padding: var(--space-5) var(--space-6);
+
+    @include viewport.until(md) {
+      padding: var(--space-4);
+    }
+  }
+
+  // section labels in the text's second colour (the page already has
+  // Discourse's own grey for user titles; this keeps it to six colours)
+  .about__left-side > h2,
+  .about__right-side > h2,
+  .about__admins h2,
+  .about__moderators h2 {
+    @include vc-comm-eyebrow;
+    color: var(--vc-ink-2);
+  }
+
+  // contact and site activity on one card
+  .about__right-side {
+    @include vc-comm-card;
+    align-self: flex-start;
+    padding: var(--space-4) var(--space-5);
+
+    > h2:first-child {
+      margin-top: 0;
+    }
+
+    .about__activities-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .about__activities-item-icon {
+      color: var(--vc-accent-deep);
+    }
+
+    .about__activities-item-period {
+      font-size: var(--font-down-1-rem);
+      color: var(--vc-ink-2);
+    }
+  }
+
+  // ── group card: the user card's look ────────────────────────────────
+  .group-card {
+    box-shadow:
+      0 0 0 1px var(--vc-line),
+      var(--vc-shadow),
+      var(--vc-shadow-lift);
+
+    .names__primary,
+    .group-name {
+      font-family: var(--heading-font-family);
+    }
+
+    @if $profile_header_style == "night" {
+      &.no-bg {
+        @include vc-night-surface;
+        border-color: transparent;
+      }
+
+      &.no-bg .card-content {
+        background: transparent;
+        @include vc-on-night;
+      }
+    }
+  }
+}
