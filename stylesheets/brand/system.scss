@@ -98,6 +98,16 @@
 // ── page_background ───────────────────────────────────────────────────
 @if $page_background == "white" {
   :root { --vc-page: var(--vc-page-white); }
+
+  // 2.2.0: on a white page, colour can't separate the cards, so a hairline
+  // and a soft lift do it (unless cards are set to flat).
+  @if $card_style != "flat" {
+    :root {
+      --vc-card-border: 1px solid color-mix(in oklab, var(--vc-ink) 9%, transparent);
+      --vc-shadow: 0 1px 2px color-mix(in oklab, var(--vc-ink) 8%, transparent),
+        0 10px 24px -14px color-mix(in oklab, var(--vc-ink) 34%, transparent);
+    }
+  }
 } @else if $page_background == "tinted" {
   :root { --vc-page: var(--vc-page-tinted); }
 } @else {
@@ -114,7 +124,7 @@
 //          mode, dark header in dark mode with the dark logo)
 // night:   the dark brand surface in both modes. Check the logo reads on
 //          it before choosing this — the light logo has navy detail.
-@if $header_style == "night" {
+@if $header_style == "night" and $frame_style != "night" {
   .d-header {
     background: var(--vc-night);
     color: var(--vc-on-night);

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════
-// VC Canvas 2 — colour derivation (2.0.0)
+// VC Canvas 2 — colour derivation (2.0.0; frame and trim 2.2.0)
 //
 // Discourse compiles this file once per colour palette: once with the
 // light palette's colours and once with the dark palette's. Every VC
@@ -74,6 +74,33 @@ html {
     color-mix(in oklab, #{$header_background} 70%, black)
   );
   --vc-on-night: light-dark(#{$secondary}, #{$primary});
+
+  // ── frame (2.2.0): the dark surface around a light page ─────────────
+  // Used by `frame_style: night` for the header, welcome banner, sidebar
+  // and phone tab bar. Light: the palette ink (navy) with near-white text.
+  // Dark: the palette header colour, so dark mode looks as before.
+  --vc-frame-bg: light-dark(#{$primary}, #{$header_background});
+  --vc-frame-ink: light-dark(
+    color-mix(in oklab, #{$secondary} 96%, #{$primary}),
+    #{$primary}
+  );
+  --vc-frame-ink-2: color-mix(in oklab, var(--vc-frame-ink) 80%, var(--vc-frame-bg));
+  --vc-frame-muted: color-mix(in oklab, var(--vc-frame-ink) 64%, var(--vc-frame-bg));
+  --vc-frame-line: color-mix(in oklab, var(--vc-frame-ink) 12%, transparent);
+  // Accent that reads on the frame: lighter second accent (light) or the
+  // dark palette's own accent (dark). ≥5:1 on the frame and on a selected
+  // sidebar row in all four shipped palettes (checks/palette_contrast.py).
+  --vc-frame-accent: light-dark(
+    color-mix(in oklab, #{$quaternary} 65%, white),
+    #{$tertiary}
+  );
+  --vc-frame-glow: #{$quaternary};
+  --vc-frame-glow-2: #{$love};
+
+  // ── trim (2.2.0): the flame stripe and card edge ────────────────────
+  --vc-trim: linear-gradient(90deg, #{$tertiary} 0%, #{$quaternary} 55%, #{$love} 100%);
+  --vc-edge: #{$quaternary};
+  --vc-edge-strong: #{$tertiary};
 
   // ── status ───────────────────────────────────────────────────────────
   --vc-love: #{$love};

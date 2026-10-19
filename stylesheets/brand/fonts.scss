@@ -45,12 +45,14 @@
 }
 
 @if $heading_weight == "regular" {
-  :root { --vc-display-weight: 400; }
+  :root { --vc-display-weight: 400; --vc-card-title-weight: 500; }
 } @else if $heading_weight == "semibold" {
-  :root { --vc-display-weight: 600; }
+  :root { --vc-display-weight: 600; --vc-card-title-weight: 700; }
 } @else {
-  :root { --vc-display-weight: 500; }
+  :root { --vc-display-weight: 500; --vc-card-title-weight: 600; }
 }
+// 2.2.0: topic card titles sit one step heavier than headings, so they hold
+// their own on a white page.
 
 h1,
 h2,

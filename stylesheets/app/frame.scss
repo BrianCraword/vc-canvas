@@ -1,0 +1,174 @@
+// ═══════════════════════════════════════════════════════════════════════
+// Frame and trim (VC Canvas 2.2.0)
+//
+// `frame_style: night` puts the header, welcome banner, sidebar and phone
+// tab bar on the dark brand surface (--vc-frame-*, derived from the palette
+// in common/color_definitions.scss), around a light reading area. In dark
+// mode the frame tokens equal the dark header colours, so dark mode looks
+// as it did.
+//
+// `accent_trim` adds the flame stripe (--vc-trim) under the header and
+// above the phone tab bar, a thicker active-tab underline and gradient
+// primary buttons. Card-level trim is in pages/topic-list.scss.
+//
+// `html` in the selectors outranks core's single-class rules.
+// ═══════════════════════════════════════════════════════════════════════
+
+@if $frame_style == "night" {
+  // ── header ──────────────────────────────────────────────────────────
+  html .d-header {
+    background: var(--vc-frame-bg);
+    color: var(--vc-frame-ink);
+    box-shadow: 0 1px 0 var(--vc-frame-line);
+    --header_primary: var(--vc-frame-ink);
+    --header_background: var(--vc-frame-bg);
+    --d-header-icon-color: color-mix(in oklab, var(--vc-frame-ink) 78%, transparent);
+    --d-header-icon-color--hover: var(--vc-frame-ink);
+    --d-header-icon-color--active: var(--vc-frame-ink);
+    --d-header-icon-background--hover: color-mix(in oklab, var(--vc-frame-ink) 12%, transparent);
+    --d-header-icon-background--active: color-mix(in oklab, var(--vc-frame-ink) 16%, transparent);
+
+    .header-sidebar-toggle .d-icon,
+    .d-header-icons .d-icon {
+      color: var(--d-header-icon-color);
+    }
+  }
+
+  // ── welcome banner: frame colour with a flame glow ────────────────────
+  html .welcome-banner {
+    background:
+      radial-gradient(55% 160% at 90% -10%, color-mix(in oklab, var(--vc-frame-glow) 42%, transparent) 0%, transparent 62%),
+      radial-gradient(40% 140% at 4% 120%, color-mix(in oklab, var(--vc-frame-glow-2) 34%, transparent) 0%, transparent 66%),
+      var(--vc-frame-bg);
+    color: var(--vc-frame-ink);
+    border-bottom: 1px solid color-mix(in oklab, var(--vc-frame-glow) 30%, transparent);
+
+    .welcome-banner__title {
+      color: var(--vc-frame-ink);
+      font-family: var(--heading-font-family);
+    }
+
+    .search-input {
+      border-color: transparent;
+      box-shadow: 0 6px 22px -10px rgb(0 0 0 / 0.6);
+    }
+  }
+
+  // ── sidebar: the VC tokens re-pointed at the frame ───────────────────
+  html .sidebar-wrapper {
+    background: var(--vc-frame-bg);
+    border-right: 0;
+    color: var(--vc-frame-ink-2);
+    --vc-ink: var(--vc-frame-ink);
+    --vc-ink-2: var(--vc-frame-ink-2);
+    --vc-muted: var(--vc-frame-muted);
+    --vc-label: var(--vc-frame-muted);
+    --vc-line: var(--vc-frame-line);
+    --vc-line-soft: var(--vc-frame-line);
+    --vc-accent: var(--vc-frame-accent);
+    --vc-accent-tint: color-mix(in oklab, var(--vc-frame-accent) 18%, var(--vc-frame-bg));
+    --vc-on-accent: var(--vc-frame-bg);
+    --vc-sb-hue: var(--vc-frame-ink-2);
+    --vc-sb-tint: color-mix(in oklab, var(--vc-frame-ink) 9%, var(--vc-frame-bg));
+    --d-hover: color-mix(in oklab, var(--vc-frame-ink) 8%, var(--vc-frame-bg));
+    --d-selected: color-mix(in oklab, var(--vc-frame-accent) 18%, var(--vc-frame-bg));
+    --primary: var(--vc-frame-ink);
+    --primary-very-high: var(--vc-frame-ink);
+    --primary-high: var(--vc-frame-ink-2);
+    --primary-medium: var(--vc-frame-muted);
+    --primary-low-mid: var(--vc-frame-muted);
+    --primary-low: var(--vc-frame-line);
+    --d-sidebar-background: var(--vc-frame-bg);
+    --d-sidebar-footer-background: var(--vc-frame-bg);
+    --d-sidebar-link-color: var(--vc-frame-ink-2);
+    --d-sidebar-link-icon-color: var(--vc-frame-ink-2);
+    --d-sidebar-header-color: var(--vc-frame-muted);
+    --d-sidebar-header-icon-color: var(--vc-frame-muted);
+    --d-sidebar-highlight-background: var(--d-hover);
+    --d-sidebar-highlight-color: var(--vc-frame-ink);
+    --d-sidebar-active-background: var(--d-selected);
+    --d-sidebar-active-color: var(--vc-frame-ink);
+
+    .sidebar-footer-wrapper,
+    .sidebar-footer-container {
+      background: var(--vc-frame-bg);
+    }
+
+    // core fades the list into white above the footer
+    .sidebar-footer-container::before {
+      background: linear-gradient(to bottom, transparent, var(--vc-frame-bg));
+    }
+
+    .sidebar-footer-wrapper .btn,
+    .sidebar-footer-wrapper .d-icon {
+      color: var(--vc-frame-muted);
+      background: transparent;
+    }
+  }
+
+  // tiles: the per-destination hues, darkened into the frame
+  @if $sidebar_style == "tiles" {
+    html .sidebar-wrapper .sidebar-section-link:not(.active, [aria-current="page"]) .sidebar-section-link-prefix.icon {
+      background: color-mix(in oklab, var(--vc-sb-hue) 24%, var(--vc-frame-bg));
+
+      .d-icon {
+        color: color-mix(in oklab, var(--vc-sb-hue) 50%, var(--vc-frame-ink));
+      }
+    }
+  }
+
+  // ── phone tab bar (Header Mega Nav's bar, styled from outside) ─────────
+  html nav.je-mnav {
+    background: color-mix(in oklab, var(--vc-frame-bg) 94%, transparent);
+    border-top: 1px solid var(--vc-frame-line);
+    box-shadow: 0 -8px 24px -16px rgb(0 0 0 / 0.5);
+
+    .je-mnav__tab-label {
+      color: var(--vc-frame-muted);
+    }
+
+    .je-mnav__tab.active .je-mnav__tab-label {
+      color: var(--vc-frame-accent);
+    }
+  }
+}
+
+@if $accent_trim == "true" {
+  // flame stripe under the header and above the phone tab bar
+  html .d-header {
+    border-bottom: 3px solid transparent;
+    border-image: var(--vc-trim) 1;
+  }
+
+  html nav.je-mnav {
+    border-top: 3px solid transparent;
+    border-image: var(--vc-trim) 1;
+  }
+
+  // thicker underline on the active list tab
+  html .navigation-container .nav-pills > li > a.active::after,
+  html .navigation-container .nav-pills > li > button.active::after {
+    height: 3px;
+    background: var(--vc-accent);
+  }
+
+  // primary buttons: flame into wine, with a soft glow
+  html .btn.btn-primary {
+    background-image: linear-gradient(
+      135deg,
+      var(--vc-accent) 0%,
+      color-mix(in oklab, var(--vc-accent) 78%, var(--vc-love)) 100%
+    );
+    box-shadow: 0 6px 16px -8px color-mix(in oklab, var(--vc-accent) 70%, transparent);
+
+    @media (hover: hover) {
+      &:hover {
+        background-image: linear-gradient(
+          135deg,
+          var(--vc-accent-deep) 0%,
+          color-mix(in oklab, var(--vc-accent-deep) 78%, var(--vc-love)) 100%
+        );
+      }
+    }
+  }
+}

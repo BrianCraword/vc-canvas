@@ -3,7 +3,8 @@
 // ═══════════════════════════════════════════════════════════════════════
 // Topic list as cards (VC Canvas 2.1.0)
 //
-// Setting `topic_list_layout`: cards (default) or classic (Discourse's
+// Settings: `card_edge` and `accent_trim` (2.2.0) add the flame edge and
+// flame reply counts. `topic_list_layout`: cards (default) or classic (Discourse's
 // table, untouched). `topic_card_excerpt_lines` clamps the excerpt;
 // `topic_card_views` shows the view count. Sizes are rem-based: they follow
 // the member's text-size preference and don't compound inside core's
@@ -109,25 +110,53 @@
       background: var(--vc-surface);
       border: var(--vc-card-border);
       border-radius: var(--vc-radius-card);
-      box-shadow: var(--vc-shadow);
+      // --vc-card-edge-color: the flame edge on the left (`card_edge`, 2.2.0)
+      --vc-card-edge-color: transparent;
+      box-shadow:
+        inset 4px 0 0 var(--vc-card-edge-color),
+        var(--vc-shadow);
       cursor: pointer;
       transition:
         border-color 0.15s ease,
         box-shadow 0.15s ease;
 
+      @if $card_edge == "all" {
+        --vc-card-edge-color: var(--vc-edge);
+      } @else if $card_edge == "new_activity" {
+        &.unseen-topic,
+        &.unread-posts {
+          --vc-card-edge-color: var(--vc-edge);
+        }
+      }
+
       @media (hover: hover) {
         &:hover {
-          border-color: var(--vc-line-strong);
-          box-shadow:
-            var(--vc-shadow),
-            0 6px 18px -10px color-mix(in oklab, var(--vc-ink) 28%, transparent);
+          @if $card_edge != "none" {
+            --vc-card-edge-color: var(--vc-edge-strong);
+          }
+
+          @if $accent_trim == "true" {
+            border-color: color-mix(in oklab, var(--vc-edge-strong) 35%, transparent);
+            box-shadow:
+              inset 4px 0 0 var(--vc-card-edge-color),
+              var(--vc-shadow),
+              0 12px 28px -14px color-mix(in oklab, var(--vc-edge-strong) 55%, transparent);
+          } @else {
+            border-color: var(--vc-line-strong);
+            box-shadow:
+              inset 4px 0 0 var(--vc-card-edge-color),
+              var(--vc-shadow),
+              0 6px 18px -10px color-mix(in oklab, var(--vc-ink) 28%, transparent);
+          }
         }
       }
 
       // keyboard (j/k) and title focus
       &.selected {
         border-color: var(--vc-accent-line);
-        box-shadow: var(--vc-ring);
+        box-shadow:
+          inset 4px 0 0 var(--vc-card-edge-color),
+          var(--vc-ring);
       }
 
       &.bulk-selected {
@@ -160,13 +189,19 @@
         min-width: 0;
         font-family: var(--heading-font-family);
         font-size: var(--font-up-2-rem);
-        font-weight: var(--vc-display-weight);
+        font-weight: var(--vc-card-title-weight);
         line-height: 1.3;
         letter-spacing: var(--vc-display-tracking);
 
         a.title {
           padding: 0;
           font-weight: inherit;
+        }
+
+        @if $accent_trim == "true" {
+          a.title:hover {
+            color: var(--vc-accent-deep);
+          }
         }
 
         .topic-statuses .d-icon {
@@ -281,6 +316,10 @@
 
       > .posts {
         grid-area: replies;
+
+        @if $accent_trim == "true" {
+          color: var(--vc-accent-deep);
+        }
 
         .badge-posts {
           display: inline-flex;

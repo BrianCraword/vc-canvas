@@ -1,5 +1,5 @@
 # ═══════════════════════════════════════════════════════════════════════
-# LOOK & FEEL (2.0.0; topic list settings 2.1.0). Colours are edited in Admin → Appearance → Colour
+# LOOK & FEEL (2.0.0; topic list settings 2.1.0; frame and trim 2.2.0). Colours are edited in Admin → Appearance → Colour
 # palettes (VC Flame Light / VC Flame Dark by default). These settings
 # control everything else about how the site looks.
 # ═══════════════════════════════════════════════════════════════════════
@@ -58,12 +58,12 @@ density:
 
 page_background:
   type: enum
-  default: paper
+  default: white
   choices:
     - paper
     - white
     - tinted
-  description: "Page background behind the cards. paper = warm off-white derived from the accent, white = plain, tinted = a stronger accent tint. All follow the colour palette, including dark mode."
+  description: "Page background behind the cards. white = plain (2.2.0 default; cards get a stronger shadow so they don't wash out), paper = warm off-white derived from the accent, tinted = a stronger accent tint. All follow the colour palette, including dark mode."
 
 header_style:
   type: enum
@@ -71,7 +71,30 @@ header_style:
   choices:
     - palette
     - night
-  description: "Site header. palette = the colour palette's header colours. night = the dark brand colour in both modes (check the logo reads on it first)."
+  description: "Site header when frame_style is none. palette = the colour palette's header colours. night = the dark brand colour in both modes (check the logo reads on it first). With frame_style night the header is always night."
+
+frame_style:
+  type: enum
+  default: night
+  choices:
+    - night
+    - none
+  description: "Frame around the page (2.2.0). night = header, welcome banner, sidebar and phone tab bar in the dark brand colour, around a light reading area; dark mode looks as before. none = 2.1.0 look (header follows header_style)."
+
+accent_trim:
+  type: bool
+  default: true
+  description: "Flame trim (2.2.0): a thin flame-to-wine stripe under the header and above the phone tab bar, a thicker flame underline on the active tab, flame reply counts, and flame gradient primary buttons."
+
+card_edge:
+  type: enum
+  default: all
+  choices:
+    - all
+    - new_activity
+    - hover
+    - none
+  description: "Flame edge on the left of topic cards (2.2.0). all = every card; new_activity = only topics with new or unread posts; hover = when the pointer is over a card; none = no edge."
 
 sidebar_style:
   type: enum

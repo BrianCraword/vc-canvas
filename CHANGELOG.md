@@ -1,5 +1,39 @@
 # Changelog
 
+## 2.2.0 — 2026-10-19 (claude-two; candidate, not installed)
+
+Light mode gets its own style: a night frame around a white page, with flame trim. Brian chose this after live previews (option B). Board C18.
+
+Night frame (`frame_style`: night, the default; none = 2.1.0 look)
+- Header, welcome banner, sidebar and phone tab bar sit on the dark brand surface, around a light reading area.
+- The welcome banner gets a flame glow (second accent) and a wine glow (love colour).
+- In dark mode the frame equals the dark header colour, so dark mode looks as before.
+- New tokens, derived from the palette: `--vc-frame-bg`, `-ink`, `-ink-2`, `-muted`, `-line`, `-accent`, `-glow`, `-glow-2`. Frame accent = second accent 65% + white (light), or the dark accent (dark).
+- The sidebar re-points the VC and core tokens at the frame. With `sidebar_style` tiles, the per-destination hues are darkened into the frame.
+- Header Mega Nav's phone tab bar is styled from outside (`nav.je-mnav`).
+- With a night frame, `header_style` no longer applies.
+
+White page
+- `page_background` default is now **white** (was paper).
+- On white, cards get a hairline (ink 9%) and a soft lift so they don't wash out, unless `card_style` is flat.
+
+Flame trim (`accent_trim`, default on)
+- A 3px flame-to-wine stripe (`--vc-trim`) under the header and above the phone tab bar.
+- A 3px flame underline on the active list tab.
+- Reply counts and title hover in the deep accent.
+- Primary buttons get a flame-to-wine gradient with a soft glow.
+
+Card edge (`card_edge`: all (default), new_activity, hover, none)
+- A 4px flame edge on the left of topic cards (`--vc-edge`). Hover deepens it (`--vc-edge-strong`) with a warm glow.
+- new_activity puts the edge only on topics with new or unread posts.
+
+Type
+- Topic card titles are one step heavier than headings (`--vc-card-title-weight`; medium headings → 600).
+
+Not changed
+- Topic card JS, the Plaza blocks, homepage layout and palettes.
+- Logos are Brian's (Admin → Branding): the logo's dark strokes don't show on the night header.
+
 ## 2.1.0 — 2026-10-18 (claude-two; candidate, not installed)
 
 Phase 2, first page family: Latest and the other topic lists. Board C18.
