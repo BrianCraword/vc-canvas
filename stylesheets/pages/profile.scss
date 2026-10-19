@@ -1,0 +1,395 @@
+@use "lib/viewport";
+
+// ═══════════════════════════════════════════════════════════════════════
+// Profile and user card (VC Canvas 2.5.0)
+//
+// Settings: `profile_layout` cards (default) / classic (Discourse's pages,
+// untouched). `profile_header_style` night (default) / card: the profile
+// header and the user card on the night frame with softer versions of the
+// banner's flame and wine glows (24% / 20%), or on a white card.
+//
+// CSS only:
+//   [header: avatar, names, bio, buttons — night or card ............]
+//   [meta: joined, seen, groups ... ]
+//   [summary: stat tiles; each "top" list on its own card, two across]
+//   [activity: each item a card ]
+// The user card (click an avatar) gets the same header look.
+// ═══════════════════════════════════════════════════════════════════════
+
+// text and links on the night surface. Labels use frame ink-2, not frame
+// muted: over the brightest glow point muted fell to 3.6:1 in dark palettes.
+// With the softer glows below every token stays ≥ 4.5:1 at the brightest
+// point in all four palettes (checks/profile_night_contrast.py).
+@mixin vc-on-night {
+  color: var(--vc-frame-ink);
+
+  a:not(.btn, .badge-category__wrapper, .user-card-badge-link) {
+    color: var(--vc-frame-accent);
+  }
+
+  .user-profile-names__primary,
+  .user-profile-names__primary a,
+  .names__primary,
+  .names__primary a,
+  .user-profile-link {
+    color: var(--vc-frame-ink);
+  }
+
+  .user-profile-names__secondary,
+  .names__secondary,
+  .bio,
+  .bio p {
+    color: var(--vc-frame-ink-2);
+  }
+
+  .user-profile-names__title,
+  .user-profile__location-and-website,
+  .user-profile__location-and-website .d-icon,
+  .user-profile__featured-topic,
+  .desc,
+  dt {
+    color: var(--vc-frame-ink-2);
+  }
+
+  dd,
+  dd .relative-date,
+  .relative-date,
+  .metadata > div,
+  .metadata span,
+  .gamification-score {
+    color: var(--vc-frame-ink);
+  }
+
+  dd a,
+  .gamification-score a {
+    color: var(--vc-frame-accent);
+  }
+
+  // "+10 More" on the user card is a white chip like the badges beside it
+  .more-user-badges a {
+    color: var(--vc-ink);
+  }
+}
+
+@mixin vc-night-surface {
+  background:
+    radial-gradient(55% 160% at 90% -10%, color-mix(in oklab, var(--vc-frame-glow) 24%, transparent) 0%, transparent 62%),
+    radial-gradient(40% 140% at 4% 120%, color-mix(in oklab, var(--vc-frame-glow-2) 20%, transparent) 0%, transparent 66%),
+    var(--vc-frame-bg);
+}
+
+@if $profile_layout == "cards" {
+  // ── profile header ────────────────────────────────────────────────────
+  .user-main .about {
+    margin-bottom: var(--space-4);
+    border: var(--vc-card-border);
+    border-radius: var(--vc-radius-card);
+    overflow: hidden;
+    box-shadow: var(--vc-shadow);
+
+    .details {
+      background: transparent;
+      border-bottom: 0;
+      padding: var(--space-5) var(--space-6) var(--space-3);
+
+      @include viewport.until(md) {
+        padding: var(--space-4);
+      }
+    }
+
+    // the compact header on activity, messages and the other sub-pages
+    &.collapsed-info .details {
+      background: transparent;
+      border-bottom: 0;
+      padding-block: var(--space-3);
+    }
+
+    .user-profile-names__primary {
+      font-family: var(--heading-font-family);
+      font-weight: var(--vc-display-weight);
+      letter-spacing: var(--vc-display-tracking);
+    }
+
+    .secondary {
+      border-top: 1px solid var(--vc-line-soft);
+
+      dl {
+        padding: var(--space-3) 0 var(--space-2);
+      }
+
+      dt {
+        color: var(--vc-muted);
+      }
+
+      dd {
+        color: var(--vc-ink);
+      }
+    }
+
+    @if $profile_header_style == "night" {
+      @include vc-night-surface;
+      border-color: transparent;
+      @include vc-on-night;
+
+      .secondary {
+        border-top-color: var(--vc-frame-line);
+
+        dt {
+          color: var(--vc-frame-ink-2);
+        }
+
+        dd {
+          color: var(--vc-frame-ink);
+        }
+      }
+
+      // a profile background image keeps its own strip above the header
+      &.has-background .user-profile-image {
+        border-bottom: 1px solid var(--vc-frame-line);
+      }
+
+      // the staff counters bar sits on the same surface
+      .staff-counters {
+        background: color-mix(in oklab, var(--vc-frame-ink) 6%, transparent);
+        border-bottom: 1px solid var(--vc-frame-line);
+
+        // the labels in frame ink; the counts keep Discourse's own pill
+        // colours: secondary on the dot colour (they inherit it from the
+        // link, so it is restated here)
+        a {
+          color: var(--vc-frame-ink);
+        }
+
+        a > span {
+          color: var(--secondary);
+        }
+      }
+    } @else {
+      background: var(--vc-surface);
+    }
+
+    @if $accent_trim == "true" {
+      .user-profile-avatar img.avatar {
+        @if $profile_header_style == "night" {
+          box-shadow:
+            0 0 0 4px var(--vc-frame-bg),
+            0 0 0 6px var(--vc-frame-glow);
+        } @else {
+          box-shadow:
+            0 0 0 4px var(--vc-surface),
+            0 0 0 6px var(--vc-edge);
+        }
+      }
+    }
+  }
+
+  // ── summary: stat tiles ───────────────────────────────────────────────
+  .user-content .stats-section {
+    > ul {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+      gap: var(--space-3);
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      width: auto;
+      margin: 0;
+      padding: var(--space-3) var(--space-4);
+      background: var(--vc-surface);
+      border: var(--vc-card-border);
+      border-radius: var(--vc-radius-card);
+      box-shadow: var(--vc-shadow);
+    }
+
+    .user-stat {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .value {
+      font-family: var(--heading-font-family);
+      font-size: var(--font-up-2-rem);
+      font-weight: var(--vc-card-title-weight);
+      line-height: 1.1;
+      color: var(--vc-ink);
+    }
+
+    .label {
+      font-size: var(--font-down-1-rem);
+      color: var(--vc-muted);
+    }
+  }
+
+  // section titles ("Stats", "Top replies"...) as quiet eyebrow labels
+  .user-content .stats-title {
+    margin: 0 0 var(--space-3);
+    font-family: var(--vc-ui);
+    font-size: var(--font-down-1-rem);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--vc-muted);
+  }
+
+  // ── summary: each "top" list on a card, two across ─────────────────────
+  .user-content .top-section:not(.stats-section, .badges-section) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--vc-card-gap);
+    margin-bottom: var(--vc-card-gap);
+
+    @include viewport.until(md) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    // core's clearfix pseudo-elements would take grid cells
+    &::before,
+    &::after {
+      content: none;
+      display: none;
+    }
+
+    // core floats these left and right
+    > .top-sub-section {
+      float: none;
+      width: auto;
+      margin: 0;
+      padding: var(--space-4) var(--space-5);
+      background: var(--vc-surface);
+      border: var(--vc-card-border);
+      border-radius: var(--vc-radius-card);
+      box-shadow: var(--vc-shadow);
+    }
+
+    @include viewport.until(md) {
+      > .top-sub-section {
+        padding: var(--space-3) var(--space-4);
+      }
+    }
+
+    // the top-categories table fits the card on phones
+    .summary-category-list table {
+      width: 100%;
+      table-layout: fixed;
+
+      th.topic-count,
+      th.reply-count {
+        width: 5.5em;
+      }
+
+      td:first-child {
+        overflow-wrap: anywhere;
+      }
+    }
+
+    // a lone card still takes one column
+    > .top-sub-section:only-child {
+      grid-column: 1 / 2;
+
+      @include viewport.until(md) {
+        grid-column: 1 / -1;
+      }
+    }
+
+    ul {
+      margin: 0;
+    }
+
+    li {
+      padding: var(--space-2) 0;
+      border-left: 0;
+      border-bottom: 1px solid var(--vc-line-soft);
+
+      &:last-child {
+        border-bottom: 0;
+      }
+    }
+
+    .topic-info,
+    .topic-info .relative-date {
+      font-size: var(--font-down-1-rem);
+      color: var(--vc-muted);
+    }
+
+    li > a {
+      color: var(--vc-ink);
+      font-weight: 500;
+
+      @if $accent_trim == "true" {
+        &:hover {
+          color: var(--vc-accent-deep);
+        }
+      }
+    }
+  }
+
+  // ── activity: each item on a card ─────────────────────────────────────
+  .user-stream.post-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--vc-card-gap);
+  }
+
+  .user-stream .post-list-item {
+    padding: var(--space-3) var(--space-4);
+    background: var(--vc-surface);
+    border: var(--vc-card-border);
+    border-radius: var(--vc-radius-card);
+    box-shadow: var(--vc-shadow);
+
+    .stream-topic-title .title a {
+      font-weight: 600;
+      color: var(--vc-ink);
+    }
+
+    .post-list-item__metadata,
+    .post-list-item__metadata .relative-date {
+      font-size: var(--font-down-1-rem);
+      color: var(--vc-muted);
+    }
+
+    .excerpt,
+    .post-list-item__excerpt {
+      color: var(--vc-ink-2);
+    }
+  }
+
+  // ── user card (click an avatar) ───────────────────────────────────────
+  .user-card {
+    // a ring, not a border: Discourse keeps the card in the page while it is
+    // hidden, and a border made phone pages scroll sideways by 6px
+    box-shadow:
+      0 0 0 1px var(--vc-line),
+      var(--vc-shadow),
+      var(--vc-shadow-lift);
+
+    .names__primary {
+      font-family: var(--heading-font-family);
+      font-weight: var(--vc-display-weight);
+      letter-spacing: var(--vc-display-tracking);
+    }
+
+    .metadata .desc {
+      color: var(--vc-muted);
+    }
+
+    @if $profile_header_style == "night" {
+      &.no-bg {
+        @include vc-night-surface;
+        border-color: transparent;
+      }
+
+      &.no-bg .card-content {
+        background: transparent;
+        @include vc-on-night;
+      }
+
+      &.no-bg .metadata .desc {
+        color: var(--vc-frame-ink-2);
+      }
+    }
+  }
+}

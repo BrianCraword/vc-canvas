@@ -22,6 +22,9 @@
     box-shadow: 0 1px 0 var(--vc-frame-line);
     --header_primary: var(--vc-frame-ink);
     --header_background: var(--vc-frame-bg);
+    // core colours the scrolled topic title with --title-color--header, which
+    // the palette resolves at :root (to the ink); point it at the frame here
+    --title-color--header: var(--vc-frame-ink);
     --d-header-icon-color: color-mix(in oklab, var(--vc-frame-ink) 78%, transparent);
     --d-header-icon-color--hover: var(--vc-frame-ink);
     --d-header-icon-color--active: var(--vc-frame-ink);

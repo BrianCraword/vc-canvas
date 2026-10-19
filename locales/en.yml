@@ -24,6 +24,8 @@ en:
       topic_layout: "Topic page — cards: first post and reply threads on cards · classic: Discourse's page"
       topic_reading_width: "Topic post column width (px)"
       post_author_style: "Author line on posts (name and title / name only)"
+      profile_layout: "Profile pages — cards: header, stats, lists and activity on cards · classic: Discourse's pages"
+      profile_header_style: "Profile header and user card (night / card)"
       content_width: "Maximum content width in pixels"
       motion: "Hover and transition animations"
       hot_topics_count: "Number of hot topics shown"

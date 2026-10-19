@@ -128,6 +128,7 @@
   .d-header {
     background: var(--vc-night);
     color: var(--vc-on-night);
+    --title-color--header: var(--vc-on-night);
     --d-header-icon-color: color-mix(in oklab, var(--vc-on-night) 72%, transparent);
     --d-header-icon-color--hover: var(--vc-on-night);
     --d-header-icon-color--active: var(--vc-on-night);

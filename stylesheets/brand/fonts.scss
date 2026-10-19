@@ -64,8 +64,8 @@ h3 {
 }
 
 // The header's topic title (shown once you scroll a topic) is an h1. It takes
-// the header's colour, not the ink: on the night frame the ink was dark on
-// dark (2.4.0 fix).
+// the header's colour, not the ink (2.4.0). Its link is coloured by core's
+// --title-color--header, set on the header in app/frame.scss (2.4.1).
 .d-header .header-title {
   color: inherit;
 }

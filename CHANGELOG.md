@@ -1,5 +1,37 @@
 # Changelog
 
+## 2.5.0 — 2026-10-19 (claude-two; candidate, not installed)
+
+Phase 2, fourth page family: profiles and the user card. Board C18. Includes the 2.4.1 fix.
+
+Profile pages (`profile_layout`: cards, the default; classic = Discourse's pages, byte-identical to 2.4.1)
+- Header: avatar, names, bio and buttons on a card. Night (default) puts it on the brand's dark surface with soft flame and wine glows; the joined / seen / groups row sits under a hairline. On sub-pages (activity, messages and the rest) the collapsed header keeps the same surface.
+- Summary: the stats become tiles (value in the heading font, label muted). Top replies, top topics, links, categories, most liked and the rest each sit on their own card, two across on desktop, one on phones.
+- Activity and the other post streams: each item is a card.
+- Staff counters (staff only) sit on the same surface. Their coloured count pills keep Discourse's own colours.
+- CSS only (`stylesheets/pages/profile.scss`).
+
+User card (click an avatar)
+- Night: the same surface as the profile header. Card: Discourse's card with the VC ring and shadow.
+- Names in the heading font; read time, dates and counts in frame ink; "+10 More" stays a white chip like the badges.
+
+Header style (`profile_header_style`: night (default), card)
+
+Phones
+- No sideways scroll on the summary (the top-categories table is fixed-layout; card padding is smaller). The user card uses a shadow ring instead of a border, which had pushed the page 6px wide.
+
+Not changed
+- Topic lists, categories, topic page, frame, palettes and colour definitions (identical to 2.4.1). No JavaScript changes.
+- Staff counter pills: Discourse's colours fail contrast (deleted posts and warnings 3.8:1 light, 3.75:1 dark; flags 2.39:1 light). Same as without VC; staff only.
+- Bible Tagger scripture links in activity still fail contrast on white (2.28:1). That is the component's link colour (B15).
+
+## 2.4.1 — 2026-10-19 (claude-two; candidate, not installed)
+
+Fix only. Board C18.
+
+- **Scrolled topic title in the header, light mode.** 2.4.0 fixed the heading but not its link, so the title stayed dark on the night frame. Core colours that link with `--title-color--header`, which the palette resolves to the ink at `:root`. The night frame now sets it to the frame ink on the header, and `header_style` night (with frame none) sets it to the night ink. Measured live: the title went from 31,27,46 on 31,27,46 (1:1) to the frame ink, 15.36:1.
+- Nothing else changed.
+
 ## 2.4.0 — 2026-10-19 (claude-two; candidate, not installed)
 
 Phase 2, third page family: the topic page. Board C18.

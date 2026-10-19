@@ -1,5 +1,5 @@
 # ═══════════════════════════════════════════════════════════════════════
-# LOOK & FEEL (2.0.0; topic list settings 2.1.0; frame and trim 2.2.0; categories page 2.3.0; topic page 2.4.0). Colours are edited in Admin → Appearance → Colour
+# LOOK & FEEL (2.0.0; topic list settings 2.1.0; frame and trim 2.2.0; categories page 2.3.0; topic page 2.4.0/2.4.1; profiles 2.5.0). Colours are edited in Admin → Appearance → Colour
 # palettes (VC Flame Light / VC Flame Dark by default). These settings
 # control everything else about how the site looks.
 # ═══════════════════════════════════════════════════════════════════════
@@ -182,6 +182,22 @@ post_author_style:
     - name_title
     - name_only
   description: "Author line on posts (2.4.0; cards layout). name_title = name plus title or group, as Discourse shows it; name_only = just the name."
+
+profile_layout:
+  type: enum
+  default: cards
+  choices:
+    - cards
+    - classic
+  description: "Profile pages (2.5.0). cards = the profile header, stat tiles, each summary list and each activity item sit on cards, and the user card matches. classic = Discourse's profile pages."
+
+profile_header_style:
+  type: enum
+  default: night
+  choices:
+    - night
+    - card
+  description: "Profile header and user card (2.5.0; cards layout). night = the dark brand surface with softer versions of the welcome banner's flame and wine glows. card = a white card."
 
 content_width:
   type: integer
