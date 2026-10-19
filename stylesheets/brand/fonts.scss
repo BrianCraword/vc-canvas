@@ -63,6 +63,13 @@ h3 {
   color: var(--vc-ink);
 }
 
+// The header's topic title (shown once you scroll a topic) is an h1. It takes
+// the header's colour, not the ink: on the night frame the ink was dark on
+// dark (2.4.0 fix).
+.d-header .header-title {
+  color: inherit;
+}
+
 h4,
 h5,
 h6 {

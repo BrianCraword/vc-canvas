@@ -1,4 +1,4 @@
-# VC token contract — VC Canvas 2.3.0
+# VC token contract — VC Canvas 2.4.0
 
 The base theme publishes these CSS custom properties. Feature components and plugins (Feed, Header Mega Nav, AI Conversations, Trivia, Campaign, Matchmaking, Bible Tagger, Versatile Banner) may **read** them. They must not define their own colours: a component that needs a new value asks for a token here.
 
@@ -49,6 +49,8 @@ Categories page (2.3.0, `category_edge`): one internal token, set per card and n
 | Token | Meaning | Value |
 |---|---|---|
 | `--vc-cat-edge` | edge on a category card | the category's own `--category-badge-color` (category), `--vc-edge` (flame), or transparent (none) |
+
+Topic page (2.4.0): no new tokens. `topic_reading_width` sets Discourse's own `--topic-body-width`. The post body uses `--vc-ink-body`; quotes and code use `--vc-surface-sunk` and `--vc-accent-line`.
 
 Core Discourse tokens steered from the palette: `--title-color--read`, `--excerpt-color`, `--metadata-color`, `--content-border-color`, `--d-hover`, `--d-selected`, `--d-selected-hover`, `--d-selected-text-color`, `--d-link-color`, `--highlight-bg`.
 

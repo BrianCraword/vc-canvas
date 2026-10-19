@@ -28,6 +28,11 @@
     --d-header-icon-background--hover: color-mix(in oklab, var(--vc-frame-ink) 12%, transparent);
     --d-header-icon-background--active: color-mix(in oklab, var(--vc-frame-ink) 16%, transparent);
 
+    // the topic title and category shown in the header once you scroll
+    .extra-info-wrapper .badge-category__name {
+      color: var(--vc-frame-ink-2);
+    }
+
     .header-sidebar-toggle .d-icon,
     .d-header-icons .d-icon {
       color: var(--d-header-icon-color);

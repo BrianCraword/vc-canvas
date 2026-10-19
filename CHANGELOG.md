@@ -1,5 +1,30 @@
 # Changelog
 
+## 2.4.0 — 2026-10-19 (claude-two; candidate, not installed)
+
+Phase 2, third page family: the topic page. Board C18.
+
+Reading page (`topic_layout`: cards, the default; classic = Discourse's topic page)
+- Nested replies (this site's default view): the first post sits on a card with the flame edge (following `card_edge`). Each top-level reply and its whole thread sits on its own card, so threads read as units on the white page. Depth lines, sticky avatars, collapse and the menus are Discourse's own.
+- Post body: VC ink, line height 1.65, headings in the heading font, quotes and blockquotes with an accent bar on a soft fill, code on the sunk surface, rounded images.
+- Author line: the name in ink, semibold; title or group muted; dates at the meta size (13.9px). Phones had post dates at 10.6px.
+- The sticky sort bar sits on the page colour.
+- Phones: inset cards, like the topic lists, instead of full-bleed sheets.
+- Flat view (messages, and topics read flat): the same author line and post typography, no cards.
+- CSS only (`stylesheets/pages/topic.scss`).
+
+Reading width (`topic_reading_width`, default 690 = Discourse's)
+- Sets Discourse's own `--topic-body-width` (560–820px) for nested and flat topics.
+
+Author line (`post_author_style`: name_title (default), name_only)
+
+Fixed (all layouts)
+- Night frame, since 2.2.0: once you scroll a topic, the header shows the topic title, and it was dark on the dark header (invisible). It now takes the header's colour. The category beside it uses the frame ink. Cause: VC's `h1` colour rule reached the header's title.
+
+Not changed
+- Topic lists, categories, frame, palettes and colour definitions (identical to 2.3.0). No JavaScript changes.
+- Bible Tagger scripture links still fail contrast on white (2.28:1) and on quote fills (2.04:1). That is the Bible Tagger component's link colour (B15).
+
 ## 2.3.0 — 2026-10-19 (claude-two; candidate, not installed)
 
 Phase 2, second page family: the Categories page. Board C18.

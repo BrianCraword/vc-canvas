@@ -1,5 +1,7 @@
+@use "lib/viewport";
+
 // ═══════════════════════════════════════════════════════════════════════
-// Topic page (VC Canvas 2.1.0)
+// Topic page (VC Canvas 2.1.0; reading page 2.4.0)
 // ═══════════════════════════════════════════════════════════════════════
 
 // "OP" badge in nested replies. Core paints the accent on its own very-low
@@ -9,4 +11,285 @@
   color: var(--vc-accent-deep);
   background: var(--vc-accent-wash);
   border-color: var(--vc-accent-line);
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Reading page (2.4.0)
+//
+// Settings: `topic_layout` cards (default) / classic (2.3.0's topic page,
+// untouched). `topic_reading_width` sets Discourse's own topic body width
+// (default 690px = Discourse's). `post_author_style` name_title / name_only.
+//
+// CSS only. Discourse's nested replies view (this site's default) gets:
+//   [title, category ............................................]
+//   [first post as a card, with the flame edge ..................]
+//   [actions, sort ..............................................]
+//   [each top-level reply and its thread as a card ..............]
+// The flat view (messages, and topics read flat) gets the same author line
+// and post typography. Everything else stays Discourse's: the depth lines,
+// sticky avatars, menus and the phone layout's behaviour.
+// ═══════════════════════════════════════════════════════════════════════
+
+// ── post body typography, shared by nested and flat posts ───────────────
+@mixin vc-cooked {
+  color: var(--vc-ink-body);
+  line-height: 1.65;
+  overflow-wrap: break-word;
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin: 1.2em 0 0.5em;
+    font-family: var(--heading-font-family);
+    font-weight: var(--vc-display-weight);
+    letter-spacing: var(--vc-display-tracking);
+    line-height: 1.25;
+    color: var(--vc-ink);
+  }
+
+  a:not(.mention, .mention-group, .hashtag-cooked, .lightbox, .BLBST_a) {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+  }
+
+  // a plain blockquote: an accent bar and a soft fill
+  > blockquote,
+  blockquote:not(aside.quote blockquote) {
+    margin: 1em 0;
+    padding: 0.75em 1em;
+    border-left: 3px solid var(--vc-accent-line);
+    border-radius: 0 var(--vc-radius-inner) var(--vc-radius-inner) 0;
+    background: var(--vc-surface-sunk);
+    color: var(--vc-ink-2);
+  }
+
+  // a quote of another post
+  aside.quote {
+    margin: 1em 0;
+    border-radius: var(--vc-radius-inner);
+    overflow: hidden;
+
+    .title {
+      padding: 0.6em 1em 0.2em;
+      border-left: 3px solid var(--vc-accent-line);
+      background: var(--vc-surface-sunk);
+      color: var(--vc-muted);
+    }
+
+    blockquote {
+      margin: 0;
+      padding: 0.2em 1em 0.75em;
+      border-left: 3px solid var(--vc-accent-line);
+      background: var(--vc-surface-sunk);
+      color: var(--vc-ink-2);
+    }
+  }
+
+  code {
+    padding: 0.1em 0.35em;
+    border-radius: var(--vc-radius-sm);
+    background: var(--vc-surface-sunk);
+    font-size: 0.875em;
+  }
+
+  pre code {
+    display: block;
+    padding: 0.85em 1em;
+    border-radius: var(--vc-radius-inner);
+    line-height: 1.5;
+  }
+
+  img:not(.emoji, .avatar, .site-icon, .thumbnail) {
+    border-radius: var(--vc-radius-media);
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid var(--vc-line);
+  }
+
+  table th {
+    color: var(--vc-ink);
+  }
+}
+
+// ── the author line ─────────────────────────────────────────────────────
+@mixin vc-author-line {
+  .names {
+    font-size: var(--font-0-rem);
+    line-height: var(--line-height-medium);
+
+    // phones: the meta size keeps name, title and date on one line
+    @include viewport.until(sm) {
+      font-size: var(--font-down-1-rem);
+    }
+
+    .first a,
+    .full-name a,
+    .username a {
+      font-weight: 600;
+      color: var(--vc-ink);
+    }
+
+    .second a,
+    .user-title,
+    .user-title a {
+      color: var(--vc-muted);
+      font-weight: 400;
+    }
+
+    @if $post_author_style == "name_only" {
+      .second,
+      .user-title {
+        display: none;
+      }
+    }
+  }
+
+  // dates sit at the meta size, not 12px
+  .post-infos {
+    font-size: var(--font-down-1-rem);
+    color: var(--vc-muted);
+
+    a,
+    .relative-date {
+      color: inherit;
+    }
+  }
+}
+
+@if $topic_layout == "cards" {
+  :root {
+    --topic-body-width: #{$topic_reading_width}px;
+  }
+
+  // ── nested replies view ───────────────────────────────────────────────
+  .nested-view {
+    // the page shows through; the first post and threads are the cards
+    background: transparent;
+
+    @include viewport.from(sm) {
+      padding: var(--space-4) 0;
+    }
+
+    .nested-view__title {
+      font-family: var(--heading-font-family);
+      font-weight: var(--vc-display-weight);
+      letter-spacing: var(--vc-display-tracking);
+
+      a {
+        color: var(--vc-ink);
+      }
+    }
+
+    // the sticky sort bar sits on the page colour
+    &:not(.nested-context-view) > .nested-view__controls {
+      background: var(--vc-page);
+      border-bottom-color: var(--vc-line-soft);
+    }
+
+    .nested-sort-selector__label {
+      color: var(--vc-muted);
+    }
+
+    // ── the first post ─────────────────────────────────────────────────
+    .nested-view__op {
+      position: relative;
+      padding: var(--vc-card-pad);
+      background: var(--vc-surface);
+      border: var(--vc-card-border);
+      border-radius: var(--vc-radius-card);
+
+      @if $card_edge != "none" {
+        box-shadow:
+          inset 4px 0 0 var(--vc-edge),
+          var(--vc-shadow);
+      } @else {
+        box-shadow: var(--vc-shadow);
+      }
+    }
+
+    .nested-view__op-row .topic-meta-data {
+      font-size: var(--font-0-rem);
+    }
+
+    .nested-view__op > .nested-view__topic-map {
+      border-top-color: var(--vc-line-soft);
+    }
+
+    // ── threads: each top-level reply and its replies ──────────────────
+    .nested-view__roots {
+      gap: var(--vc-card-gap);
+    }
+
+    .nested-view__roots > .nested-post.--depth-0 {
+      margin-top: 0;
+      padding: var(--space-4) var(--space-5) var(--space-2) var(--space-4);
+      background: var(--vc-surface);
+      border: var(--vc-card-border);
+      border-radius: var(--vc-radius-card);
+      box-shadow: var(--vc-shadow);
+    }
+
+    .nested-post__header,
+    .nested-view__op-row {
+      @include vc-author-line;
+    }
+
+    .nested-view__op-content .cooked,
+    .nested-post__content .cooked {
+      @include vc-cooked;
+    }
+
+    // ── phones: inset cards like the topic lists, not full-bleed sheets ─
+    @include viewport.until(sm) {
+      padding: var(--space-2) 0;
+
+      .nested-view__op,
+      .nested-view__roots,
+      .nested-view__topic-map {
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      .nested-view__op {
+        padding: var(--space-3) var(--space-4);
+        margin-bottom: var(--vc-card-gap);
+      }
+
+      .nested-view__topic-map {
+        background: transparent;
+      }
+
+      &:not(.nested-context-view) > .nested-view__controls {
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      // core runs these full-bleed with the gutter at the screen edge;
+      // inset cards need room for the avatar inside the border
+      .nested-view__roots > .nested-post.--depth-0 {
+        padding: var(--space-3) var(--space-4) var(--space-2) var(--space-2);
+        border-radius: var(--vc-radius-card);
+      }
+    }
+  }
+
+  // ── flat view (messages, and topics read flat) ─────────────────────────
+  .topic-post {
+    .topic-meta-data {
+      @include vc-author-line;
+    }
+
+    .cooked {
+      @include vc-cooked;
+    }
+  }
+
+  // ── footer actions and the "watching" line ─────────────────────────────
+  .topic-notifications-button .reason .text,
+  .notifications-button-footer .reason .text {
+    color: var(--vc-muted);
+  }
 }

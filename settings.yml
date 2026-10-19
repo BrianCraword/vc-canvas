@@ -1,5 +1,5 @@
 # ═══════════════════════════════════════════════════════════════════════
-# LOOK & FEEL (2.0.0; topic list settings 2.1.0; frame and trim 2.2.0; categories page 2.3.0). Colours are edited in Admin → Appearance → Colour
+# LOOK & FEEL (2.0.0; topic list settings 2.1.0; frame and trim 2.2.0; categories page 2.3.0; topic page 2.4.0). Colours are edited in Admin → Appearance → Colour
 # palettes (VC Flame Light / VC Flame Dark by default). These settings
 # control everything else about how the site looks.
 # ═══════════════════════════════════════════════════════════════════════
@@ -159,6 +159,29 @@ category_logo:
     - hidden
     - full
   description: "Uploaded category logos on the categories page (2.3.0). small = a 40px thumbnail beside the name; hidden = not shown; full = Discourse's own size."
+
+topic_layout:
+  type: enum
+  default: cards
+  choices:
+    - cards
+    - classic
+  description: "Topic page (2.4.0). cards = the first post and each reply thread sit on cards, with VC type for the post body, quotes and code; messages and flat topics get the same author line and post type. classic = Discourse's topic page."
+
+topic_reading_width:
+  type: integer
+  default: 690
+  min: 560
+  max: 820
+  description: "Width of the post column in pixels (2.4.0; cards layout). 690 = Discourse's default. Narrower reads more comfortably on large screens."
+
+post_author_style:
+  type: enum
+  default: name_title
+  choices:
+    - name_title
+    - name_only
+  description: "Author line on posts (2.4.0; cards layout). name_title = name plus title or group, as Discourse shows it; name_only = just the name."
 
 content_width:
   type: integer
