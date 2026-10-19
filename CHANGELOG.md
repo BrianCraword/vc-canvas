@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.5.1 — 2026-10-19 (claude-two; candidate, not installed)
+
+Fix only. Board C18.
+
+- **Messages pages: your username was invisible in the profile header.** On the messages pages the VC Message Center component paints its own light header, but 2.5.0 still coloured the name for the night surface (light on light, 1.09:1). The night surface and its light text now stay off on the messages pages, so the header there keeps the card colours whichever background shows. Found on the live check of 2.5.0.
+- Nothing else changed: every other profile page and the user card compile to the same rules, now scoped to skip the messages pages.
+
 ## 2.5.0 — 2026-10-19 (claude-two; candidate, not installed)
 
 Phase 2, fourth page family: profiles and the user card. Board C18. Includes the 2.4.1 fix.

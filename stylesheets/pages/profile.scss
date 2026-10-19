@@ -127,42 +127,51 @@
     }
 
     @if $profile_header_style == "night" {
-      @include vc-night-surface;
-      border-color: transparent;
-      @include vc-on-night;
+      // VC Message Center (a theme component) paints its own light header on
+      // the messages pages, so the night surface and its light text stay off
+      // there and the header keeps the card colours (2.5.1).
+      body:not(.user-messages-page) & {
+        @include vc-night-surface;
+        border-color: transparent;
+        @include vc-on-night;
 
-      .secondary {
-        border-top-color: var(--vc-frame-line);
+        .secondary {
+          border-top-color: var(--vc-frame-line);
 
-        dt {
-          color: var(--vc-frame-ink-2);
+          dt {
+            color: var(--vc-frame-ink-2);
+          }
+
+          dd {
+            color: var(--vc-frame-ink);
+          }
         }
 
-        dd {
-          color: var(--vc-frame-ink);
+        // a profile background image keeps its own strip above the header
+        &.has-background .user-profile-image {
+          border-bottom: 1px solid var(--vc-frame-line);
+        }
+
+        // the staff counters bar sits on the same surface
+        .staff-counters {
+          background: color-mix(in oklab, var(--vc-frame-ink) 6%, transparent);
+          border-bottom: 1px solid var(--vc-frame-line);
+
+          // the labels in frame ink; the counts keep Discourse's own pill
+          // colours: secondary on the dot colour (they inherit it from the
+          // link, so it is restated here)
+          a {
+            color: var(--vc-frame-ink);
+          }
+
+          a > span {
+            color: var(--secondary);
+          }
         }
       }
 
-      // a profile background image keeps its own strip above the header
-      &.has-background .user-profile-image {
-        border-bottom: 1px solid var(--vc-frame-line);
-      }
-
-      // the staff counters bar sits on the same surface
-      .staff-counters {
-        background: color-mix(in oklab, var(--vc-frame-ink) 6%, transparent);
-        border-bottom: 1px solid var(--vc-frame-line);
-
-        // the labels in frame ink; the counts keep Discourse's own pill
-        // colours: secondary on the dot colour (they inherit it from the
-        // link, so it is restated here)
-        a {
-          color: var(--vc-frame-ink);
-        }
-
-        a > span {
-          color: var(--secondary);
-        }
+      .user-messages-page & {
+        background: var(--vc-surface);
       }
     } @else {
       background: var(--vc-surface);
@@ -170,14 +179,16 @@
 
     @if $accent_trim == "true" {
       .user-profile-avatar img.avatar {
-        @if $profile_header_style == "night" {
+        box-shadow:
+          0 0 0 4px var(--vc-surface),
+          0 0 0 6px var(--vc-edge);
+      }
+
+      @if $profile_header_style == "night" {
+        body:not(.user-messages-page) & .user-profile-avatar img.avatar {
           box-shadow:
             0 0 0 4px var(--vc-frame-bg),
             0 0 0 6px var(--vc-frame-glow);
-        } @else {
-          box-shadow:
-            0 0 0 4px var(--vc-surface),
-            0 0 0 6px var(--vc-edge);
         }
       }
     }
