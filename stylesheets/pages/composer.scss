@@ -1,0 +1,84 @@
+// ═══════════════════════════════════════════════════════════════════════
+// Composer and empty states (VC Canvas 2.8.0)
+//
+// Setting: `composer_layout` cards (default) / classic (Discourse's own,
+// the 2.7.0 build byte-for-byte). CSS only.
+//   [composer: the preview reads like the post will (the topic page's
+//    post type), a flame stripe on top (`accent_trim`), the title in the
+//    heading font, a clearer placeholder]
+//   [empty states: on a soft card, the title in the heading font]
+// The composer has two other owners, left alone here: VC Feed Composer
+// (body.vc-feed-composing) and VC AI Conversations Next (AI threads,
+// body.vcai-workspace--thread). Uses `vc-cooked` from topic.scss.
+// ═══════════════════════════════════════════════════════════════════════
+
+@if $composer_layout == "cards" {
+  // ── composer (replies, new topics, messages) ─────────────────────────
+  body:not(.vc-feed-composing, .vcai-workspace--thread) #reply-control {
+    @if $accent_trim == "true" {
+      &.open,
+      &.draft {
+        background-image: var(--vc-trim);
+        background-size: 100% 3px;
+        background-repeat: no-repeat;
+        background-position: top left;
+      }
+    }
+
+    // what you type
+    .d-editor-input {
+      color: var(--vc-ink);
+      line-height: 1.6;
+
+      &::placeholder {
+        color: var(--vc-muted);
+        opacity: 1;
+      }
+    }
+
+    // the title as it will read on the topic list
+    #reply-title {
+      font-family: var(--heading-font-family);
+      font-size: var(--font-up-1-rem);
+      font-weight: var(--vc-card-title-weight);
+      color: var(--vc-ink);
+
+      &::placeholder {
+        color: var(--vc-muted);
+        opacity: 1;
+      }
+    }
+
+    // the preview: the topic page's post type
+    .d-editor-preview {
+      @include vc-cooked;
+    }
+  }
+
+  // ── empty states ─────────────────────────────────────────────────────
+  .empty-state__container.--text-only .empty-state {
+    max-width: 40rem;
+    margin: var(--space-4) 0;
+    padding: var(--space-5) var(--space-6);
+    background: var(--vc-surface-sunk);
+    border: 1px dashed var(--vc-line-strong);
+    border-radius: var(--vc-radius-card);
+
+    .empty-state__title {
+      margin-bottom: var(--space-2);
+      color: var(--vc-ink);
+    }
+
+    .empty-state__body {
+      color: var(--vc-ink-2);
+
+      p:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .empty-state__tip {
+      color: var(--vc-muted);
+    }
+  }
+}

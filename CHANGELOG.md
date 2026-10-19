@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.8.0 — 2026-10-19 (claude-two; candidate, not installed)
+
+Phase 2, step 7 (second half): the composer and empty states. Board C18. This completes Phase 2's page families except the header and sidebar, which wait for the navigation plan (A21).
+
+Composer and empty states (`composer_layout`: cards, the default; classic = Discourse's, byte-identical to 2.7.0)
+- Composer (replies, new topics, messages): the preview uses the topic page's post type, so it reads the way the post will; the topic title is typed in the heading font; a flame stripe along the top (with `accent_trim`); what you type at a line height of 1.6; placeholders in the meta grey (6.1:1, from 4.6:1).
+- The Feed composer (VC Feed Composer) and the AI composer (VC AI Conversations Next) keep their own look: Canvas's rules skip `body.vc-feed-composing` and `body.vcai-workspace--thread`.
+- Empty states (a member's empty likes, drafts and similar lists): the message on a soft card with a dashed edge, the title in ink, the body in the second ink.
+
+Not changed
+- Every other page (as 2.7.0), frame, palettes and colour definitions. No JavaScript changes. No new tokens.
+
 ## 2.7.0 — 2026-10-19 (claude-two; candidate, not installed)
 
 Phase 2, step 7 (first half): badges, groups, tags and the about page. Board C18. The composer and empty states follow in 2.8.0.

@@ -1,4 +1,4 @@
-# VC token contract — VC Canvas 2.7.0
+# VC token contract — VC Canvas 2.8.0
 
 The base theme publishes these CSS custom properties. Feature components and plugins (Feed, Header Mega Nav, AI Conversations, Trivia, Campaign, Matchmaking, Bible Tagger, Versatile Banner) may **read** them. They must not define their own colours: a component that needs a new value asks for a token here.
 
@@ -57,6 +57,8 @@ Profiles and user card (2.5.0): no new tokens. The night header and user card us
 Search, notifications and menus (2.6.0): no new tokens. Discourse's `--d-unread-notification-background` is steered to `--vc-accent-wash` (`menus_layout` cards). Menu tab counts use `--vc-on-accent` on `--vc-accent-deep`.
 
 Badges, groups, tags and about (2.7.0): no new tokens. The about page's header uses the profile's night surface and its text tokens.
+
+Composer and empty states (2.8.0): no new tokens. The composer preview reuses the post type (`vc-cooked` in topic.scss); placeholders use `--vc-muted`; empty states sit on `--vc-surface-sunk`.
 
 Core Discourse tokens steered from the palette: `--title-color--read`, `--excerpt-color`, `--metadata-color`, `--content-border-color`, `--d-hover`, `--d-selected`, `--d-selected-hover`, `--d-selected-text-color`, `--d-link-color`, `--highlight-bg`.
 

@@ -1,5 +1,5 @@
 # ═══════════════════════════════════════════════════════════════════════
-# LOOK & FEEL (2.0.0; topic list settings 2.1.0; frame and trim 2.2.0; categories page 2.3.0; topic page 2.4.0/2.4.1; profiles 2.5.0/2.5.1; search, notifications and menus 2.6.0; badges, groups, tags and about 2.7.0). Colours are edited in Admin → Appearance → Colour
+# LOOK & FEEL (2.0.0; topic list settings 2.1.0; frame and trim 2.2.0; categories page 2.3.0; topic page 2.4.0/2.4.1; profiles 2.5.0/2.5.1; search, notifications and menus 2.6.0; badges, groups, tags and about 2.7.0; composer and empty states 2.8.0). Colours are edited in Admin → Appearance → Colour
 # palettes (VC Flame Light / VC Flame Dark by default). These settings
 # control everything else about how the site looks.
 # ═══════════════════════════════════════════════════════════════════════
@@ -214,6 +214,14 @@ community_pages_layout:
     - cards
     - classic
   description: "Badges, groups, tags and about pages, and the group card (2.7.0). cards = badges and groups as cards, the tag list on a card with chips, the about page with the site name on the night surface (or a white card, following profile_header_style) and its stats as tiles. classic = Discourse's own."
+
+composer_layout:
+  type: enum
+  default: cards
+  choices:
+    - cards
+    - classic
+  description: "Composer and empty states (2.8.0). cards = the composer's preview reads like the post will, a flame stripe on top (with accent_trim), the topic title in the heading font, a clearer placeholder; empty pages show their message on a soft card. The Feed and AI composers keep their own look. classic = Discourse's own."
 
 content_width:
   type: integer
