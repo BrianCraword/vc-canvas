@@ -1,0 +1,789 @@
+@use "lib/viewport";
+
+// ═══════════════════════════════════════════════════════════════════════
+// Categories page as cards (VC Canvas 2.3.0)
+//
+// Settings: `categories_layout` cards (default) / classic (Discourse's own
+// page, untouched). `category_edge` category / flame / none: the colour of
+// the edge on the left of each category card. `category_logo` small /
+// hidden / full: uploaded category logos as a 40px thumbnail, not at all,
+// or at Discourse's size.
+//
+// CSS only. It covers every category page style an admin can pick in
+// Admin → Settings ("desktop category page style", "mobile category page
+// style"):
+//   desktop — the category table (categories only, with featured topics,
+//             with latest topics, with top topics) and the Latest / Top
+//             column beside it;
+//   phones  — Discourse's category cards with their featured topics.
+// Category boxes keep Discourse's layout and get the card surface only.
+//
+// Each category stays Discourse's own row; here it becomes a card:
+//
+//   [logo] [name ......................................] [topics]
+//          [description, two lines .............................]
+//          [subcategory chips ..................................]
+//          [featured topics (with-featured-topics style only) ..]
+//
+// The whole card opens the category; subcategory chips, counts and topic
+// links inside it stay their own links. Layout approach adapted from
+// Discourse's Horizon theme (MIT).
+// ═══════════════════════════════════════════════════════════════════════
+
+// ── shared pieces (used only when categories_layout is cards) ─────────
+
+  // colour of the edge; read by ::before (desktop) or the border (phones)
+  @mixin vc-cat-edge {
+    @if $category_edge == "category" {
+      --vc-cat-edge: var(--category-badge-color, var(--vc-line-strong));
+    } @else if $category_edge == "flame" {
+      --vc-cat-edge: var(--vc-edge);
+    } @else {
+      --vc-cat-edge: transparent;
+    }
+  }
+
+  // card surface and hover, matching the topic cards (2.1.0 / 2.2.0).
+  // $inset: the topic-card flame edge drawn as an inset shadow.
+  @mixin vc-cat-card($inset: false) {
+    position: relative;
+    background: var(--vc-surface);
+    border: var(--vc-card-border);
+    border-radius: var(--vc-radius-card);
+
+    @if $inset {
+      box-shadow:
+        inset 4px 0 0 var(--vc-card-edge-color),
+        var(--vc-shadow);
+    } @else {
+      box-shadow: var(--vc-shadow);
+    }
+
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+
+    @media (hover: hover) {
+      &:hover {
+        @if $accent_trim == "true" {
+          border-color: color-mix(in oklab, var(--vc-edge-strong) 35%, transparent);
+
+          @if $inset {
+            box-shadow:
+              inset 4px 0 0 var(--vc-card-edge-color),
+              var(--vc-shadow),
+              0 12px 28px -14px color-mix(in oklab, var(--vc-edge-strong) 55%, transparent);
+          } @else {
+            box-shadow:
+              var(--vc-shadow),
+              0 12px 28px -14px color-mix(in oklab, var(--vc-edge-strong) 55%, transparent);
+          }
+        } @else {
+          border-color: var(--vc-line-strong);
+
+          @if $inset {
+            box-shadow:
+              inset 4px 0 0 var(--vc-card-edge-color),
+              var(--vc-shadow),
+              0 6px 18px -10px color-mix(in oklab, var(--vc-ink) 28%, transparent);
+          } @else {
+            box-shadow:
+              var(--vc-shadow),
+              0 6px 18px -10px color-mix(in oklab, var(--vc-ink) 28%, transparent);
+          }
+        }
+      }
+    }
+  }
+
+  // section headings: "Category", "Latest", "Top"
+  @mixin vc-cat-heading {
+    font-family: var(--vc-ui);
+    font-size: var(--font-down-1-rem);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--vc-muted);
+  }
+
+  // the category name, as big as a topic card title
+  @mixin vc-cat-title {
+    margin: 0;
+    font-family: var(--heading-font-family);
+    font-size: var(--font-up-2-rem);
+    font-weight: var(--vc-card-title-weight);
+    line-height: 1.3;
+    letter-spacing: var(--vc-display-tracking);
+
+    .category-title-link {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      min-width: 0;
+      color: var(--vc-ink);
+
+      // the whole card opens the category
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+      }
+    }
+
+    .category-text-title,
+    .category-name {
+      min-width: 0;
+    }
+
+    .badge-category__wrapper {
+      font-size: inherit;
+    }
+
+    .badge-category {
+      gap: 0.4em;
+    }
+
+    .badge-category__name {
+      color: var(--vc-ink);
+    }
+
+    .badge-category .d-icon {
+      color: var(--vc-muted);
+    }
+
+    @if $accent_trim == "true" {
+      .category-title-link:hover .badge-category__name {
+        color: var(--vc-accent-deep);
+      }
+    }
+  }
+
+  @mixin vc-cat-description {
+    margin: var(--space-2) 0 0;
+    padding: 0;
+    font-family: var(--font-family);
+    font-size: var(--font-0-rem);
+    line-height: 1.5;
+    color: var(--vc-ink-2);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+  }
+
+  // subcategories as chips
+  @mixin vc-cat-subcategories {
+    position: relative;
+    z-index: 1; // above the card link
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    margin: var(--space-3) 0 0;
+    padding: 0;
+
+    .subcategory {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25em;
+      max-width: 100%;
+      margin: 0;
+    }
+
+    .subcategory > .badge-category__wrapper,
+    > .badge-category__wrapper {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      padding: 0.3em 0.7em;
+      border-radius: var(--vc-radius-pill);
+      background: var(--vc-surface-sunk);
+      font-size: var(--font-down-1-rem);
+      line-height: 1.2;
+
+      .badge-category__name {
+        color: var(--vc-ink-2);
+      }
+
+      @media (hover: hover) {
+        &:hover {
+          background: color-mix(in oklab, var(--vc-ink) 10%, var(--vc-surface));
+        }
+      }
+    }
+
+    .category__badges .badge-notification {
+      color: var(--vc-accent-deep);
+      font-size: var(--font-down-1-rem);
+    }
+
+    .subcategories__more-subcategories {
+      font-size: var(--font-down-1-rem);
+
+      a {
+        color: var(--vc-muted);
+      }
+    }
+  }
+
+@if $categories_layout == "cards" {
+  // ── desktop and tablet: the category table ───────────────────────────
+  table.category-list {
+    display: block;
+    width: 100%;
+    margin: 0 0 var(--space-4);
+    border: 0;
+
+    > thead {
+      display: block;
+      border: 0;
+
+      > tr {
+        display: flex;
+        border: 0;
+      }
+
+      th {
+        width: auto;
+        padding: 0 0 var(--space-2);
+        border: 0;
+        @include vc-cat-heading;
+      }
+
+      // counts sit on each card; featured topics sit inside each card
+      th.topics,
+      th.latest {
+        display: none;
+      }
+    }
+
+    > tbody {
+      display: flex;
+      flex-direction: column;
+      gap: var(--vc-card-gap);
+      border: 0;
+    }
+
+    > tbody > tr {
+      @include vc-cat-card;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas:
+        "main   topics"
+        "latest latest";
+      column-gap: var(--space-4);
+      padding: var(--vc-card-pad);
+      overflow: hidden; // keeps the edge inside the rounded corners
+
+      // anything a plugin adds gets its own full row
+      > td {
+        grid-column: 1 / -1;
+        min-width: 0;
+        padding: 0;
+        border: 0;
+      }
+    }
+
+    > tbody > tr > td.category {
+      grid-area: main;
+      display: block;
+      width: auto;
+      border: 0;
+      @include vc-cat-edge;
+
+      // the edge: drawn from the cell so it can read the category colour
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 4px;
+        background: var(--vc-cat-edge);
+      }
+
+      &.no-category-style {
+        padding-left: 0;
+      }
+
+      h3 {
+        @include vc-cat-title;
+      }
+
+      .category-description {
+        @include vc-cat-description;
+      }
+
+      .subcategories {
+        @include vc-cat-subcategories;
+      }
+
+      // nesting depth 3 (not used on VC today): a plain list inside the card
+      .subcategories-with-subcategories {
+        position: relative;
+        z-index: 1;
+        display: block;
+        margin-top: var(--space-3);
+        border: 0;
+      }
+    }
+
+    > tbody > tr > td.topics {
+      grid-area: topics;
+      position: relative;
+      z-index: 1;
+      pointer-events: none; // a click on the count opens the category…
+      align-self: start;
+      width: auto;
+      text-align: right;
+      font-size: var(--font-down-1-rem);
+      color: var(--vc-muted);
+
+      > div[title] {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.3em;
+        padding: 0.3em 0.75em;
+        border-radius: var(--vc-radius-pill);
+        background: var(--vc-surface-sunk);
+        color: var(--vc-ink-2);
+        line-height: 1.2;
+        white-space: nowrap;
+      }
+
+      .value {
+        font-size: inherit;
+        font-weight: 600;
+      }
+
+      .unit {
+        font-size: inherit;
+        color: var(--vc-muted);
+      }
+
+      a {
+        pointer-events: auto; // …the new / unread links stay their own
+      }
+
+      .badge-notification {
+        display: block;
+        margin-top: var(--space-2);
+        padding: 0;
+        background: transparent;
+        font-size: var(--font-down-1-rem);
+        font-weight: 600;
+        color: var(--vc-accent-deep);
+        text-align: right;
+      }
+    }
+
+    // featured topics ("categories with featured topics" style)
+    > tbody > tr > td.latest {
+      grid-area: latest;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      width: auto;
+      margin-top: var(--space-3);
+      padding-top: var(--space-3);
+      border-top: 1px solid var(--vc-line-soft);
+
+      .featured-topic {
+        display: flex;
+        align-items: baseline;
+        gap: var(--space-2);
+        min-width: 0;
+        margin: 0;
+        font-size: var(--font-0-rem);
+        line-height: 1.4;
+
+        .title {
+          position: relative; // keeps the screen-reader " read" text inside
+          min-width: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          color: var(--vc-ink-2);
+        }
+
+        a.last-posted-at,
+        a.last-posted-at:visited {
+          margin-left: auto;
+          font-size: var(--font-down-1-rem);
+          color: var(--vc-muted);
+          white-space: nowrap;
+        }
+      }
+    }
+
+    &.with-topics {
+      margin-left: 0;
+
+      .category {
+        width: auto;
+      }
+    }
+  }
+
+  // ── the Latest / Top column beside the categories ────────────────────
+  .categories-and-latest,
+  .categories-and-top {
+    @include viewport.from(sm) {
+      gap: var(--space-6);
+
+      div.column.categories {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .latest-topic-list,
+  .top-topic-list {
+    .table-heading {
+      padding: 0 0 var(--space-2);
+      border: 0;
+      @include vc-cat-heading;
+    }
+
+    .no-topics h3 {
+      font-size: var(--font-0-rem);
+      color: var(--vc-muted);
+    }
+
+    .more-topics {
+      margin-top: var(--space-4);
+    }
+  }
+
+  .latest-topic-list-item {
+    --vc-card-edge-color: transparent;
+    @include vc-cat-card($inset: true);
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "poster title replies"
+      "poster meta  activity";
+    align-items: center;
+    gap: var(--space-1) var(--space-3);
+    margin-top: var(--vc-card-gap);
+    padding: var(--space-3) var(--space-4);
+
+    @if $card_edge == "all" {
+      --vc-card-edge-color: var(--vc-edge);
+    }
+
+    @if $card_edge != "none" {
+      @media (hover: hover) {
+        &:hover {
+          --vc-card-edge-color: var(--vc-edge-strong);
+        }
+      }
+    }
+
+    .main-link,
+    .topic-stats {
+      display: contents;
+    }
+
+    .topic-poster {
+      grid-area: poster;
+      align-self: start;
+      width: auto;
+
+      .avatar {
+        width: 32px;
+        height: 32px;
+      }
+    }
+
+    // core sizes these at .latest-topic-list-item .main-link level
+    .main-link .top-row {
+      grid-area: title;
+      min-width: 0;
+      margin: 0;
+      font-size: var(--font-0-rem);
+      line-height: 1.35;
+
+      a.title {
+        padding: 0;
+        font-weight: 500;
+        color: var(--vc-ink);
+
+        // whole card opens the topic; poster, category and counts stay links
+        &::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+        }
+      }
+
+      a.title.visited,
+      a.title:visited {
+        color: var(--vc-ink-2);
+      }
+
+      @if $accent_trim == "true" {
+        a.title:hover {
+          color: var(--vc-accent-deep);
+        }
+      }
+    }
+
+    .main-link .bottom-row {
+      grid-area: meta;
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+      font-size: var(--font-0-rem); // core sizes the badge inside at 0.87em
+      line-height: var(--line-height-medium);
+    }
+
+    .topic-poster,
+    .posts-map,
+    .topic-last-activity {
+      position: relative;
+      z-index: 1;
+    }
+
+    .posts-map {
+      grid-area: replies;
+      justify-self: end;
+      font-size: var(--font-down-1-rem);
+      font-weight: 600;
+      color: var(--vc-muted);
+
+      @if $accent_trim == "true" {
+        color: var(--vc-accent-deep);
+      }
+
+      a {
+        padding: 0;
+        color: inherit;
+      }
+    }
+
+    .topic-last-activity {
+      grid-area: activity;
+      justify-self: end;
+      font-size: var(--font-down-1-rem);
+      white-space: nowrap;
+
+      a {
+        color: var(--vc-muted);
+      }
+    }
+  }
+
+  // ── phones: Discourse's category cards ────────────────────────────────
+  div.category-list > .category-list-item {
+    // Discourse sets the category colour inline as border-color on all four
+    // sides, so the hairline is an outline and only the left border shows.
+    // Core also forces 1px top and bottom borders (!important) in its
+    // content-border colour; scoping that colour to transparent hides them.
+    --content-border-color: transparent;
+    position: relative;
+    margin: 0 0 var(--vc-card-gap);
+    padding: var(--space-3) var(--space-4);
+    background: var(--vc-surface);
+    border-style: none;
+    border-radius: var(--vc-radius-card);
+    outline: var(--vc-card-border);
+    outline-offset: -1px;
+    box-shadow: var(--vc-shadow);
+
+    @if $category_edge == "category" {
+      border-left: 4px solid; // colour from Discourse's inline style
+    } @else if $category_edge == "flame" {
+      box-shadow:
+        inset 4px 0 0 var(--vc-edge),
+        var(--vc-shadow);
+    }
+
+    // not a table any more: as a table, long topic titles widened the card
+    // past the screen
+    > table.topic-list {
+      display: block;
+      width: 100%;
+      margin: 0;
+      border: 0;
+
+      > tbody {
+        display: flex;
+        flex-direction: column;
+        border: 0;
+      }
+
+      tr {
+        display: flex;
+        align-items: baseline;
+        min-width: 0;
+        border: 0;
+      }
+
+      th.main-link,
+      td {
+        display: block;
+        flex: 1 1 auto;
+        min-width: 0;
+        padding: 0;
+        border: 0;
+      }
+
+      h3 {
+        @include vc-cat-title;
+        max-width: none;
+        padding: 0;
+        font-size: var(--font-up-1-rem);
+      }
+
+      tr.category-description td {
+        @include vc-cat-description;
+      }
+
+      // featured topics
+      tr.category-topic-link {
+        position: relative;
+        z-index: 1;
+
+        td {
+          padding-top: var(--space-2);
+        }
+
+        &:first-of-type td,
+        &:nth-child(2) td {
+          border-top: 0;
+        }
+
+        .topic-inset {
+          display: flex;
+          align-items: baseline;
+          gap: var(--space-2);
+          min-width: 0;
+          font-size: var(--font-0-rem);
+        }
+
+        a.title {
+          position: relative; // keeps the screen-reader " read" text inside
+          min-width: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          padding: 0;
+          color: var(--vc-ink-2);
+        }
+
+        .age,
+        .age a {
+          margin-left: auto;
+          font-size: var(--font-down-1-rem);
+          color: var(--vc-muted);
+          white-space: nowrap;
+          opacity: 1; // core dims older dates below readable contrast
+        }
+
+        td.num.posts {
+          flex: none;
+          width: auto;
+          padding-left: var(--space-3);
+          text-align: right;
+          font-size: var(--font-down-1-rem);
+          font-weight: 600;
+          color: var(--vc-muted);
+
+          @if $accent_trim == "true" {
+            color: var(--vc-accent-deep);
+          }
+
+          a {
+            padding: 0;
+            color: inherit;
+          }
+        }
+      }
+
+      tr.subcategories-list td {
+        padding-top: var(--space-1);
+      }
+
+      .subcategories {
+        @include vc-cat-subcategories;
+
+        // core makes every badge full width on phones
+        > .badge-category__wrapper {
+          width: auto;
+        }
+      }
+
+      .category-title-link .badge-category__wrapper {
+        width: auto;
+      }
+    }
+
+    > .category-topics-count {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: var(--space-3);
+      margin-top: var(--space-3);
+      padding: 0;
+      border: 0;
+      font-size: var(--font-down-1-rem);
+      color: var(--vc-muted);
+
+      .category-stat {
+        float: none;
+        margin: 0;
+        font-size: inherit; // core's relative size compounds to 12px
+      }
+
+      a {
+        color: var(--vc-muted);
+      }
+    }
+  }
+
+  // ── category boxes (if an admin picks a box style) ───────────────────
+  .category-boxes,
+  .category-boxes-with-topics {
+    .category-box {
+      background: var(--vc-surface);
+      border-radius: var(--vc-radius-card);
+      box-shadow: var(--vc-shadow);
+    }
+
+    .category-box-inner {
+      background: transparent;
+      border-color: color-mix(in oklab, var(--vc-ink) 9%, transparent);
+    }
+  }
+
+  // ── uploaded category logos ──────────────────────────────────────────
+  @if $category_logo == "hidden" {
+    .category-list .category-logo,
+    .category-boxes .category-logo,
+    .category-boxes-with-topics .category-logo {
+      display: none;
+    }
+  } @else if $category_logo == "small" {
+    .category-list .category-title-link .category-logo {
+      order: -1;
+      flex: none;
+      float: none;
+      margin: 0;
+
+      img {
+        --height: 40px;
+        display: block;
+        height: 40px;
+        width: calc(40px * var(--aspect-ratio, 1));
+        max-width: 120px;
+        margin: 0;
+        object-fit: contain;
+        border-radius: var(--vc-radius-media);
+      }
+    }
+  }
+}

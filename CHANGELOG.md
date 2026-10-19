@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.3.0 — 2026-10-19 (claude-two; candidate, not installed)
+
+Phase 2, second page family: the Categories page. Board C18.
+
+Categories as cards (`categories_layout`: cards, the default; classic = Discourse's table, byte-identical to 2.2.0)
+- Each category is a card: name in the heading font, a two-line description, subcategories as chips, and the topic count as a pill. New and unread counts show under it in the deep accent.
+- The whole card opens the category. Subcategory chips, counts and featured-topic links stay their own links.
+- The Latest column beside the categories becomes compact cards: avatar, title, category, replies and date. The whole card opens the topic; it follows `card_edge` like the topic cards.
+- Phones: Discourse's category cards get the same surface, a two-line description, chips, and featured topics that truncate instead of widening the page.
+- Category boxes, if an admin picks a box style, get the card surface only.
+- CSS only (`stylesheets/pages/categories.scss`). Works with every category page style in Admin → Settings; built and checked against the site's current ones (desktop: categories and latest topics; phones: categories with featured topics).
+
+Category edge (`category_edge`: category (default), flame, none)
+- A 4px edge on the left of each category card, in the category's own colour (each category's settings), the brand flame, or nothing.
+
+Category logos (`category_logo`: small (default), hidden, full)
+- Uploaded logos show as a 40px thumbnail beside the name instead of at full size (Blog's was 407 × 150px).
+
+Not changed
+- Topic lists, topic page, frame, palettes and colour definitions (identical to 2.2.0 for all four palettes). No JavaScript changes.
+- Category colours are category settings (Brian's): seven top-level categories still use Discourse's stock blue `#0088CC`.
+
 ## 2.2.0 — 2026-10-19 (claude-two; candidate, not installed)
 
 Light mode gets its own style: a night frame around a white page, with flame trim. Brian chose this after live previews (option B). Board C18.

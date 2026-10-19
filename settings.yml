@@ -1,5 +1,5 @@
 # ═══════════════════════════════════════════════════════════════════════
-# LOOK & FEEL (2.0.0; topic list settings 2.1.0; frame and trim 2.2.0). Colours are edited in Admin → Appearance → Colour
+# LOOK & FEEL (2.0.0; topic list settings 2.1.0; frame and trim 2.2.0; categories page 2.3.0). Colours are edited in Admin → Appearance → Colour
 # palettes (VC Flame Light / VC Flame Dark by default). These settings
 # control everything else about how the site looks.
 # ═══════════════════════════════════════════════════════════════════════
@@ -133,6 +133,32 @@ topic_card_views:
   type: bool
   default: false
   description: "Show the view count on topic cards (desktop and tablet)."
+
+categories_layout:
+  type: enum
+  default: cards
+  choices:
+    - cards
+    - classic
+  description: "Categories page (2.3.0). cards = each category is a card with its name, description, subcategory chips and topic count, and the whole card opens the category; the Latest column beside it becomes cards too. classic = Discourse's table."
+
+category_edge:
+  type: enum
+  default: category
+  choices:
+    - category
+    - flame
+    - none
+  description: "Edge on the left of each category card (2.3.0). category = the category's own colour (set in each category's settings); flame = the brand flame; none = no edge."
+
+category_logo:
+  type: enum
+  default: small
+  choices:
+    - small
+    - hidden
+    - full
+  description: "Uploaded category logos on the categories page (2.3.0). small = a 40px thumbnail beside the name; hidden = not shown; full = Discourse's own size."
 
 content_width:
   type: integer

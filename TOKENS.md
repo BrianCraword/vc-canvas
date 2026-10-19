@@ -1,4 +1,4 @@
-# VC token contract — VC Canvas 2.2.0
+# VC token contract — VC Canvas 2.3.0
 
 The base theme publishes these CSS custom properties. Feature components and plugins (Feed, Header Mega Nav, AI Conversations, Trivia, Campaign, Matchmaking, Bible Tagger, Versatile Banner) may **read** them. They must not define their own colours: a component that needs a new value asks for a token here.
 
@@ -43,6 +43,12 @@ Frame and trim (2.2.0, `frame_style`, `accent_trim`, `card_edge`):
 | `--vc-frame-glow`, `-glow-2` | banner glows | quaternary, love |
 | `--vc-trim` | flame stripe | tertiary → quaternary → love |
 | `--vc-edge`, `--vc-edge-strong` | card edge, and on hover | quaternary, tertiary |
+
+Categories page (2.3.0, `category_edge`): one internal token, set per card and not for components to read.
+
+| Token | Meaning | Value |
+|---|---|---|
+| `--vc-cat-edge` | edge on a category card | the category's own `--category-badge-color` (category), `--vc-edge` (flame), or transparent (none) |
 
 Core Discourse tokens steered from the palette: `--title-color--read`, `--excerpt-color`, `--metadata-color`, `--content-border-color`, `--d-hover`, `--d-selected`, `--d-selected-hover`, `--d-selected-text-color`, `--d-link-color`, `--highlight-bg`.
 
