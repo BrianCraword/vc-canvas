@@ -1,5 +1,5 @@
 # ═══════════════════════════════════════════════════════════════════════
-# LOOK & FEEL (2.0.0; topic list settings 2.1.0; frame and trim 2.2.0; categories page 2.3.0; topic page 2.4.0/2.4.1; profiles 2.5.0/2.5.1; search, notifications and menus 2.6.0; badges, groups, tags and about 2.7.0; composer and empty states 2.8.0). Colours are edited in Admin → Appearance → Colour
+# LOOK & FEEL (2.0.0; topic list settings 2.1.0; frame and trim 2.2.0; categories page 2.3.0; topic page 2.4.0/2.4.1; profiles 2.5.0/2.5.1; search, notifications and menus 2.6.0; badges, groups, tags and about 2.7.0; composer and empty states 2.8.0; admin sidebar text 2.8.1; the Feed 2.9.0). Colours are edited in Admin → Appearance → Colour
 # palettes (VC Flame Light / VC Flame Dark by default). These settings
 # control everything else about how the site looks.
 # ═══════════════════════════════════════════════════════════════════════
@@ -222,6 +222,14 @@ composer_layout:
     - cards
     - classic
   description: "Composer and empty states (2.8.0). cards = the composer's preview reads like the post will, a flame stripe on top (with accent_trim), the topic title in the heading font, a clearer placeholder; empty pages show their message on a soft card. The Feed and AI composers keep their own look. classic = Discourse's own."
+
+feed_layout:
+  type: enum
+  default: cards
+  choices:
+    - cards
+    - classic
+  description: "The Feed (2.9.0). cards = every Feed card on the Canvas card, posts with the flame edge (following card_edge), the Canvas type sizes with nothing under 12px, section titles as labels, the author line and post text as on the topic page. The Feed composer keeps its own look. classic = the Feed plugin's own look."
 
 content_width:
   type: integer

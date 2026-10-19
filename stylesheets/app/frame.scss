@@ -114,6 +114,37 @@
     }
   }
 
+  // the admin sidebar: Discourse paints its panel light in light mode
+  // (--d-sidebar-admin-background), so the frame's light text faded into it
+  // (1.51:1). Inside the admin panel the sidebar tokens follow Discourse's
+  // own primary scale, which is dark on the light panel and light on the
+  // dark one (2.8.1).
+  html.admin-area .sidebar-wrapper .admin-panel {
+    --vc-ink: var(--primary-900);
+    --vc-ink-2: var(--primary-800);
+    --vc-muted: var(--primary-600);
+    --vc-label: var(--primary-600);
+    --vc-accent: var(--tertiary);
+    --vc-accent-tint: color-mix(in oklab, var(--tertiary) 16%, var(--d-sidebar-admin-background));
+    --vc-on-accent: var(--secondary);
+    --vc-sb-hue: var(--primary-800);
+    --vc-sb-tint: color-mix(in oklab, var(--primary-900) 9%, var(--d-sidebar-admin-background));
+    --d-hover: color-mix(in oklab, var(--primary-900) 7%, var(--d-sidebar-admin-background));
+    --d-selected: color-mix(in oklab, var(--tertiary) 14%, var(--d-sidebar-admin-background));
+    --primary: var(--primary-900);
+    --primary-very-high: var(--primary-900);
+    --primary-high: var(--primary-800);
+    --primary-medium: var(--primary-600);
+    --primary-low-mid: var(--primary-600);
+    --d-sidebar-link-color: var(--primary-800);
+    --d-sidebar-link-icon-color: var(--primary-800);
+    --d-sidebar-header-color: var(--primary-600);
+    --d-sidebar-header-icon-color: var(--primary-600);
+    --d-sidebar-highlight-color: var(--primary-900);
+    --d-sidebar-active-color: var(--primary-900);
+    color: var(--primary-800);
+  }
+
   // tiles: the per-destination hues, darkened into the frame
   @if $sidebar_style == "tiles" {
     html .sidebar-wrapper .sidebar-section-link:not(.active, [aria-current="page"]) .sidebar-section-link-prefix.icon {

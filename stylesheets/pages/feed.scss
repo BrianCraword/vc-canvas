@@ -1,0 +1,174 @@
+@use "lib/viewport";
+
+// ═══════════════════════════════════════════════════════════════════════
+// The Feed (VC Canvas 2.9.0)
+//
+// Setting: `feed_layout` cards (default) / classic (the Feed plugin's own
+// look, the 2.8.1 build byte-for-byte). CSS only.
+// The Feed is a plugin (discourse-vc-feed); these rules sit on top of its
+// stylesheet, only on the Feed page (body.vc-feed-active), so the plugin is
+// unchanged and needs no rebuild.
+//   [cards: every Feed card on the Canvas card (surface, hairline, radius,
+//    shadow); posts get the flame edge like the topic page's first post]
+//   [type: the Canvas sizes (12.1 / 13.9 / 16 / 18.4 / 21.1px), nothing
+//    under 12px; section titles as Canvas labels; the author line as on the
+//    topic page; post text in the topic page's post type]
+//   [colour: three text greys (ink, ink-2, muted) plus the accents]
+// The Feed composer (VC Feed Composer) keeps its own look.
+// ═══════════════════════════════════════════════════════════════════════
+
+// a section label, as on the profile summary and the badges page
+@mixin vc-feed-eyebrow {
+  font-family: var(--vc-ui);
+  font-size: var(--font-down-1-rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--vc-muted);
+}
+
+@mixin vc-feed-card {
+  background: var(--vc-surface);
+  border: var(--vc-card-border);
+  border-radius: var(--vc-radius-card);
+  box-shadow: var(--vc-shadow);
+}
+
+@if $feed_layout == "cards" {
+  body.vc-feed-active {
+    // ── cards ─────────────────────────────────────────────────────────
+    .vc-feed-greeting,
+    .vc-feed-standalone,
+    .vc-ai-space,
+    .vc-feed-explore,
+    .vc-rail-matches,
+    .vc-rail-module {
+      @include vc-feed-card;
+    }
+
+    // a post: the topic page's first-post card, flame edge on the left
+    .vc-feed-item {
+      background: var(--vc-surface);
+      border: var(--vc-card-border);
+      border-radius: var(--vc-radius-card);
+
+      @if $card_edge != "none" {
+        box-shadow:
+          inset 4px 0 0 var(--vc-edge),
+          var(--vc-shadow);
+      } @else {
+        box-shadow: var(--vc-shadow);
+      }
+
+      @media (hover: hover) {
+        &:hover {
+          background: var(--vc-surface);
+          border-color: var(--vc-line-strong);
+        }
+      }
+
+      // the fade at the bottom of a long post, in the card's colour
+      .vc-feed-item__body.is-clamped::after {
+        background: linear-gradient(transparent, var(--vc-surface));
+      }
+    }
+
+    // ── section titles: Canvas labels ─────────────────────────────────
+    .vc-feed-header__title,
+    .vc-rail-module__title,
+    .vc-rail-matches__title {
+      @include vc-feed-eyebrow;
+    }
+
+    .vc-feed-explore__group-title {
+      color: var(--vc-muted);
+    }
+
+    .vc-rail-rankings__col-title {
+      font-size: var(--font-down-2-rem);
+    }
+
+    // ── the author line, as on the topic page ─────────────────────────
+    .vc-feed-item__author {
+      font-family: var(--vc-ui);
+      font-size: var(--font-0-rem);
+      font-weight: 600;
+      color: var(--vc-ink);
+    }
+
+    .vc-feed-item__handle,
+    .vc-feed-item__age {
+      font-family: var(--vc-ui);
+      font-size: var(--font-down-1-rem);
+      font-weight: 400;
+      color: var(--vc-muted);
+    }
+
+    // phones: the meta size keeps name, handle and date on one line
+    @include viewport.until(sm) {
+      .vc-feed-item__author {
+        font-size: var(--font-down-1-rem);
+      }
+    }
+
+    // ── post title and text ───────────────────────────────────────────
+    .vc-feed-item__title {
+      font-family: var(--vc-display);
+      font-weight: var(--vc-card-title-weight);
+      letter-spacing: var(--vc-display-tracking);
+      color: var(--vc-ink);
+    }
+
+    .vc-feed-item__body {
+      @include vc-cooked;
+    }
+
+    .vc-feed-item__tag {
+      color: var(--vc-ink-2);
+    }
+
+    // ── small text up to 12px, in the muted grey ──────────────────────
+    .vc-feed-item__actions .vc-feed-item__action-label,
+    .vc-feed-item__actions .vc-feed-item__view-label,
+    .vc-feed-item__actions .vc-feed-item__count,
+    .vc-feed-item__actions .vc-feed-item__action > span,
+    .vc-feed-replies__all,
+    .vc-feed-trigger__tool > span,
+    .vc-ai-space__private,
+    .vc-ai-space__view-all {
+      font-size: var(--font-down-2-rem);
+    }
+
+    .vc-feed-trigger__post {
+      font-size: var(--font-down-1-rem);
+    }
+
+    .vc-feed-greeting__handle,
+    .vc-feed-greeting__more summary,
+    .vc-feed-audience__note,
+    .vc-feed-audience__details summary,
+    .vc-ai-space__private {
+      color: var(--vc-muted);
+    }
+
+    .vc-feed-reply__excerpt {
+      color: var(--vc-ink-2);
+
+      a {
+        font-size: inherit;
+      }
+    }
+
+    // ── the side rail ─────────────────────────────────────────────────
+    .vc-ai-space__title {
+      font-size: var(--font-0-rem);
+    }
+
+    .vc-rail-module__headline {
+      font-family: var(--vc-display);
+      font-size: var(--font-up-1-rem);
+      font-weight: var(--vc-display-weight);
+      letter-spacing: var(--vc-display-tracking);
+    }
+  }
+}

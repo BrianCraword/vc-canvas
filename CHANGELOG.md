@@ -1,5 +1,30 @@
 # Changelog
 
+## 2.9.0 — 2026-10-19 (claude-two; candidate, not installed)
+
+Phase 3, first feature: the Feed in line with the theme (Brian's pick, B29). Board C21. Includes 2.8.1 (the admin sidebar text).
+
+The Feed (`feed_layout`: cards, the default; classic = the Feed plugin's own look, byte-identical to 2.8.1)
+- Every Feed card (posts, the greeting, the post box, the side rail) on the Canvas card: same surface, hairline, corner and shadow as the topic lists. Posts get the flame edge on the left (following `card_edge`), like a topic's first post.
+- Type: the Canvas sizes only (12.1, 13.9, 16, 18.4 and 21.1px), down from twelve sizes; nothing under 12px (the action labels, section titles and rail labels were 10.5–11.5px). The trending-tags cloud keeps its weighted sizes.
+- Section titles ("Community Feed", the rail's module titles, My Matches) as Canvas labels. The author line as on the topic page: name at the body size, handle and date in the muted grey. Post titles in the heading font at the card-title weight; post text in the topic page's post type.
+- Greys: the Feed's four greys become Canvas's ink, second ink and muted.
+- Only on the Feed page (`body.vc-feed-active`). The Feed plugin is unchanged, so nothing needs a rebuild. The Feed composer (VC Feed Composer) keeps its own look.
+
+Not changed
+- Every other page (as 2.8.1), frame, palettes and colour definitions. No JavaScript changes. No new tokens.
+
+## 2.8.1 — 2026-10-19 (claude-two; candidate, not installed)
+
+A fix to the frame, asked for by Brian on the live 2.8.0: the admin sidebar's unselected links were too light to read in light mode.
+
+Admin sidebar (`frame_style`: night only)
+- Discourse paints the admin panel's sidebar light in light mode, and the night frame's light text faded into it (1.51:1). Inside the admin panel the sidebar now follows Discourse's own text scale: dark text on the light panel (9.0:1), light text on the dark panel (unchanged look, 6.1:1 at worst). Icon tiles follow, the selected item keeps its flame tile.
+- The forum sidebar, the frame and every page are as 2.8.0. With `frame_style` none the build is byte-identical to 2.8.0.
+
+Not changed
+- Pages, palettes and colour definitions. No JavaScript changes. No new tokens.
+
 ## 2.8.0 — 2026-10-19 (claude-two; candidate, not installed)
 
 Phase 2, step 7 (second half): the composer and empty states. Board C18. This completes Phase 2's page families except the header and sidebar, which wait for the navigation plan (A21).

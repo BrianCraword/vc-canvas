@@ -29,6 +29,7 @@ en:
       menus_layout: "Search, notifications and header menus — cards: results and notifications on cards, unread in the accent · classic: Discourse's"
       community_pages_layout: "Badges, groups, tags and about — cards: cards, chips and an about page header · classic: Discourse's"
       composer_layout: "Composer and empty states — cards: post-style preview, flame stripe, empty pages on a soft card · classic: Discourse's"
+      feed_layout: "The Feed — cards: Canvas cards with the flame edge, Canvas type sizes, nothing under 12px · classic: the Feed plugin's own look"
       content_width: "Maximum content width in pixels"
       motion: "Hover and transition animations"
       hot_topics_count: "Number of hot topics shown"
