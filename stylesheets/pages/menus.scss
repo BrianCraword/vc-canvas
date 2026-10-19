@@ -1,0 +1,221 @@
+@use "lib/viewport";
+
+// ═══════════════════════════════════════════════════════════════════════
+// Search, notifications and the header menus (VC Canvas 2.6.0)
+//
+// Setting: `menus_layout` cards (default) / classic (Discourse's own, the
+// 2.5.1 build byte-for-byte). CSS only.
+//   [search page: each result a card, the match highlighted in the accent]
+//   [notifications page: the list on one card, unread rows washed with the
+//    accent and edged in flame, dates at the meta size]
+//   [user menu and search menu: card corners and shadow, the same unread
+//    rows, readable tab counts]
+// Messages pages belong to the VC Message Center component (B25): not here.
+// ═══════════════════════════════════════════════════════════════════════
+
+@if $menus_layout == "cards" {
+  // unread notifications everywhere Discourse draws them
+  :root {
+    --d-unread-notification-background: var(--vc-accent-wash);
+  }
+
+  // ── shared: notification and menu rows ─────────────────────────────
+  .user-menu.show-avatars,
+  .user-notifications-list.show-avatars {
+    li.notification,
+    li.bookmark,
+    li.reviewable,
+    li.message {
+      a {
+        color: var(--vc-ink);
+      }
+
+      .item-label {
+        color: var(--vc-ink);
+        font-weight: 600;
+      }
+
+      &.unread,
+      &.pending {
+        box-shadow: inset 3px 0 0 var(--vc-edge);
+
+        .icon-avatar__icon-wrapper {
+          background: var(--vc-accent-deep);
+
+          .d-icon {
+            color: var(--vc-on-accent);
+          }
+        }
+      }
+    }
+  }
+
+  // ── header menus: the user menu and the search menu ─────────────────
+  // (core rounds the search menu with `.search-menu-container.menu-panel-results
+  // .menu-panel`, so the search menu selector here is one step stronger)
+  .user-menu.revamped,
+  .search-menu .menu-panel-results .menu-panel.search-menu-panel {
+    border: 1px solid var(--vc-line);
+    border-radius: var(--vc-radius-card);
+    box-shadow: var(--vc-shadow), var(--vc-shadow-lift);
+    overflow: hidden;
+  }
+
+  .user-menu.revamped {
+    background: var(--vc-surface);
+
+    // descriptions one step down, so label and text read as two lines
+    li .item-description {
+      font-size: var(--font-down-1-rem);
+    }
+
+    // the tab bar: active tab in the accent, counts readable
+    .tabs-list .btn.user-menu-tab {
+      &.active .d-icon {
+        color: var(--vc-accent-deep);
+        background-color: var(--vc-accent-wash);
+      }
+
+      // core's count is 10.6px, white on a light accent (2.19:1); here
+      // 12px on the deep accent, tucked into the corner with a surface ring
+      .badge-notification {
+        top: 1px;
+        right: 1px;
+        box-sizing: border-box;
+        min-width: 1.6em;
+        padding: 0 0.3em;
+        line-height: 1.35;
+        background-color: var(--vc-accent-deep);
+        color: var(--vc-on-accent);
+        font-size: var(--font-down-2-rem);
+        border: 2px solid var(--vc-surface);
+      }
+    }
+  }
+
+  .search-menu .menu-panel-results .menu-panel.search-menu-panel {
+    background: var(--vc-surface);
+
+    .search-link:hover,
+    .search-link:focus-visible,
+    li:hover > .search-link {
+      background: var(--vc-accent-wash);
+    }
+
+    .search-highlight {
+      color: var(--vc-ink);
+      font-weight: 700;
+    }
+  }
+
+  // ── notifications page ──────────────────────────────────────────────
+  .user-notifications-list.show-avatars,
+  .user-content .user-notifications-list {
+    background: var(--vc-surface);
+    border: var(--vc-card-border);
+    border-radius: var(--vc-radius-card);
+    box-shadow: var(--vc-shadow);
+    overflow: hidden;
+
+    li.notification {
+      border-bottom: 1px solid var(--vc-line-soft);
+
+      &:last-child {
+        border-bottom: 0;
+      }
+
+      // dates at the meta size (core: 12.1px); colour stays core's
+      .relative-date {
+        font-size: var(--font-down-1-rem);
+      }
+    }
+  }
+
+  // ── search page ─────────────────────────────────────────────────────
+  .search-container {
+    .fps-result {
+      position: relative;
+      gap: var(--space-3);
+      margin-bottom: var(--vc-card-gap);
+      padding: var(--vc-card-pad);
+      background: var(--vc-surface);
+      border: var(--vc-card-border);
+      border-radius: var(--vc-radius-card);
+      --vc-card-edge-color: transparent;
+      box-shadow:
+        inset 4px 0 0 var(--vc-card-edge-color),
+        var(--vc-shadow);
+      transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+
+      @if $card_edge == "all" {
+        --vc-card-edge-color: var(--vc-edge);
+      }
+
+      @media (hover: hover) {
+        &:hover {
+          @if $card_edge != "none" {
+            --vc-card-edge-color: var(--vc-edge-strong);
+          }
+
+          border-color: var(--vc-line-strong);
+        }
+      }
+
+      .author {
+        margin: 0;
+        padding: 0;
+      }
+
+      .fps-topic {
+        min-width: 0;
+      }
+
+      .search-link .topic-title {
+        font-family: var(--heading-font-family);
+        font-weight: var(--vc-card-title-weight);
+        color: var(--vc-ink);
+      }
+
+      // read results one step lighter, in the excerpt colour (keeps the
+      // page at six text colours)
+      a.search-link.visited .topic-title {
+        color: var(--vc-ink-2);
+      }
+
+      .blurb {
+        color: var(--vc-ink-2);
+
+        .date {
+          color: var(--vc-muted);
+          font-size: var(--font-down-1-rem);
+        }
+      }
+
+      .like-count {
+        color: var(--vc-muted);
+        font-size: var(--font-down-1-rem);
+      }
+
+      @include viewport.until(sm) {
+        padding: var(--space-3);
+
+        .author {
+          display: none;
+        }
+      }
+    }
+
+    // the matched words: ink on the accent wash (core's rule is
+    // `.fps-result .blurb .search-highlight`, so this one is as specific)
+    .search-highlight,
+    .fps-result .blurb .search-highlight {
+      color: var(--vc-ink);
+      font-weight: 700;
+      background: var(--vc-accent-wash);
+      border-radius: 3px;
+      padding: 0 0.15em;
+    }
+  }
+}

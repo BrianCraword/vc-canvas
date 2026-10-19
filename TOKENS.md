@@ -1,4 +1,4 @@
-# VC token contract — VC Canvas 2.5.0
+# VC token contract — VC Canvas 2.6.0
 
 The base theme publishes these CSS custom properties. Feature components and plugins (Feed, Header Mega Nav, AI Conversations, Trivia, Campaign, Matchmaking, Bible Tagger, Versatile Banner) may **read** them. They must not define their own colours: a component that needs a new value asks for a token here.
 
@@ -53,6 +53,8 @@ Categories page (2.3.0, `category_edge`): one internal token, set per card and n
 Topic page (2.4.0): no new tokens. `topic_reading_width` sets Discourse's own `--topic-body-width`. The post body uses `--vc-ink-body`; quotes and code use `--vc-surface-sunk` and `--vc-accent-line`.
 
 Profiles and user card (2.5.0): no new tokens. The night header and user card use the frame tokens on the frame colour with two glows at 24% / 20% (the welcome banner keeps 42% / 34%). Labels on that surface use `--vc-frame-ink-2`, not `--vc-frame-muted`: muted fell to 3.6:1 over the brightest glow point in dark palettes. Worst-point contrast for every text token is in `checks/profile-night-contrast-output.txt` (all ≥ 4.5:1).
+
+Search, notifications and menus (2.6.0): no new tokens. Discourse's `--d-unread-notification-background` is steered to `--vc-accent-wash` (`menus_layout` cards). Menu tab counts use `--vc-on-accent` on `--vc-accent-deep`.
 
 Core Discourse tokens steered from the palette: `--title-color--read`, `--excerpt-color`, `--metadata-color`, `--content-border-color`, `--d-hover`, `--d-selected`, `--d-selected-hover`, `--d-selected-text-color`, `--d-link-color`, `--highlight-bg`.
 

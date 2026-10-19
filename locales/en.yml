@@ -26,6 +26,7 @@ en:
       post_author_style: "Author line on posts (name and title / name only)"
       profile_layout: "Profile pages — cards: header, stats, lists and activity on cards · classic: Discourse's pages"
       profile_header_style: "Profile header and user card (night / card)"
+      menus_layout: "Search, notifications and header menus — cards: results and notifications on cards, unread in the accent · classic: Discourse's"
       content_width: "Maximum content width in pixels"
       motion: "Hover and transition animations"
       hot_topics_count: "Number of hot topics shown"

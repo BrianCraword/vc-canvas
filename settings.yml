@@ -1,5 +1,5 @@
 # ═══════════════════════════════════════════════════════════════════════
-# LOOK & FEEL (2.0.0; topic list settings 2.1.0; frame and trim 2.2.0; categories page 2.3.0; topic page 2.4.0/2.4.1; profiles 2.5.0/2.5.1). Colours are edited in Admin → Appearance → Colour
+# LOOK & FEEL (2.0.0; topic list settings 2.1.0; frame and trim 2.2.0; categories page 2.3.0; topic page 2.4.0/2.4.1; profiles 2.5.0/2.5.1; search, notifications and menus 2.6.0). Colours are edited in Admin → Appearance → Colour
 # palettes (VC Flame Light / VC Flame Dark by default). These settings
 # control everything else about how the site looks.
 # ═══════════════════════════════════════════════════════════════════════
@@ -198,6 +198,14 @@ profile_header_style:
     - night
     - card
   description: "Profile header and user card (2.5.0; cards layout). night = the dark brand surface with softer versions of the welcome banner's flame and wine glows. card = a white card."
+
+menus_layout:
+  type: enum
+  default: cards
+  choices:
+    - cards
+    - classic
+  description: "Search page, notifications page, user menu and search menu (2.6.0). cards = search results and the notification list on cards, unread rows in the accent wash with a flame edge, readable menu counts. classic = Discourse's own."
 
 content_width:
   type: integer

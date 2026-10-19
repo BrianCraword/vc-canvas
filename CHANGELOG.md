@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.6.0 — 2026-10-19 (claude-two; candidate, not installed)
+
+Phase 2, step 6: search, notifications and the header menus. Board C18. Includes the 2.5.1 fix (the messages-page name).
+
+Search page (`menus_layout`: cards, the default; classic = Discourse's, byte-identical to 2.5.1)
+- Each result is a card with the flame edge (following `card_edge`), the title in the heading font, the excerpt and date in the card colours, and the matched words in ink on the accent wash.
+- Read results are one step lighter. Phones drop the avatar to give the text room.
+
+Notifications page
+- The list sits on one card. Unread rows keep the accent wash and get a flame edge. Dates go from 12.1px to the meta size (13.9px).
+
+User menu and search menu
+- Card corners, hairline and shadow, the same unread rows.
+- The counts on the user menu's tabs were 10.6px white on a light accent (2.19:1). They are now 12px on the deep accent (7.8:1 or better in all four palettes), tucked into the corner so the icon shows.
+- Descriptions in the user menu one step smaller than the names.
+
+Messages
+- Left to the VC Message Center component. Its white-on-white Message and Chat buttons are its own rule (board B25).
+
+Not changed
+- Topic lists, categories, topic page, profiles (as 2.5.1), frame, palettes and colour definitions. No JavaScript changes. No new tokens: Discourse's own `--d-unread-notification-background` is set to `--vc-accent-wash`.
+
 ## 2.5.1 — 2026-10-19 (claude-two; candidate, not installed)
 
 Fix only. Board C18.
