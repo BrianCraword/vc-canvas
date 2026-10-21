@@ -1,0 +1,45 @@
+// ═══════════════════════════════════════════════════════════════════════
+// The messages pages (VC Canvas 2.10.0)
+//
+// Setting: `messages_layout` cards (default) / classic (the 2.9.0 build
+// byte-for-byte, for use with the VC Message Center component switched on).
+// With cards, Canvas styles the private message folders (inbox, sent, new,
+// unread, archive, group inboxes) like the other profile tabs, and VC Message
+// Center is switched off:
+//   [header: the profile's night header (profile.scss, `$vc-night-scope`)]
+//   [profile tabs: Discourse's, as on every other profile tab]
+//   [folder bar: Inbox ▾  Latest Sent New Unread Archive Bot chats   ▦ New Message]
+//   [messages: the topic cards (topic-list.scss; vc-topic-cards.js adds the
+//    "messages" list context), no Views column, the flame edge on unread]
+// CSS here is the folder bar and the unread edge; the rest reuses the
+// topic list and profile rules.
+// ═══════════════════════════════════════════════════════════════════════
+
+@if $messages_layout == "cards" {
+  body.user-messages-page {
+    // ── folder bar: folders packed to the left, as on the activity tab;
+    // the layout switch and New Message stay on the right ───────────────
+    .user-navigation-secondary .messages-nav > li {
+      flex: 0 0 auto;
+    }
+
+    // ── messages: with `card_edge` all, every topic card has the flame
+    // edge; in an inbox it marks what's unread instead ───────────────────
+    @if $topic_list_layout == "cards" and $card_edge == "all" {
+      .topic-list.vc-topic-cards > .topic-list-body > .topic-list-item {
+        --vc-card-edge-color: transparent;
+
+        &.unseen-topic,
+        &.unread-posts {
+          --vc-card-edge-color: var(--vc-edge);
+        }
+
+        @media (hover: hover) {
+          &:hover {
+            --vc-card-edge-color: var(--vc-edge-strong);
+          }
+        }
+      }
+    }
+  }
+}

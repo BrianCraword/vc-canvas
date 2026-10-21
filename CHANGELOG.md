@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.10.0 — 2026-10-20 (claude-two; candidate, not installed)
+
+Phase 3: the messages pages (Brian's choice, B32, board C20). Canvas takes over what VC Message Center did, so the messages tab looks like the other profile tabs. **Switch VC Message Center off first, then Update.**
+
+The messages pages (`messages_layout`: cards, the default; classic = 2.9.0, byte-identical, for use with VC Message Center on)
+- The profile's night header on the messages pages too (2.5.1 had kept it off there for Message Center). Staff viewing a member's messages can read the Message and Chat buttons again (were 1:1 with Message Center; 5.2:1 light, 7.1:1 dark).
+- Profile tabs and the folder bar are Discourse's, as on the other tabs; the folders sit together on the left, the layout switch and New Message on the right.
+- Each message is a topic card (heading-font title, a two-line preview, participants, replies, date), on phones too; no Views column. With `card_edge` all, the flame edge marks unread messages only. Needs `topic_list_layout` cards; with classic the list keeps Discourse's table.
+- JavaScript: `lib/vc-topic-cards.js` adds the "messages" list context to the card lists when `messages_layout` is cards; with classic it behaves as 2.9.0.
+
+Not changed
+- Every other page (as 2.9.0), frame, palettes and colour definitions. No new tokens.
+
 ## 2.9.0 — 2026-10-19 (claude-two; candidate, not installed)
 
 Phase 3, first feature: the Feed in line with the theme (Brian's pick, B29). Board C21. Includes 2.8.1 (the admin sidebar text).

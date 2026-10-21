@@ -11,12 +11,20 @@
 // ═══════════════════════════════════════════════════════════════════════
 
 // Lists that become cards: Latest, New, Unread, Top, Hot, category and tag
-// lists. Suggested/related topics and private messages keep the table.
+// lists, and (with `messages_layout` cards, 2.10.0) the private message
+// folders, whose list context is "messages". Suggested/related topics keep
+// the table.
 const CARD_CONTEXTS = ["discovery"];
 
-export function isCardContext(context) {
+export function cardContexts(themeSettings) {
+  return themeSettings?.messages_layout === "cards"
+    ? [...CARD_CONTEXTS, "messages"]
+    : CARD_CONTEXTS;
+}
+
+export function isCardContext(context, contexts = CARD_CONTEXTS) {
   return (
-    CARD_CONTEXTS.includes(context?.listContext) &&
+    contexts.includes(context?.listContext) &&
     !context?.category?.doc_index_topic_id
   );
 }
@@ -56,13 +64,14 @@ export function applyVcTopicCards(api, themeSettings) {
   }
 
   const excerptLines = parseInt(themeSettings.topic_card_excerpt_lines, 10) || 0;
+  const contexts = cardContexts(themeSettings);
 
   api.registerValueTransformer("topic-list-class", ({ value, context }) =>
-    isCardContext(context) ? [...value, "vc-topic-cards"] : value
+    isCardContext(context, contexts) ? [...value, "vc-topic-cards"] : value
   );
 
   api.registerValueTransformer("topic-list-item-class", ({ value, context }) => {
-    if (!isCardContext(context)) {
+    if (!isCardContext(context, contexts)) {
       return value;
     }
     const classes = [...value, "vc-card"];
@@ -74,13 +83,13 @@ export function applyVcTopicCards(api, themeSettings) {
 
   // Phones get the same cells as desktop, laid out by CSS.
   api.registerValueTransformer("topic-list-item-mobile-layout", ({ value, context }) =>
-    isCardContext(context) ? false : value
+    isCardContext(context, contexts) ? false : value
   );
 
   // Show an excerpt on every card (core only does it for pinned topics),
   // unless it would just repeat the title. 0 lines keeps core's behaviour.
   api.registerValueTransformer("topic-list-item-expand-pinned", ({ value, context }) => {
-    if (!isCardContext(context) || excerptLines < 1) {
+    if (!isCardContext(context, contexts) || excerptLines < 1) {
       return value;
     }
     return !excerptRepeatsTitle(context.topic);
@@ -89,7 +98,7 @@ export function applyVcTopicCards(api, themeSettings) {
   // The whole card opens the topic, as the title link would.
   api.registerBehaviorTransformer("topic-list-item-click", ({ context, next }) => {
     const { event, topic, listContext } = context;
-    if (!isCardContext({ listContext, category: topic?.category })) {
+    if (!isCardContext({ listContext, category: topic?.category }, contexts)) {
       return next();
     }
 

@@ -78,6 +78,15 @@
     var(--vc-frame-bg);
 }
 
+// Where the night header applies. VC Message Center (a theme component)
+// painted its own light header on the messages pages, so 2.5.1 kept the
+// night surface off there; with `messages_layout` cards (2.10.0) Canvas
+// styles the messages pages and the night header covers them too.
+$vc-night-scope: "body:not(.user-messages-page)";
+@if $messages_layout == "cards" {
+  $vc-night-scope: "body";
+}
+
 @if $profile_layout == "cards" {
   // ── profile header ────────────────────────────────────────────────────
   .user-main .about {
@@ -129,8 +138,9 @@
     @if $profile_header_style == "night" {
       // VC Message Center (a theme component) paints its own light header on
       // the messages pages, so the night surface and its light text stay off
-      // there and the header keeps the card colours (2.5.1).
-      body:not(.user-messages-page) & {
+      // there and the header keeps the card colours (2.5.1), unless Canvas
+      // styles the messages pages (`messages_layout` cards, 2.10.0).
+      #{$vc-night-scope} & {
         @include vc-night-surface;
         border-color: transparent;
         @include vc-on-night;
@@ -170,8 +180,10 @@
         }
       }
 
-      .user-messages-page & {
-        background: var(--vc-surface);
+      @if $messages_layout != "cards" {
+        .user-messages-page & {
+          background: var(--vc-surface);
+        }
       }
     } @else {
       background: var(--vc-surface);
@@ -185,7 +197,7 @@
       }
 
       @if $profile_header_style == "night" {
-        body:not(.user-messages-page) & .user-profile-avatar img.avatar {
+        #{$vc-night-scope} & .user-profile-avatar img.avatar {
           box-shadow:
             0 0 0 4px var(--vc-frame-bg),
             0 0 0 6px var(--vc-frame-glow);
