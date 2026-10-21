@@ -106,11 +106,30 @@ $vc-night-scope: "body:not(.user-messages-page)";
       }
     }
 
-    // the compact header on activity, messages and the other sub-pages
+    // a profile with a background image: core's own rule for it (no side
+    // padding on wide screens) outranks the one above (2.10.1)
+    &.has-background:not(.collapsed-info) .details {
+      padding: var(--space-5) var(--space-6) var(--space-3);
+
+      @include viewport.until(md) {
+        padding: var(--space-4);
+      }
+    }
+
+    // the compact header on activity, messages and the other sub-pages.
+    // Core sets no padding here on wide screens, so the sides are restated:
+    // the avatar and the buttons sat on the card's edge (2.10.1)
     &.collapsed-info .details {
       background: transparent;
       border-bottom: 0;
-      padding-block: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+    }
+
+    // the header's buttons one size down (2.10.1, Brian)
+    .controls .btn {
+      font-size: var(--font-down-1-rem);
+      padding: 0.4em 0.9em;
+      min-height: 0;
     }
 
     .user-profile-names__primary {

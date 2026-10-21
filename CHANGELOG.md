@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.10.1 — 2026-10-20 (claude-two; candidate, not installed)
+
+A fix to the profile header, asked for by Brian on the live 2.10.0.
+
+Profile header (`profile_layout` cards)
+- The compact header (every profile tab except an expanded summary, and the messages tab) had no side padding on wide screens: Discourse's own rule for it outranked Canvas's, so the avatar and the buttons sat on the card's edge. Now 16px each side, as on phones. Headers with a background image keep their side padding when expanded too.
+- The header's buttons (Admin, Expand, Message, Chat, Follow, notification level) one size down: 13.9px text, a 29px button instead of 38px.
+- Since 2.5.0. With `profile_layout` classic the build is byte-identical to 2.10.0.
+
+Not changed
+- Every other page (as 2.10.0), frame, palettes and colour definitions. No JavaScript changes. No new tokens.
+
 ## 2.10.0 — 2026-10-20 (claude-two; candidate, not installed)
 
 Phase 3: the messages pages (Brian's choice, B32, board C20). Canvas takes over what VC Message Center did, so the messages tab looks like the other profile tabs. **Switch VC Message Center off first, then Update.**
